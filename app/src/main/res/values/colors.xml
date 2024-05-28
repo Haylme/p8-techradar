@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+
     <color name="white">#FFFFFFFF</color>
+
+    <color name="border">#747775</color>
+
+    <color name= "underline">#202124</color>
+
+    <color name="detail_text">#1D1B20</color>
+
+    <color name="field_text">#EADDFF</color>
+
+
+
+
+
+
+
+
+
+"
 </resources>
