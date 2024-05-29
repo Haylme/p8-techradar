@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">tech radar</string>
+    <string name="rechercher_un_candidat">rechercher un candidat</string>
 </resources>

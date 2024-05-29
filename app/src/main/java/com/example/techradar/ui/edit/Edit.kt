@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.techradar.R
+import com.example.techradar.databinding.FragmentEditBinding
 
 class Edit : Fragment() {
 
-    companion object {
-        fun newInstance() = Edit()
-    }
+ private var _binding : FragmentEditBinding? = null
+ private val binding get() = _binding!!
 
     private val viewModel: EditViewModel by viewModels()
 
@@ -26,6 +26,9 @@ class Edit : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_edit, container, false)
+        _binding = FragmentEditBinding.inflate(inflater, container, false)
+        return binding.root
+
+
     }
 }

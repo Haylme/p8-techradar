@@ -6,19 +6,25 @@
 
     <color name="border">#747775</color>
 
-    <color name= "underline">#202124</color>
+    <color name="underline_bottom">#202124</color>
 
     <color name="detail_text">#1D1B20</color>
 
     <color name="field_text">#EADDFF</color>
 
+    <color name="searchBar">#ECE6F0</color>
+
+    <color name="searchBarText">#EADDF7</color>
+
+    <color name="searchBarHint">#B3B3</color>
+
+    <color name="tous_favoris_underline">#E6E0E9</color>
+
+    <color name="tous_favoris_text">#6750A4</color>
 
 
 
 
 
 
-
-
-"
 </resources>

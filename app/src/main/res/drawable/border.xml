@@ -5,24 +5,26 @@
 
         <shape>
 
+
+            <solid android:color="@android:color/transparent"/>
+
             <stroke
                 android:width="4dp"
-                android:color="@color/primary"
+                android:color="@color/border"
                 />
-
-
-
 
 
             <corners
-"
 
+                android:radius="30dp"
 
                 />
 
 
-        </shape>
+            "
 
+
+        </shape>
 
 
     </item>
