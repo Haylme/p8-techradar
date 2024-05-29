@@ -4,4 +4,11 @@
     <string name="tous">tous</string>
     <string name="favoris">favoris</string>
     <string name="fab_add_content">fab_add_content</string>
+    <string name="edit">edit</string>
+    <string name="supprimer">supprimer</string>
+    <string name="avatar_picture">avatar_picture</string>
+    <string name="appel">Appel</string>
+    <string name="Sms">Sms</string>
+    <string name="Email">Email</string>
+
 </resources>
