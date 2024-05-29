@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">tech radar</string>
     <string name="rechercher_un_candidat">rechercher un candidat</string>
+    <string name="tous">tous</string>
+    <string name="favoris">favoris</string>
+    <string name="fab_add_content">fab_add_content</string>
 </resources>
