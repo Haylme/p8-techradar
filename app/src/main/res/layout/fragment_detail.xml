@@ -132,23 +132,19 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/A_propos"
-                android:textStyle="bold"
-                android:textSize="16sp"  />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="372dp"
                 android:layout_height="119dp"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="40dp"
-                android:hint="@string/exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan"
-                app:boxBackgroundMode="none"
-               >
-
-            </com.google.android.material.textfield.TextInputEditText>
+                android:background="@null"
+                android:hint="@string/exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan" />
 
 
         </com.google.android.material.card.MaterialCardView>
-
 
 
         <com.google.android.material.card.MaterialCardView
@@ -165,8 +161,59 @@
             app:layout_constraintTop_toBottomOf="@+id/apropos_card">
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/Prétentions_salariales"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="159dp"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="40dp"
+                android:background="@null"
+                android:hint="@string/_3500" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/notes_card"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="15dp"
+
+            android:layout_marginTop="15dp"
+            android:background="@color/top_bar"
+            android:checkable="false"
+            android:clickable="false"
+            android:elevation="0dp"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pretentions_card"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/Notes"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="159dp"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="40dp"
+                android:background="@null" />
 
         </com.google.android.material.card.MaterialCardView>
 

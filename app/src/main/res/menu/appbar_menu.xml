@@ -20,7 +20,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="supp"
+        android:id="@+id/supp"
         android:icon="@drawable/delete"
         android:title="@string/supprimer"
         app:showAsAction="ifRoom" />

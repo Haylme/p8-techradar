@@ -13,5 +13,8 @@
     <string name="call_button_item">call_button_item</string>
     <string name="A_propos">A propos</string>
     <string name="exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan">Exemple : Je m\'appelle John Doe, j\'ai 25 ans et je suis éleveur de porc en Afghanistan</string>
+    <string name="Prétentions_salariales">Prétentions salariales</string>
+    <string name="_3500">3500€</string>
+    <string name="Notes">Notes</string>
 
 </resources>
