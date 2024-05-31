@@ -25,5 +25,7 @@
     <string name="mail_icon">mail_icon</string>
     <string name="Sélectionner_une_date">Sélectionner une date</string>
     <string name="Entrer_une_date">Entrer une date</string>
+    <string name="birthday_icon">birthday_icon</string>
+    <string name="calendar_icon">calendar_icon</string>
 
 </resources>
