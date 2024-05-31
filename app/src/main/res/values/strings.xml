@@ -17,5 +17,13 @@
     <string name="_3500">3500€</string>
     <string name="Notes">Notes</string>
     <string name="Disponible_de_suite">Disponible de suite</string>
+    <string name="Prénom">prénom</string>
+    <string name="person_icon">person_icon</string>
+    <string name="Nom">Nom</string>
+    <string name="Téléphone">Téléphone</string>
+    <string name="phone_icon">phone_icon</string>
+    <string name="mail_icon">mail_icon</string>
+    <string name="Sélectionner_une_date">Sélectionner une date</string>
+    <string name="Entrer_une_date">Entrer une date</string>
 
 </resources>
