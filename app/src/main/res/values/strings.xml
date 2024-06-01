@@ -32,4 +32,6 @@
     <string name="Note">Note</string>
     <string name="edit_icon">edit_icon</string>
 
+    <string name="error_mail">format d'email invalide</string>
+
 </resources>
