@@ -30,7 +30,7 @@
                 android:background="@color/top_bar"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/backstack"
-                app:title="Modifier un candidat" />
+                app:title="Ajouter un candidat" />
 
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -227,7 +227,6 @@
                 app:hintEnabled="true"
                 app:hintTextColor="@color/top_bar"
                 app:boxStrokeColor="@color/box_stroke"
-
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
