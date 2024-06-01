@@ -42,6 +42,7 @@
             android:layout_height="190dp"
             android:layout_margin="15dp"
             android:background="@color/picture"
+
             android:contentDescription="@string/avatar_picture"
             android:src="@drawable/baseline_category_24"
             app:layout_constraintTop_toBottomOf="@+id/layout_appbar" />
@@ -53,6 +54,7 @@
             android:layout_marginTop="20dp"
             android:hint="@string/Prénom"
             app:hintTextColor="@color/top_bar"
+
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/avatar">
 
@@ -86,9 +88,11 @@
             android:layout_height="56dp"
             android:layout_marginTop="30dp"
             android:hint="@string/Nom"
+
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/prenom_layout">
+
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -105,6 +109,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="30dp"
             android:hint="@string/Téléphone"
+
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/nom_layout">
@@ -112,6 +117,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:inputType="phone"
+
 
                 />
 
@@ -133,17 +140,23 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/mail_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="332dp"
             android:layout_height="56dp"
             android:layout_marginTop="30dp"
             android:hint="@string/Email"
+
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
-            app:layout_constraintTop_toBottomOf="@id/phone_layout">
+            app:layout_constraintTop_toBottomOf="@id/phone_layout"
+
+
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:inputType="textEmailAddress"
 
                 />
 
@@ -194,31 +207,129 @@
                 android:id="@+id/calendar_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/calendar"
-                android:contentDescription="@string/calendar_icon"
                 android:layout_gravity="center|end"
                 android:layout_marginEnd="15dp"
                 android:clickable="true"
-                />
-            
+                android:contentDescription="@string/calendar_icon"
+                android:src="@drawable/calendar" />
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/date_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="284dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/Date"
+                app:expandedHintEnabled="false"
+                app:hintEnabled="true"
+                app:hintTextColor="@color/top_bar"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="@string/jj_mm_aaaa"
+                    android:inputType="date"
+
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
 
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:contentDescription="@string/birthday_icon"
             android:src="@drawable/cake"
-           android:contentDescription="@string/birthday_icon"
+            app:layout_constraintEnd_toStartOf="@+id/birthday_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mail_icon"
-            app:layout_constraintEnd_toStartOf="@+id/birthday_card"
             app:layout_constraintTop_toTopOf="@+id/birthday_card"
 
 
+            />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/wadge_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="332dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="30dp"
+            android:hint="@string/Prétentions_salariales"
+
+            app:hintTextColor="@color/top_bar"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/birthday_card"
+
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <ImageView
+
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/money"
+            app:layout_constraintEnd_toStartOf="@+id/wadge_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birthday_card"
+            app:layout_constraintTop_toTopOf="@+id/wadge_layout" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/notes_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="332dp"
+            android:layout_height="175dp"
+            android:layout_marginTop="30dp"
+
+            android:hint="@string/Note"
+            app:hintTextColor="@color/top_bar"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/wadge_layout"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top|start"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/edit_icon"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toStartOf="@+id/wadge_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wadge_layout"
+            app:layout_constraintTop_toTopOf="@+id/notes_layout"
+            android:layout_marginTop="15dp"
             />
 
 

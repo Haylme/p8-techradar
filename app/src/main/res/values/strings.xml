@@ -27,5 +27,9 @@
     <string name="Entrer_une_date">Entrer une date</string>
     <string name="birthday_icon">birthday_icon</string>
     <string name="calendar_icon">calendar_icon</string>
+    <string name="Date">Date</string>
+    <string name="jj_mm_aaaa">jj/mm/aaaa</string>
+    <string name="Note">Note</string>
+    <string name="edit_icon">edit_icon</string>
 
 </resources>
