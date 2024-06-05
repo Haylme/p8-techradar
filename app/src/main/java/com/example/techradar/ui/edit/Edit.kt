@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentEditBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class Edit : Fragment() {
 
  private var _binding : FragmentEditBinding? = null
@@ -30,5 +33,18 @@ class Edit : Fragment() {
         return binding.root
 
 
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

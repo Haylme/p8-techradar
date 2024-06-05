@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@layout/fragment_home">
+    <fragment
+        android:id="@+id/home2"
+        android:name="com.example.techradar.ui.home.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home2_to_detail"
+            app:destination="@id/detail" />
+        <action
+            android:id="@+id/action_home2_to_add2"
+            app:destination="@id/add2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detail"
+        android:name="com.example.techradar.ui.detail.Detail"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_detail_to_edit"
+            app:destination="@id/edit" />
+    </fragment>
+    <fragment
+        android:id="@+id/add2"
+        android:name="com.example.techradar.ui.add.Add"
+        android:label="fragment_add"
+        tools:layout="@layout/fragment_add" />
+    <fragment
+        android:id="@+id/edit"
+        android:name="com.example.techradar.ui.edit.Edit"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" />
+</navigation>

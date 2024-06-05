@@ -32,8 +32,9 @@
     <string name="Note">Note</string>
     <string name="edit_icon">edit_icon</string>
 
-    <string name="error_mail">format d'email invalide</string>
+    <string name="error_mail">format d\'email invalide</string>
     <string name="wadge_layout">wadge_layout</string>
     <string name="Sauvegarder">Sauvegarder</string>
+    <string name="home">home</string>
 
 </resources>

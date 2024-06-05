@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
+
 }
 
 android {
@@ -48,6 +50,19 @@ dependencies {
 
     implementation (libs.androidx.material3)
 
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+
+    implementation("androidx.room:room-ktx:$room_version")
+
+
+    kapt("androidx.room:room-compiler:$room_version")
+
+
+    implementation("com.google.dagger:hilt-android:2.42")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.42")
+
 
     //implementation("androidx.core:core-splashscreen:$1.0.0")
 
@@ -60,6 +75,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.room.common)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

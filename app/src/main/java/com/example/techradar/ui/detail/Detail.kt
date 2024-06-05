@@ -7,12 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.techradar.R
+import com.example.techradar.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class Detail : Fragment() {
 
-    companion object {
-        fun newInstance() = Detail()
-    }
+@AndroidEntryPoint
+class Detail : Fragment(R.layout.fragment_detail) {
+
+  private var _binding: FragmentHomeBinding? = null
+
+    private val binding get() = _binding!!
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
 
     private val viewModel: DetailViewModel by viewModels()
 
@@ -26,6 +33,28 @@ class Detail : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+       return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
