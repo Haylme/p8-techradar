@@ -35,7 +35,7 @@ data class ListDto(
     var listNote: String,
 
     @ColumnInfo(name = "list_favorite")
-    var listFavorite: Boolean?,
+    var listFavorite: Boolean = false,
 
     @ColumnInfo(name = "list_picture")
     var listPicture: String?

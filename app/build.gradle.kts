@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt")
-
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -24,8 +24,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    
 
+    kapt {
+
+        correctErrorTypes = true
+
+    }
 
 
     buildTypes {
@@ -48,7 +52,8 @@ android {
 
 dependencies {
 
-    implementation (libs.androidx.material3)
+
+    implementation(libs.androidx.material3)
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
@@ -59,9 +64,13 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
 
 
-    implementation("com.google.dagger:hilt-android:2.42")
-    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.42")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
+
+
+    // implementation("com.google.dagger:hilt-android:2.42")
+    //implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    //kapt("com.google.dagger:hilt-android-compiler:2.42")
 
 
     //implementation("androidx.core:core-splashscreen:$1.0.0")

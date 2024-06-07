@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@layout/fragment_home">
+    app:startDestination="@+id/home">
     <fragment
-        android:id="@+id/home2"
+        android:id="@+id/home"
         android:name="com.example.techradar.ui.home.Home"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_home2_to_detail"
+            android:id="@+id/action_home_to_detail"
             app:destination="@id/detail" />
         <action
-            android:id="@+id/action_home2_to_add2"
+            android:id="@+id/action_home_to_add2"
             app:destination="@id/add2" />
     </fragment>
     <fragment
