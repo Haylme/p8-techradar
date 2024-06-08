@@ -50,10 +50,11 @@ class EditViewModel @Inject constructor(
                     _editAdd.value = SimpleResponse.success(content)
 
 
-                }else {
+                } else {
 
                     val error = "Error, please complete at least one field"
-
+                    _editAdd.value = SimpleResponse.failure(Exception(error))
+                    _editError.value = error
 
                 }
 

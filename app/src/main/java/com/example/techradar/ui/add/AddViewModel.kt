@@ -55,7 +55,15 @@ class AddViewModel @Inject constructor(
 
                 val response = dataRepository.addUser(content)
 
-                _userAdd.value = SimpleResponse.success(response)
+                if(response)  {
+                    _userAdd.value = SimpleResponse.success(content)
+
+
+                }else {
+                    val errorMessage = "Add operation failed, please try again"
+                    _userError.value = errorMessage
+                    _userAdd.value = SimpleResponse.failure(Exception(errorMessage))
+                }
 
 
             } catch (e: Exception) {

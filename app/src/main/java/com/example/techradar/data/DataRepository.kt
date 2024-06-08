@@ -13,10 +13,14 @@ import kotlinx.coroutines.flow.map
 class DataRepository(private val listDao: ListDao) {
 
 
-    suspend fun addUser(content: Content): Content {
-        listDao.insertUser(content.toDto())
-        return content // Return the added content
+    suspend fun addUser(content: Content): Boolean{
+       val result = listDao.insertUser(content.toDto())
+         return result != -1L
     }
+
+
+
+
 
 
     suspend fun fetchDetailUser(id: Long): Content? {
@@ -29,7 +33,7 @@ class DataRepository(private val listDao: ListDao) {
 
     }
 
-    suspend fun fetchAllUsers(): List<Content>? {
+    suspend fun fetchAllUsers(): List<Content> {
 
 
         val user = listDao.getAllUsers()
@@ -42,7 +46,7 @@ class DataRepository(private val listDao: ListDao) {
     }
 
 
-    suspend fun fetchAllFavorites(): List<Content>? {
+    suspend fun fetchAllFavorites(): List<Content> {
 
 
         val user = listDao.getAllFavoriteUsers()
