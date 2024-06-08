@@ -41,7 +41,7 @@ interface ListDao {
         listNote: String?,
         listFavorite: Boolean?,
         listPicture: String?
-    )
+    ):Int
 
     @Query("DELETE FROM list WHERE user_Id = :id")
     suspend fun deleteUserById(id: Long)

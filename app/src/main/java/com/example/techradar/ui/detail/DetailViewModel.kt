@@ -56,8 +56,8 @@ class DetailViewModel @Inject constructor(
 
             } catch (e: Exception) {
 
-                val message = ""
-                _detailError.value = e.message
+                val message = "Error when fetching user account, please try again"
+                _detailError.value = message
 
             }
 

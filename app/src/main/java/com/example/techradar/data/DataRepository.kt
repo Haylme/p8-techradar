@@ -45,47 +45,51 @@ class DataRepository(private val listDao: ListDao) {
     suspend fun fetchAllFavorites(): List<Content>? {
 
 
-            val user = listDao.getAllFavoriteUsers()
-                .first()
-                .map { Content.fromDto(it) }
+        val user = listDao.getAllFavoriteUsers()
+            .first()
+            .map { Content.fromDto(it) }
 
 
         return user
 
 
-
-
-
     }
 
 
-    suspend fun editUser(content: Content) {
+    suspend fun editUser(content: Content): Boolean {
 
-            listDao.updateUser(
-                id = content.id,
-                listName = content.name,
-                listFirstname = content.firstname,
-                listPhone = content.phone,
-                listEmail = content.email,
-                listBirthday = content.birthday,
-                listWage = content.wage,
-                listNote = content.note,
-                listFavorite = content.favorite,
-                listPicture = content.picture
 
-            )
+        val rowUpdate = listDao.updateUser(
+            id = content.id,
+            listName = content.name,
+            listFirstname = content.firstname,
+            listPhone = content.phone,
+            listEmail = content.email,
+            listBirthday = content.birthday,
+            listWage = content.wage,
+            listNote = content.note,
+            listFavorite = content.favorite,
+            listPicture = content.picture
+
+        )
+        return rowUpdate > 0
 
     }
 
     suspend fun suppressUser(id: Long) {
 
-            listDao.deleteUserById(id)
+        listDao.deleteUserById(id)
 
 
     }
 
 
 }
+
+
+
+
+
 
 
 
