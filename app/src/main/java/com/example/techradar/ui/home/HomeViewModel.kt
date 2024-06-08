@@ -20,11 +20,11 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _homeError = MutableStateFlow<String?>(null)
+    private var _homeError = MutableStateFlow<String?>(null)
     val homeError: StateFlow<String?> = _homeError
 
-    private val _homeAdd = MutableStateFlow(SimpleResponse.initial<Content?>())
-    val homeAdd: StateFlow<SimpleResponse<Content?>> = _homeAdd.asStateFlow()
+    private val _homeAdd = MutableStateFlow(SimpleResponse.initial<List<Content?>>())
+    val homeAdd: StateFlow<SimpleResponse<List<Content?>>> = _homeAdd.asStateFlow()
 
 
     fun resetToast() {
@@ -66,19 +66,31 @@ class HomeViewModel @Inject constructor(
 
     fun allFavorites() {
 
+        viewModelScope.launch(Dispatchers.IO) {
+
+            try {
+                val response = dataRepository.fetchAllFavorites()
+
+                if (response.isNotEmpty()) {
+                    _homeAdd.value = SimpleResponse.success(response)
+
+                } else {
+                    val message = "No data found"
+                    _homeError.value = message
+                    _homeAdd.value = SimpleResponse.failure(Exception(message))
+                }
 
 
+            } catch (e: Exception) {
+                val message = "unknown error occurred, please try again"
+                _homeError.value = message
 
 
-
-
+            }
+        }
 
 
     }
-
-
-
-
 
 
 }

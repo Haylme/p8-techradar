@@ -2,9 +2,6 @@ package com.example.techradar.data
 
 import com.example.techradar.model.Content
 import com.example.techradar.room.dao.ListDao
-import com.example.techradar.room.dto.ListDto
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -13,10 +10,11 @@ import kotlinx.coroutines.flow.map
 class DataRepository(private val listDao: ListDao) {
 
 
-    suspend fun addUser(content: Content): Boolean{
-       val result = listDao.insertUser(content.toDto())
-         return result != -1L
+    suspend fun addUser(content: Content): Boolean {
+        val result = listDao.insertUser(content.toDto())
+        return result != -1L // Indicate success if the insertion was successful
     }
+
 
 
 
