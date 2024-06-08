@@ -1,6 +1,8 @@
 package com.example.techradar.data
+
 import com.example.techradar.model.Content
 import com.example.techradar.room.dao.ListDao
+import com.example.techradar.room.dto.ListDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -11,60 +13,79 @@ import kotlinx.coroutines.flow.map
 class DataRepository(private val listDao: ListDao) {
 
 
-    private val _userError = MutableStateFlow<String?>(null)
-    private val error: StateFlow<String?> = _userError
-
-
-    suspend fun addUser(content: Content) {
-
-        try {
-            listDao.insertUser(content.toDto())
-        } catch (e: Exception) {
-            _userError.value = "Something went wrong, please try again"
-        }
-
+    suspend fun addUser(content: Content): Content {
+        listDao.insertUser(content.toDto())
+        return content // Return the added content
     }
 
 
     suspend fun fetchDetailUser(id: Long): Content? {
-        return try {
-            val user = listDao.getDetailUser(id)
-                .map { listDto -> Content.fromDto(listDto) }
-                .firstOrNull()
 
-            if (user == null) {
-                _userError.value = "User not found, please try again"
-            }
-            user
-        } catch (e: Exception) {
-            _userError.value = "Something went wrong, please try again"
-            null
-        }
+        val user = listDao.getDetailUser(id)
+            .map { listDto -> Content.fromDto(listDto) }
+            .firstOrNull()
+        return user
+
+
     }
 
     suspend fun fetchAllUsers(): List<Content>? {
-        return try {
 
-            val user = listDao.getAllUsers()
+
+        val user = listDao.getAllUsers()
+            .first()
+            .map { Content.fromDto(it) }
+
+        return user
+
+
+    }
+
+
+    suspend fun fetchAllFavorites(): List<Content>? {
+
+
+            val user = listDao.getAllFavoriteUsers()
                 .first()
                 .map { Content.fromDto(it) }
 
-            if (user.isEmpty()) {
-                _userError.value = "No users found, please try again"
 
-            }
-                user
+        return user
 
 
-            } catch (e: Exception) {
-                _userError.value = "Something went wrong, please)"
-                null
-            }
 
 
-        }
 
     }
+
+
+    suspend fun editUser(content: Content) {
+
+            listDao.updateUser(
+                id = content.id,
+                listName = content.name,
+                listFirstname = content.firstname,
+                listPhone = content.phone,
+                listEmail = content.email,
+                listBirthday = content.birthday,
+                listWage = content.wage,
+                listNote = content.note,
+                listFavorite = content.favorite,
+                listPicture = content.picture
+
+            )
+
+    }
+
+    suspend fun suppressUser(id: Long) {
+
+            listDao.deleteUserById(id)
+
+
+    }
+
+
+}
 
 
 

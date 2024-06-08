@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.techradar.R
+import com.example.techradar.data.DataRepository
 import com.example.techradar.databinding.FragmentAddBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class Add : Fragment() {
 
-   private var _binding: FragmentAddBinding? = null
+
+
+
+    private var _binding: FragmentAddBinding? = null
    private val binding get() = _binding!!
 
     private val viewModel: AddViewModel by viewModels()
