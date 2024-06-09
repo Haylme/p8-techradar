@@ -1,5 +1,6 @@
 package com.example.techradar.data
 
+import android.net.Uri
 import com.example.techradar.model.Content
 import com.example.techradar.room.dao.ListDao
 import kotlinx.coroutines.flow.first
@@ -16,6 +17,10 @@ class DataRepository(private val listDao: ListDao) {
     }
 
 
+   /** suspend fun saveImageUri(id:Long,uri: Uri) {
+
+        listDao.updateImageUri(id,uri)
+    }**/
 
 
 
@@ -62,7 +67,7 @@ class DataRepository(private val listDao: ListDao) {
 
 
         val rowUpdate = listDao.updateUser(
-            id = content.id,
+            //id = content.id,
             listName = content.name,
             listFirstname = content.firstname,
             listPhone = content.phone,
@@ -71,7 +76,7 @@ class DataRepository(private val listDao: ListDao) {
             listWage = content.wage,
             listNote = content.note,
             listFavorite = content.favorite,
-            listPicture = content.picture
+            listPicture = content.picture.toString()
 
         )
         return rowUpdate > 0

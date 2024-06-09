@@ -60,6 +60,7 @@
             app:layout_constraintTop_toBottomOf="@id/avatar">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/prenom_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -91,6 +92,8 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nom_edit_Text"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -108,6 +111,7 @@
             app:layout_constraintTop_toBottomOf="@id/nom_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="phone" />
@@ -141,6 +145,7 @@
             app:layout_constraintTop_toBottomOf="@id/phone_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mail_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textEmailAddress" />
@@ -217,6 +222,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/date_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
@@ -241,7 +247,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/wadge_layout"
+            android:id="@+id/wage_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="332dp"
             android:layout_height="56dp"
@@ -252,6 +258,7 @@
             app:layout_constraintTop_toBottomOf="@id/birthday_card">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/wage_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -265,10 +272,10 @@
             android:layout_marginTop="10dp"
             android:contentDescription="@string/wadge_layout"
             android:src="@drawable/money"
-            app:layout_constraintEnd_toStartOf="@+id/wadge_layout"
+            app:layout_constraintEnd_toStartOf="@+id/wage_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/birthday_card"
-            app:layout_constraintTop_toTopOf="@+id/wadge_layout" />
+            app:layout_constraintTop_toTopOf="@+id/wage_layout" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -280,11 +287,12 @@
             android:hint="@string/Note"
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
-            app:layout_constraintTop_toBottomOf="@id/wadge_layout"
+            app:layout_constraintTop_toBottomOf="@id/wage_layout"
 
             >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/note_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top|start" />
@@ -298,9 +306,9 @@
             android:layout_marginTop="15dp"
             android:contentDescription="@string/edit_icon"
             android:src="@drawable/edit"
-            app:layout_constraintEnd_toStartOf="@+id/wadge_layout"
+            app:layout_constraintEnd_toStartOf="@+id/wage_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wadge_layout"
+            app:layout_constraintTop_toBottomOf="@+id/wage_layout"
             app:layout_constraintTop_toTopOf="@+id/notes_layout" />
 
 

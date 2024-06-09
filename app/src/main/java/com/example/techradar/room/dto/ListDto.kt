@@ -1,5 +1,6 @@
 package com.example.techradar.room.dto
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -38,7 +39,7 @@ data class ListDto(
     var listFavorite: Boolean = false,
 
     @ColumnInfo(name = "list_picture")
-    var listPicture: String?
+    var listPicture: Uri?
 
 
 )

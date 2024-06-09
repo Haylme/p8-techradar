@@ -63,7 +63,7 @@ abstract class AppDataBase : RoomDatabase() {
                     listWage = 3800,
                     listNote = "Je suis un très grand acteur du cinéma français.Comme l'eau sur terre, je me fais hélas rare.",
                     listFavorite = false,
-                    listPicture = imageUri.toString()
+                    listPicture = imageUri
                 )
             )
 
@@ -78,7 +78,7 @@ abstract class AppDataBase : RoomDatabase() {
                     listWage = 300000,
                     listNote = "i can speak japanese and english with more than 20 years experience as famous japanese actor. My favorite role part is playing a yakuza or a samurai",
                     listFavorite = false,
-                    listPicture = imageUri2.toString()
+                    listPicture = imageUri2
                 )
             )
         }

@@ -18,6 +18,8 @@ import javax.inject.Inject
 class AddViewModel @Inject constructor(
     private val dataRepository: DataRepository
 ) : ViewModel() {
+
+
     val checkField =
         { name: String, firstname: String, phone: String, email: String, birthday: String, wage: Int, note: String ->
             name.isNotEmpty() &&
@@ -25,7 +27,7 @@ class AddViewModel @Inject constructor(
                     phone.isNotEmpty() &&
                     email.isNotEmpty() &&
                     birthday.isNotEmpty() &&
-                    wage.toString().isNotEmpty() &&
+                    wage > 0 &&
                     note.isNotEmpty()
         }
 
@@ -55,11 +57,11 @@ class AddViewModel @Inject constructor(
 
                 val response = dataRepository.addUser(content)
 
-                if(response)  {
+                if (response) {
                     _userAdd.value = SimpleResponse.success(content)
 
 
-                }else {
+                } else {
                     val errorMessage = "Add operation failed, please try again"
                     _userError.value = errorMessage
                     _userAdd.value = SimpleResponse.failure(Exception(errorMessage))
