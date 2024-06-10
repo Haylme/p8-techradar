@@ -34,7 +34,7 @@ interface ListDao {
 
     @Query("UPDATE list SET list_name = COALESCE(:listName, list_name), list_firstname = COALESCE(:listFirstname, list_firstname), list_phone = COALESCE(:listPhone, list_phone), list_email = COALESCE(:listEmail, list_email), list_birthday = COALESCE(:listBirthday, list_birthday), list_wage = COALESCE(:listWage, list_wage), list_note = COALESCE(:listNote, list_note), list_favorite = COALESCE(:listFavorite, list_favorite), list_picture = COALESCE(:listPicture, list_picture) WHERE user_Id = :id")
     suspend fun updateUser(
-        //id: Long,
+        id: Long,
         listName: String?,
         listFirstname: String?,
         listPhone: String?,

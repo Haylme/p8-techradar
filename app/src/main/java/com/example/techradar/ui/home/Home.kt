@@ -6,9 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import com.example.techradar.R
+import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
+import com.example.techradar.model.Content
+import com.example.techradar.viewholder.ListViewHolder
 import com.google.android.material.search.SearchView
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -19,12 +27,13 @@ class Home : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
+    private var listAdapter = ListAdapter(mutableListOf())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: Use the ViewModel
+
     }
 
     override fun onCreateView(
@@ -40,21 +49,55 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        fab.setOnClickListener { moveTo() }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                when (tab?.position) {
+
+
+                }
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+                TODO("Not yet implemented")
+            }
+        })
+
     }
 
 
+    private val tabLayout = binding.tablelayout
+
+    private val tousTab = tabLayout.getTabAt(0)
+
+    private val favorisTab = tabLayout.getTabAt(1)
 
 
+    private val search = binding.searchBar
+
+    private val fab = binding.addButton
 
 
-    fun searchbar (){
-
-
+    private fun moveTo() {
+        NavHostFragment.findNavController(this@Home)
+            .navigate(R.id.action_home_to_add)
 
 
     }
 
 
+    private fun allFetch() {
+
+
+    }
 
 
     override fun onDestroyView() {
@@ -62,3 +105,4 @@ class Home : Fragment() {
         _binding = null
     }
 }
+

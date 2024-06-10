@@ -4,7 +4,7 @@ import android.net.Uri
 import com.example.techradar.room.dto.ListDto
 
 data class Content(
-    //val id: Long,
+    val id: Long = 0,
     val name: String,
     val firstname: String,
     val phone: String,
@@ -24,7 +24,7 @@ data class Content(
 
             return Content(
 
-                //id = dto.id,
+                id = dto.id,
                 name = dto.listName,
                 firstname = dto.listFirstname,
                 phone = dto.listPhone,
@@ -43,7 +43,7 @@ data class Content(
 
     fun toDto(): ListDto {
         return ListDto(
-           // id = this.id,
+            id = this.id,
             listName = this.name,
             listFirstname = this.firstname,
             listPhone = this.phone,

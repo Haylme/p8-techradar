@@ -196,7 +196,8 @@ class Add : Fragment() {
                     }
 
                     else -> {
-                        Snackbar.make(binding.root, "An error occurred", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.root, "An error occurred", Snackbar.LENGTH_LONG)
+                            .show()
                     }
                 }
             }

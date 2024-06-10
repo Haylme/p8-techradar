@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.techradar.room.dao.ListDao
 import com.example.techradar.room.dto.ListDto
@@ -12,7 +14,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 
+class Converters {
+    @TypeConverter
+    fun fromUri(uri: Uri?): String? {
+        return uri?.toString()
+    }
+
+    @TypeConverter
+    fun toUri(uriString: String?): Uri? {
+        return uriString?.let { Uri.parse(it) }
+    }
+}
+
 @Database(entities = [ListDto::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun listDao(): ListDao
@@ -66,7 +81,6 @@ abstract class AppDataBase : RoomDatabase() {
                     listPicture = imageUri
                 )
             )
-
 
             listDao.insertUser(
                 ListDto(

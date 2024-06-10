@@ -13,7 +13,7 @@
             android:id="@+id/action_home_to_detail"
             app:destination="@id/detail" />
         <action
-            android:id="@+id/action_home_to_add2"
+            android:id="@+id/action_home_to_add"
             app:destination="@id/add2" />
     </fragment>
     <fragment

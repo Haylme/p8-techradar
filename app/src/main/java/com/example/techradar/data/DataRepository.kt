@@ -67,7 +67,7 @@ class DataRepository(private val listDao: ListDao) {
 
 
         val rowUpdate = listDao.updateUser(
-            //id = content.id,
+            id = content.id,
             listName = content.name,
             listFirstname = content.firstname,
             listPhone = content.phone,
