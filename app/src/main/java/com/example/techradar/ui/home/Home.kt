@@ -11,9 +11,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.techradar.R
 import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
-import com.example.techradar.model.Content
-import com.example.techradar.viewholder.ListViewHolder
-import com.google.android.material.search.SearchView
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,6 +25,13 @@ class Home : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private var listAdapter = ListAdapter(mutableListOf())
+
+
+    companion object {
+        fun newInstance(): Home {
+            return Home()
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +55,11 @@ class Home : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        binding.recycler.adapter = listAdapter
+
+        collectNotes()
+
+
         fab.setOnClickListener { moveTo() }
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -58,7 +67,23 @@ class Home : Fragment() {
 
                 when (tab?.position) {
 
+                    0 -> {
+                        viewModel.allUsers()
 
+
+                    }
+
+                    1 -> {
+
+                        viewModel.allFavorites()
+
+                    }
+
+                    else -> {
+
+                        viewModel.allUsers()
+
+                    }
                 }
             }
 
@@ -94,11 +119,18 @@ class Home : Fragment() {
     }
 
 
-    private fun allFetch() {
 
 
+    private fun collectNotes() {
+        lifecycleScope.launch {
+            viewModel.homeAdd.collect {
+
+                listAdapter.updateList(it)
+
+
+            }
+        }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

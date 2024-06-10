@@ -14,7 +14,7 @@
             app:destination="@id/detail" />
         <action
             android:id="@+id/action_home_to_add"
-            app:destination="@id/add2" />
+            app:destination="@id/add" />
     </fragment>
     <fragment
         android:id="@+id/detail"
@@ -29,13 +29,21 @@
             app:destination="@id/home" />
     </fragment>
     <fragment
-        android:id="@+id/add2"
+        android:id="@+id/add"
         android:name="com.example.techradar.ui.add.Add"
         android:label="fragment_add"
-        tools:layout="@layout/fragment_add" />
+        tools:layout="@layout/fragment_add" >
+        <action
+            android:id="@+id/action_add_to_home"
+            app:destination="@id/home" />
+    </fragment>
     <fragment
         android:id="@+id/edit"
         android:name="com.example.techradar.ui.edit.Edit"
         android:label="fragment_edit"
-        tools:layout="@layout/fragment_edit" />
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_edit_to_home"
+            app:destination="@id/home" />
+    </fragment>
 </navigation>

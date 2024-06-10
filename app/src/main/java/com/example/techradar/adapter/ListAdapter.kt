@@ -5,13 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.techradar.databinding.ItemBinding
 import com.example.techradar.model.Content
+import com.example.techradar.model.SimpleResponse
 import com.example.techradar.viewholder.ListViewHolder
 
-class ListAdapter(private var list: MutableList<Content>) : RecyclerView.Adapter<ListViewHolder>() {
+class ListAdapter(private var list: List<Content>) : RecyclerView.Adapter<ListViewHolder>() {
 
 
-    fun updateList(newList: MutableList<Content>) {
-        list = newList
+    fun updateList(newList: SimpleResponse<List<Content?>>) {
+
+        val filteredList = newList.data?.filterNotNull() ?: emptyList()
+        list = filteredList
         notifyDataSetChanged()
     }
 

@@ -71,6 +71,9 @@ dependencies {
     kapt ("com.github.bumptech.glide:compiler:4.12.0")
 
 
+    implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
+
+
 
     //implementation("androidx.core:core-splashscreen:$1.0.0")
 
