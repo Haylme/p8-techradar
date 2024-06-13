@@ -20,16 +20,19 @@ class AddViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    val checkField =
-        { name: String, firstname: String, phone: String, email: String, birthday: String, wage: Int, note: String ->
-            name.isNotEmpty() &&
-                    firstname.isNotEmpty() &&
-                    phone.isNotEmpty() &&
-                    email.isNotEmpty() &&
-                    birthday.isNotEmpty() &&
-                    wage > 0 &&
-                    note.isNotEmpty()
-        }
+    fun checkField(
+        nom: String,
+        prenom: String,
+        phone: String,
+        email: String,
+        date: String,
+        wage: Int,
+        note: String
+    ): Boolean {
+        // Implement your logic here
+        return nom.isNotEmpty() && prenom.isNotEmpty() && phone.isNotEmpty() &&
+                email.isNotEmpty() && date.isNotEmpty() && wage > 0 && note.isNotEmpty()
+    }
 
 
     private val _userError = MutableStateFlow<String?>(null)

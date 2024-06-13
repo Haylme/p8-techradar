@@ -38,6 +38,17 @@ class Add : Fragment() {
 
     private var imageUri: Uri? = null
 
+    companion object {
+
+        @JvmStatic
+        fun newInstance() = Add()
+
+
+    }
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

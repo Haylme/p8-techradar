@@ -14,12 +14,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class Detail : Fragment(R.layout.fragment_detail) {
 
-  private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    companion object {
+
+        @JvmStatic
+        fun newInstance() = Detail()
+    }
+
+
 
     private val viewModel: DetailViewModel by viewModels()
 
@@ -34,23 +39,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-       return binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
     }
-
-
-
-
-
-
-
 
 
     override fun onDestroyView() {

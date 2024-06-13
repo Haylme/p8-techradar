@@ -19,6 +19,15 @@ class Edit : Fragment() {
 
     private val viewModel: EditViewModel by viewModels()
 
+    companion object {
+        @JvmStatic
+        fun newInstance() = Edit()
+    }
+
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
