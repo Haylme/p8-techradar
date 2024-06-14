@@ -15,6 +15,7 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.techradar.R
 import com.example.techradar.data.DataRepository
 import com.example.techradar.databinding.FragmentAddBinding
@@ -47,8 +48,6 @@ class Add : Fragment() {
     }
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,6 +76,14 @@ class Add : Fragment() {
         val wage = binding.wageLayout
         val note = binding.noteEditText
         val button = binding.saveButton
+
+
+
+
+        binding.topAppbar.setNavigationOnClickListener {
+            findNavController().navigate(R.id.action_add_to_home)
+        }
+
 
 
         val imageContract =

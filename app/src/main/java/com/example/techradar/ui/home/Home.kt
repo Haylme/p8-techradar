@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techradar.R
 import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
@@ -48,10 +49,12 @@ class Home : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recycler.adapter = listAdapter
-
+        binding.recycler.layoutManager = LinearLayoutManager(context)
         collectNotes()
 
         binding.addButton.setOnClickListener { moveTo() }
+
+        viewModel.allUsers()
 
         binding.tablelayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
