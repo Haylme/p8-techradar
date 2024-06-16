@@ -90,7 +90,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tablelayout" />
+                app:layout_constraintTop_toBottomOf="@+id/tablelayout"
+               />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

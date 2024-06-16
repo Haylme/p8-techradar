@@ -52,10 +52,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/Prénom"
-            app:hintTextColor="@color/top_bar"
+            app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintStart_toEndOf="@+id/person_icon"
-            app:layout_constraintTop_toBottomOf="@id/avatar">
+            app:layout_constraintTop_toBottomOf="@id/avatar"
+            app:expandedHintEnabled="true"
+            app:hintAnimationEnabled="true"
+
+           >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/prenom_edit_text"
@@ -89,7 +93,10 @@
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintStart_toEndOf="@+id/person_icon"
-            app:layout_constraintTop_toBottomOf="@id/prenom_layout">
+            app:layout_constraintTop_toBottomOf="@id/prenom_layout"
+            app:expandedHintEnabled="true"
+            app:hintAnimationEnabled="true"
+            >
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -111,7 +118,9 @@
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintStart_toEndOf="@+id/person_icon"
-            app:layout_constraintTop_toBottomOf="@id/nom_layout">
+            app:layout_constraintTop_toBottomOf="@id/nom_layout"
+            app:expandedHintEnabled="true"
+            app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phone_edit_text"
@@ -148,7 +157,9 @@
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintStart_toEndOf="@+id/person_icon"
-            app:layout_constraintTop_toBottomOf="@id/phone_layout">
+            app:layout_constraintTop_toBottomOf="@id/phone_layout"
+            app:expandedHintEnabled="true"
+            app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mail_edit_text"
@@ -269,7 +280,9 @@
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintStart_toEndOf="@+id/person_icon"
-            app:layout_constraintTop_toBottomOf="@id/birthday_card">
+            app:layout_constraintTop_toBottomOf="@id/birthday_card"
+            app:expandedHintEnabled="true"
+            app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/wage_edit_text"
@@ -303,7 +316,9 @@
             app:hintTextColor="@color/top_bar"
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintStart_toEndOf="@+id/person_icon"
-            app:layout_constraintTop_toBottomOf="@id/wage_layout">
+            app:layout_constraintTop_toBottomOf="@id/wage_layout"
+            app:expandedHintEnabled="true"
+            app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/note_edit_text"

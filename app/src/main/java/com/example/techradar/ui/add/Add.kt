@@ -1,5 +1,7 @@
 package com.example.techradar.ui.add
 
+import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.viewModels
@@ -25,6 +27,15 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
+fun getDrawableUri(context: Context, drawableId: Int): Uri {
+    return Uri.Builder()
+        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+        .authority(context.resources.getResourcePackageName(drawableId))
+        .appendPath(context.resources.getResourceTypeName(drawableId))
+        .appendPath(context.resources.getResourceEntryName(drawableId))
+        .build()
+}
 
 
 @AndroidEntryPoint
@@ -85,6 +96,10 @@ class Add : Fragment() {
         }
 
 
+        if (imageUri == null) {
+            imageUri = getDrawableUri(requireContext(), R.drawable.baseline_category_24)
+        }
+
 
         val imageContract =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -97,6 +112,8 @@ class Add : Fragment() {
         avatar.setOnClickListener {
             imageContract.launch("image/*")
         }
+
+        avatar.setImageURI(imageUri)
 
         button.isEnabled = false
 
@@ -166,7 +183,38 @@ class Add : Fragment() {
                 )
 
 
+                lifecycleScope.launch {
+                    viewModel.userAdd.collect { response ->
+                        when (response.status) {
+                            is SimpleResponse.Status.Success -> {
+                                Snackbar.make(binding.root, "User added successfully", Snackbar.LENGTH_LONG)
+                                    .show()
+                                viewModel.resetToast()
+                                NavHostFragment.findNavController(this@Add)
+                                    .navigate(R.id.action_add_to_home)
+                            }
 
+                            is SimpleResponse.Status.Failure -> {
+
+                                lifecycleScope.launch {
+
+                                    viewModel.error.collect { message ->
+                                        message?.let {
+                                            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+                                            viewModel.resetToast()
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            else -> {
+                                Snackbar.make(binding.root, "An error occurred", Snackbar.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
+                    }
+                }
 
 
 
@@ -186,40 +234,12 @@ class Add : Fragment() {
 
         }
 
+       // binding.calendarButton.setOnClickListener()
 
 
-        lifecycleScope.launch {
-            viewModel.userAdd.collect { response ->
-                when (response.status) {
-                    is SimpleResponse.Status.Success -> {
-                        Snackbar.make(binding.root, "User added successfully", Snackbar.LENGTH_LONG)
-                            .show()
-                        viewModel.resetToast()
-                        NavHostFragment.findNavController(this@Add)
-                            .navigate(R.id.action_detail_to_home)
-                    }
 
-                    is SimpleResponse.Status.Failure -> {
 
-                        lifecycleScope.launch {
 
-                            viewModel.error.collect { message ->
-                                message?.let {
-                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-                                    viewModel.resetToast()
-                                }
-                            }
-                        }
-
-                    }
-
-                    else -> {
-                        Snackbar.make(binding.root, "An error occurred", Snackbar.LENGTH_LONG)
-                            .show()
-                    }
-                }
-            }
-        }
 
 
     }
