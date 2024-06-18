@@ -47,11 +47,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/firstnameAndName"
-                    tools:text="John Doe"
+                    android:id="@+id/firstname"
+                    tools:text="John"
                     android:textSize="21sp"
                     android:autoSizeMinTextSize="21sp"
                     android:layout_marginStart="40dp"
+
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name"
+                    tools:text="doe"
+                    android:textSize="21sp"
+                    android:autoSizeMinTextSize="21sp"
+                    android:layout_marginStart="10dp"
 
 
                     />
@@ -164,6 +175,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -201,6 +213,7 @@
 
 
             <TextView
+                android:id="@+id/wage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -239,6 +252,7 @@
 
 
             <TextView
+                android:id="@+id/note_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"

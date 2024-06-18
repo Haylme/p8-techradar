@@ -10,7 +10,7 @@ import com.example.techradar.model.Content
 
 class ListViewHolder(
     private val binding: ItemBinding,
-    //private val itemView: View,
+
     onItemClicked: (Int) -> Unit
 
 ) : RecyclerView.ViewHolder(binding.root) {

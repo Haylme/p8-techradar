@@ -1,17 +1,15 @@
 package com.example.techradar.ui.detail
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.engine.Resource
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
-import com.example.techradar.databinding.FragmentHomeBinding
 import com.example.techradar.model.SimpleResponse
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,12 +50,18 @@ class Detail : Fragment(R.layout.fragment_detail) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val backBar = binding.back
         val avatar = binding.avatar
-        val call = binding.call
-       val sms = binding.message
-        val mail = binding.mailButton
-        val
+        val callButton = binding.call
+        val smsButton = binding.message
+        val mailButton = binding.mailButton
+        val about = binding.about
+        val wageText = binding.wage
+        val note = binding.noteEditText
+        val name = binding.name
+        val firstname = binding.firstname
+
+        val backBar = binding.back
+
 
 
         backBar.setOnClickListener {
@@ -73,6 +77,29 @@ class Detail : Fragment(R.layout.fragment_detail) {
             viewModel.detailUser(it)
             fetchDetail(it)
         }
+
+        name.text = arguments?.getString("name")
+
+        firstname.text = arguments?.getString("firstname")
+
+        note.text = arguments?.getString("note")
+
+
+        val wage = arguments?.getInt("wage") ?: 0
+        wageText.text = wage.toString()
+
+        about.text = arguments?.getString("note")
+
+
+        avatar.setImageResource(arguments?.getInt("avatar") ?: 0)
+
+
+
+
+        val phoneValue = arguments?.getInt("phone")
+        val emailValue = arguments?.getString(("email"))
+
+
 
     }
 
