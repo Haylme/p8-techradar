@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/detail"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -16,8 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-       >
+        android:layout_margin="10dp">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/layout_appbar"
@@ -35,7 +33,30 @@
                 android:background="@color/top_bar"
                 android:minHeight="?attr/actionBarSize"
                 app:menu="@menu/appbar_menu"
-                app:navigationIcon="@drawable/backstack" />
+
+                >
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contentDescription="@string/backstack"
+                    android:src="@drawable/backstack" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstnameAndName"
+                    tools:text="John Doe"
+                    android:textSize="21sp"
+                    android:autoSizeMinTextSize="21sp"
+                    android:layout_marginStart="40dp"
+
+
+                    />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -106,7 +127,7 @@
             app:layout_constraintStart_toEndOf="@+id/message"
             app:layout_constraintTop_toBottomOf="@+id/avatar"
 
-             />
+            />
 
 
         <TextView
@@ -140,17 +161,17 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/A_propos"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
-                android:paddingTop="18dp"
                 android:layout_marginTop="40dp"
                 android:background="@null"
-                android:hint="@string/exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan" />
+                android:hint="@string/exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan"
+                android:paddingTop="18dp"
+                android:textSize="18sp"/>
 
 
         </com.google.android.material.card.MaterialCardView>
@@ -179,14 +200,15 @@
                 android:textStyle="bold" />
 
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="40dp"
                 android:background="@null"
                 android:hint="@string/_3500"
-                android:paddingTop="18dp"/>
+                android:paddingTop="18dp"
+                android:textSize="18sp"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -216,7 +238,7 @@
                 android:textStyle="bold" />
 
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -225,6 +247,7 @@
                 android:gravity="top|start"
                 android:hint="@string/Disponible_de_suite"
                 android:paddingTop="15dp"
+                android:textSize="18sp"
 
                 />
 

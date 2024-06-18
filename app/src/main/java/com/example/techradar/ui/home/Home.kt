@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techradar.R
 import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
+import com.example.techradar.model.Content
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,7 +26,7 @@ class Home : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private var listAdapter = ListAdapter(mutableListOf())
+    private lateinit var listAdapter: ListAdapter
 
     companion object {
         @JvmStatic
@@ -47,6 +47,10 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listAdapter = ListAdapter(mutableListOf()) { content ->
+            onItemClicked(content)
+        }
 
         binding.recycler.adapter = listAdapter
         binding.recycler.layoutManager = LinearLayoutManager(context)
@@ -80,6 +84,23 @@ class Home : Fragment() {
                 listAdapter.updateList(it)
             }
         }
+    }
+
+    private fun onItemClicked(content: Content) {
+        val bundle = bundleOf(
+            "id" to content.id.toString(),
+            "name" to content.name,
+            "firstname" to content.firstname,
+            "phone" to content.phone,
+            "email" to content.email,
+            "birthday" to content.birthday,
+            "wage" to content.wage,
+            "note" to content.note,
+            "favorite" to content.favorite,
+            "picture" to (content.picture ?: "")
+
+        )
+        findNavController().navigate(R.id.action_home_to_detail, bundle)
     }
 
     override fun onDestroyView() {

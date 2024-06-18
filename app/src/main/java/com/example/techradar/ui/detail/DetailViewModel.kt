@@ -32,7 +32,7 @@ class DetailViewModel @Inject constructor(
 
     }
 
-    fun resetAccountValue() {
+    fun resetError() {
 
         _detailAdd.value = SimpleResponse.initial()
     }

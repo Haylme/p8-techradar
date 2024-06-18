@@ -36,5 +36,6 @@
     <string name="wadge_layout">wadge_layout</string>
     <string name="Sauvegarder">Sauvegarder</string>
     <string name="home">home</string>
+    <string name="backstack">backstack</string>
 
 </resources>
