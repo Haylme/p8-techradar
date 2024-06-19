@@ -67,5 +67,29 @@ class DetailViewModel @Inject constructor(
 
     }
 
+    fun updateData(content: Content) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            try {
+
+                val result = dataRepository.updateFav(content)
+
+                if (result) {
+                    _updateResult.value = SimpleResponse.success(result.body())
+                    )
+
+                }
+
+
+            }
+
+
+        }
+    }
+    fun deleteCandidate (){
+
+
+    }
 
 }

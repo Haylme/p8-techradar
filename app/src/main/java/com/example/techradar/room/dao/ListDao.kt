@@ -46,6 +46,13 @@ interface ListDao {
         listPicture: String?
     ): Int
 
+    @Query("UPDATe list SET list_favorite = :listFavorite WHERE user_Id = :id")
+    suspend fun updateFavorite(id:Long, listFavorite: Boolean)
+
+
+
+
+
     @Query("DELETE FROM list WHERE user_Id = :id")
     suspend fun deleteUserById(id: Long)
 }

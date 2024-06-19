@@ -2,31 +2,32 @@ package com.example.techradar.ui.add
 
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.techradar.R
-import com.example.techradar.data.DataRepository
 import com.example.techradar.databinding.FragmentAddBinding
 import com.example.techradar.model.Content
 import com.example.techradar.model.SimpleResponse
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 fun getDrawableUri(context: Context, drawableId: Int): Uri {
     return Uri.Builder()
@@ -50,13 +51,13 @@ class Add : Fragment() {
 
     private var imageUri: Uri? = null
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() = Add()
-
-
+    /**private val imageContract =
+    registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+    if (uri != null) {
+    imageUri = uri
+    binding.avatar.setImageURI(uri)
     }
+    }**/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +77,27 @@ class Add : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val dateButton = binding.calendarButton
+        val dateEditText = binding.dateEditText
+
+        dateButton.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setTitleText("Entrer a date")
+                .build()
+
+
+            datePicker.addOnPositiveButtonClickListener { selection ->
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val date = sdf.format(Date(selection))
+                dateEditText.setText(date)
+            }
+
+            datePicker.show(parentFragmentManager, "Date_picker")
+
+        }
 
 
         val avatar = binding.avatar
@@ -118,8 +140,44 @@ class Add : Fragment() {
         button.isEnabled = false
 
 
-        val textwatcher = object : TextWatcher {
+
+        email.addTextChangedListener(object : TextWatcher {
+
+            var current = ""
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                 current = s.toString()
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+               // TODO("Not yet implemented")
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val userMail = s.toString()
+                if (s == null) return
+                if (userMail == current) return
+
+                val isValidMail = if (viewModel.checkMail(userMail)) true
+                else {
+                    binding.mailEditText.error = "format d'email invalide"
+                    false
+                }
+                if (isValidMail) current = userMail
+
+
+            }
+
+        })
+
+
+        val textwatcher = object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
                 //TODO("Not yet implemented")
             }
 
@@ -187,7 +245,11 @@ class Add : Fragment() {
                     viewModel.userAdd.collect { response ->
                         when (response.status) {
                             is SimpleResponse.Status.Success -> {
-                                Snackbar.make(binding.root, "User added successfully", Snackbar.LENGTH_LONG)
+                                Snackbar.make(
+                                    binding.root,
+                                    "User added successfully",
+                                    Snackbar.LENGTH_LONG
+                                )
                                     .show()
                                 viewModel.resetToast()
                                 NavHostFragment.findNavController(this@Add)
@@ -200,7 +262,12 @@ class Add : Fragment() {
 
                                     viewModel.error.collect { message ->
                                         message?.let {
-                                            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+                                            Snackbar.make(
+                                                binding.root,
+                                                it,
+                                                Snackbar.LENGTH_LONG
+                                            )
+                                                .show()
                                             viewModel.resetToast()
                                         }
                                     }
@@ -209,7 +276,11 @@ class Add : Fragment() {
                             }
 
                             else -> {
-                                Snackbar.make(binding.root, "An error occurred", Snackbar.LENGTH_LONG)
+                                Snackbar.make(
+                                    binding.root,
+                                    "An error occurred",
+                                    Snackbar.LENGTH_LONG
+                                )
                                     .show()
                             }
                         }
@@ -234,21 +305,58 @@ class Add : Fragment() {
 
         }
 
-       // binding.calendarButton.setOnClickListener()
+        dateEditText.addTextChangedListener(object : TextWatcher {
+            private var current = ""
+            private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Store the current text before it changes
+                current = s.toString()
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing here
+            }
 
+            override fun afterTextChanged(s: Editable?) {
+                if (s == null) return
 
+                val userInput = s.toString()
+                if (userInput == current) return
 
+                val cleanInput = userInput.replace("\\D".toRegex(), "")
+                val formattedInput = StringBuilder()
+
+                for (i in cleanInput.indices) {
+                    formattedInput.append(cleanInput[i])
+                    if ((i == 1 || i == 3) && i != cleanInput.length - 1) {
+                        formattedInput.append('/')
+                    }
+                }
+
+                current = formattedInput.toString()
+                dateEditText.removeTextChangedListener(this)
+                dateEditText.setText(current)
+                dateEditText.setSelection(current.length)
+                dateEditText.addTextChangedListener(this)
+
+                // Handle error if the format is incorrect
+                try {
+                    LocalDate.parse(current, formatter)
+                } catch (e: Exception) {
+                    dateEditText.error = "format de date invalide"
+                }
+            }
+        })
 
 
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
+
+
+

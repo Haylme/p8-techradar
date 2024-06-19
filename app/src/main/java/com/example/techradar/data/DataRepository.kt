@@ -17,13 +17,10 @@ class DataRepository(private val listDao: ListDao) {
     }
 
 
-   /** suspend fun saveImageUri(id:Long,uri: Uri) {
+    /** suspend fun saveImageUri(id:Long,uri: Uri) {
 
-        listDao.updateImageUri(id,uri)
+    listDao.updateImageUri(id,uri)
     }**/
-
-
-
 
 
     suspend fun fetchDetailUser(id: Long): Content? {
@@ -82,6 +79,15 @@ class DataRepository(private val listDao: ListDao) {
         return rowUpdate > 0
 
     }
+
+    suspend fun updateFav(content: Content) {
+
+        val favRow = listDao.updateFavorite(
+            id = content.id,
+            listFavorite = content.favorite
+        )
+    }
+
 
     suspend fun suppressUser(id: Long) {
 

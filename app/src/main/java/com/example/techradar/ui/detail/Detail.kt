@@ -2,6 +2,7 @@ package com.example.techradar.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
 import com.example.techradar.model.SimpleResponse
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,17 +92,71 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
         about.text = arguments?.getString("note")
 
+        val favorite = arguments?.getBoolean("favorite") ?: false
+
+
 
         avatar.setImageResource(arguments?.getInt("avatar") ?: 0)
-
-
 
 
         val phoneValue = arguments?.getInt("phone")
         val emailValue = arguments?.getString(("email"))
 
 
+        val nameSize = name.text.length
+        val firstnameSize = firstname.text.length
 
+        if (nameSize + firstnameSize > 6) {
+
+            name.textSize = 16f
+            firstname.textSize = 16f
+
+        }
+
+
+    }
+
+
+    override fun onOptionsMenuSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.fav -> {
+
+
+            }
+
+            R.id.edit_button -> {
+
+                findNavController().navigate(R.id.action_detail_to_edit)
+
+            }
+
+            R.id.supp -> {
+                context?.let {
+                    MaterialAlertDialogBuilder(it)
+                        .setTitle("Suppression")
+                        .setMessage("Etes-vous certain de vouloir supprimer ce candidat ? Cette action est irréversible")
+
+                        .setNegativeButton("Annuler") { dialog, which ->
+                            dialog.cancel()
+
+                        }
+                        .setPositiveButton("Confirmer") { dialog, which ->
+                            // Handle the positive button action here
+                        }
+                        .show()
+
+                }
+
+            }
+
+
+
+                }
+
+            }
+        }
     }
 
 

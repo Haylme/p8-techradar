@@ -1,5 +1,6 @@
 package com.example.techradar.ui.add
 
+import android.util.Patterns.EMAIL_ADDRESS
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.techradar.data.DataRepository
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 
@@ -18,6 +20,23 @@ import javax.inject.Inject
 class AddViewModel @Inject constructor(
     private val dataRepository: DataRepository
 ) : ViewModel() {
+
+
+    private val EMAIL_ADDRESS_PATTERN: Pattern
+        get() = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+        )
+
+    fun checkMail(email: String): Boolean {
+        return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
+    }
 
 
     fun checkField(
