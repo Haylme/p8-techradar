@@ -47,7 +47,7 @@ interface ListDao {
     ): Int
 
     @Query("UPDATe list SET list_favorite = :listFavorite WHERE user_Id = :id")
-    suspend fun updateFavorite(id:Long, listFavorite: Boolean)
+    suspend fun updateFavorite(id:Long, listFavorite: Boolean?)
 
 
 

@@ -80,13 +80,16 @@ class DataRepository(private val listDao: ListDao) {
 
     }
 
-    suspend fun updateFav(content: Content) {
 
-        val favRow = listDao.updateFavorite(
-            id = content.id,
-            listFavorite = content.favorite
-        )
-    }
+
+        suspend fun updateFav(id: Long, bool: Boolean?) {
+            listDao.updateFavorite(
+                id = id,
+                listFavorite = bool
+            )
+        }
+
+
 
 
     suspend fun suppressUser(id: Long) {

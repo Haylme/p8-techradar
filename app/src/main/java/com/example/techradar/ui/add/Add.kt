@@ -19,6 +19,7 @@ import com.example.techradar.R
 import com.example.techradar.databinding.FragmentAddBinding
 import com.example.techradar.model.Content
 import com.example.techradar.model.SimpleResponse
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,8 +27,10 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 fun getDrawableUri(context: Context, drawableId: Int): Uri {
     return Uri.Builder()
@@ -82,10 +85,21 @@ class Add : Fragment() {
         val dateButton = binding.calendarButton
         val dateEditText = binding.dateEditText
 
+
+        // calendar constraint time and year
+        val today = MaterialDatePicker.todayInUtcMilliseconds()
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("utc"))
+
+        calendar.timeInMillis = today
+        val constraintsBuilder = CalendarConstraints.Builder()
+            .setEnd(today)
+
+
         dateButton.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .setTitleText("Entrer a date")
+                .setCalendarConstraints(constraintsBuilder.build())
+                .setTitleText("Entrer une date")
                 .build()
 
 

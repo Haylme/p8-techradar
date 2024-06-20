@@ -27,6 +27,10 @@ class DetailViewModel @Inject constructor(
     val detailAdd: StateFlow<SimpleResponse<Content?>> = _detailAdd.asStateFlow()
 
 
+    private val _updateUserFav = MutableStateFlow(SimpleResponse.initial<Boolean>())
+    val updateUserFav: StateFlow<SimpleResponse<Boolean>> = _updateUserFav.asStateFlow()
+
+
     fun resetToast() {
         _detailError.value = null
 
@@ -67,29 +71,26 @@ class DetailViewModel @Inject constructor(
 
     }
 
-    fun updateData(content: Content) {
-
+    fun updateData(id: Long, bool: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-
-            try {
-
-                val result = dataRepository.updateFav(content)
-
-                if (result) {
-                    _updateResult.value = SimpleResponse.success(result.body())
-                    )
-
-                }
+            dataRepository.updateFav(id, bool)
 
 
-            }
-
-
+            _updateUserFav.value = SimpleResponse.success(bool)
         }
     }
-    fun deleteCandidate (){
 
 
+    fun deleteCandidate(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                dataRepository.suppressUser(id)
+                _detailAdd.value = SimpleResponse.success(null)
+            } catch (e: Exception) {
+                _detailAdd.value = SimpleResponse.failure(Exception ("Unknown error"))
+                _detailError.value = "Unknown error"
+            }
+        }
     }
 
 }

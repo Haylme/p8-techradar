@@ -2,9 +2,14 @@ package com.example.techradar.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,19 +30,16 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private val binding get() = _binding!!
 
-    companion object {
+    var favorite = arguments?.getBoolean("favorite") ?: false
 
-        @JvmStatic
-        fun newInstance() = Detail()
-    }
-
+    var userId = arguments?.getLong("Id") ?: 0
 
     private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: Use the ViewModel
+
     }
 
     override fun onCreateView(
@@ -45,11 +47,21 @@ class Detail : Fragment(R.layout.fragment_detail) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
+
+
+        (activity as AppCompatActivity).setSupportActionBar(binding.topAppbar)
+
+
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        //onOptionsMenuSelected()
 
 
         val avatar = binding.avatar
@@ -61,6 +73,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val note = binding.noteEditText
         val name = binding.name
         val firstname = binding.firstname
+
 
         val backBar = binding.back
 
@@ -92,7 +105,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
         about.text = arguments?.getString("note")
 
-        val favorite = arguments?.getBoolean("favorite") ?: false
+
 
 
 
@@ -116,18 +129,48 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
+    @Deprecated("Deprecated in Java", ReplaceWith(
+        "inflater.inflate(R.menu.appbar_menu, menu)",
+        "com.example.techradar.R"
+    )
+    )
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
-    override fun onOptionsMenuSelected(item: MenuItem): Boolean {
+
+
+
+        inflater.inflate(R.menu.appbar_menu, menu)
+
+
+
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
 
             R.id.fav -> {
 
+                if (favorite) {
+                    val bool = false
+                    favorite = bool
+                    updateIcon(item, bool)
+
+                    viewModel.updateData(userId, favorite)
+
+                } else {
+                    val bool = true
+                    favorite = bool
+                    updateIcon(item, bool)
+                    viewModel.updateData(userId, favorite)
+
+                }
 
             }
 
             R.id.edit_button -> {
-
+              //  val bundle = bundleOf()
                 findNavController().navigate(R.id.action_detail_to_edit)
 
             }
@@ -143,7 +186,9 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
                         }
                         .setPositiveButton("Confirmer") { dialog, which ->
-                            // Handle the positive button action here
+
+                            viewModel.deleteCandidate(userId)
+                            findNavController().navigate(R.id.action_detail_to_home)
                         }
                         .show()
 
@@ -152,13 +197,23 @@ class Detail : Fragment(R.layout.fragment_detail) {
             }
 
 
-
-                }
-
-            }
         }
+        return true
     }
 
+
+    private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
+        if ((isFavorite)) {
+            menuItem.setIcon(R.drawable.star_full)
+
+        } else {
+
+            menuItem.setIcon(R.drawable.favorite_foreground)
+
+        }
+
+
+    }
 
     private fun fetchDetail(userId: Long) {
 
@@ -181,7 +236,11 @@ class Detail : Fragment(R.layout.fragment_detail) {
                                     message ->
 
                                 message?.let {
-                                    Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                                    Snackbar.make(
+                                        binding.root,
+                                        message,
+                                        Snackbar.LENGTH_SHORT
+                                    )
                                         .show()
                                     viewModel.resetError()
                                 }
@@ -208,4 +267,5 @@ class Detail : Fragment(R.layout.fragment_detail) {
         super.onDestroyView()
         _binding = null
     }
+
 }
