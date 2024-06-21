@@ -1,6 +1,8 @@
 package com.example.techradar.ui.detail
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -21,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 
 @AndroidEntryPoint
@@ -30,11 +33,29 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private val binding get() = _binding!!
 
-    var favorite = arguments?.getBoolean("favorite") ?: false
 
-    var userId = arguments?.getLong("Id") ?: 0
+    private var favorite = arguments?.getBoolean("favorite") ?: false
+
+    private var userId by Delegates.notNull<Long>()
 
     private val viewModel: DetailViewModel by viewModels()
+
+    private lateinit var name: String
+
+    private lateinit var firstname: String
+
+    private lateinit var phoneValue: String
+
+    private lateinit var emailValue: String
+
+    private lateinit var birthday: String
+
+    private var wage by Delegates.notNull<Int>()
+
+    private lateinit var note: String
+
+    private lateinit var pictureUri: Uri
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,13 +107,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-        val userId = arguments?.getString("id")?.toLongOrNull()
+        //val userId = arguments?.getString("id")?.toLongOrNull()
 
-        userId?.let {
+        userId.let {
             viewModel.detailUser(it)
-            fetchDetail(it)
+            fetchDetail()
         }
 
+         userId = arguments?.getLong("Id") ?: 0
         name.text = arguments?.getString("name")
 
         firstname.text = arguments?.getString("firstname")
@@ -100,20 +122,24 @@ class Detail : Fragment(R.layout.fragment_detail) {
         note.text = arguments?.getString("note")
 
 
-        val wage = arguments?.getInt("wage") ?: 0
-        wageText.text = wage.toString()
+        wage = arguments?.getInt("wage") ?: 0
+        wageText.text = "${wage.toString()} €"
 
         about.text = arguments?.getString("note")
 
 
+        birthday = arguments?.getString("birthday").toString()
 
 
+        pictureUri = arguments?.getParcelable("pictureUri") ?: Uri.EMPTY
 
-        avatar.setImageResource(arguments?.getInt("avatar") ?: 0)
+        pictureUri.let {
+            binding.avatar.setImageURI(it)
+        }
 
 
-        val phoneValue = arguments?.getInt("phone")
-        val emailValue = arguments?.getString(("email"))
+         phoneValue = arguments?.getInt("phone").toString()
+         emailValue = arguments?.getString(("email")).toString()
 
 
         val nameSize = name.text.length
@@ -129,50 +155,54 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
-    @Deprecated("Deprecated in Java", ReplaceWith(
-        "inflater.inflate(R.menu.appbar_menu, menu)",
-        "com.example.techradar.R"
-    )
+    @Deprecated(
+        "Deprecated in Java", ReplaceWith(
+            "inflater.inflate(R.menu.appbar_menu, menu)",
+            "com.example.techradar.R"
+        )
     )
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
 
-
-
         inflater.inflate(R.menu.appbar_menu, menu)
-
 
 
     }
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
-
             R.id.fav -> {
-
-                if (favorite) {
+                if(favorite){
                     val bool = false
                     favorite = bool
-                    updateIcon(item, bool)
 
+                    updateIcon(item,favorite)
                     viewModel.updateData(userId, favorite)
 
-                } else {
+                }else{
                     val bool = true
                     favorite = bool
-                    updateIcon(item, bool)
+                    updateIcon(item, favorite)
                     viewModel.updateData(userId, favorite)
 
                 }
 
+
             }
 
             R.id.edit_button -> {
-              //  val bundle = bundleOf()
-                findNavController().navigate(R.id.action_detail_to_edit)
-
+                val bundle = Bundle().apply {
+                    putLong("id", userId)
+                    putString("name", name)
+                    putString("firstname", firstname)
+                    putString("phone", phoneValue)
+                    putString("email", emailValue)
+                    putInt("wage", wage)
+                    putString("note", note)
+                    putParcelable("pics", pictureUri)
+                }
+                findNavController().navigate(R.id.action_detail_to_edit, bundle)
             }
 
             R.id.supp -> {
@@ -180,24 +210,22 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     MaterialAlertDialogBuilder(it)
                         .setTitle("Suppression")
                         .setMessage("Etes-vous certain de vouloir supprimer ce candidat ? Cette action est irréversible")
-
-                        .setNegativeButton("Annuler") { dialog, which ->
+                        .setNegativeButton("Annuler") { dialog, _ ->
                             dialog.cancel()
+                        }
+                        .setPositiveButton("Confirmer") { dialog_, _ ->
+                            dialog_.apply {
+                                viewModel.deleteCandidate(userId)
+                                Log.d("error", "onOptionsItemSelected:$userId ")
+                                findNavController().navigate(R.id.action_detail_to_home)
+                            }
 
                         }
-                        .setPositiveButton("Confirmer") { dialog, which ->
-
-                            viewModel.deleteCandidate(userId)
-                            findNavController().navigate(R.id.action_detail_to_home)
-                        }
-                        .show()
-
                 }
-
+                    ?.show()
             }
-
-
         }
+
         return true
     }
 
@@ -215,7 +243,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
-    private fun fetchDetail(userId: Long) {
+    private fun fetchDetail() {
 
         lifecycleScope.launch {
             viewModel.detailAdd.collect { response ->
