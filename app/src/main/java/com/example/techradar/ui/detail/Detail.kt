@@ -1,5 +1,6 @@
 package com.example.techradar.ui.detail
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -79,7 +80,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//favStatus(menuItem,favorite)
+
 
         userId = arguments?.getLong("Id") ?: 0
 
@@ -154,6 +155,30 @@ class Detail : Fragment(R.layout.fragment_detail) {
             firstname.textSize = 16f
 
         }
+
+
+        callButton.setOnClickListener{
+
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneValue"))
+            startActivity(intent)
+
+        }
+
+        smsButton.setOnClickListener{
+
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("smsto:$phoneValue"))
+            startActivity(intent)
+
+        }
+
+       mailButton.setOnClickListener{
+
+           val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto: $emailValue"))
+           startActivity(intent)
+
+       }
+
+
 
 
     }
