@@ -34,9 +34,9 @@ class Detail : Fragment(R.layout.fragment_detail) {
     private val binding get() = _binding!!
 
 
-    private var favorite = arguments?.getBoolean("favorite") ?: false
+    private var favorite by Delegates.notNull<Boolean>()
 
-    private var userId by Delegates.notNull<Long>()
+    private var   userId by Delegates.notNull<Long>()
 
     private val viewModel: DetailViewModel by viewModels()
 
@@ -71,7 +71,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         setHasOptionsMenu(true)
 
 
-        (activity as AppCompatActivity).setSupportActionBar(binding.topAppbar)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.topAppbar)
 
 
         return binding.root
@@ -82,7 +82,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        //onOptionsMenuSelected()
+        userId = arguments?.getLong("Id") ?: 0
 
 
         val avatar = binding.avatar
@@ -107,14 +107,18 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-        //val userId = arguments?.getString("id")?.toLongOrNull()
+         userId = arguments?.getString("id")?.toLongOrNull()!!
 
-        userId.let {
-            viewModel.detailUser(it)
-            fetchDetail()
-        }
+      //  userId.let {
+      //      viewModel.detailUser(it)
+       //     fetchDetail()
+      //  }
 
-         userId = arguments?.getLong("Id") ?: 0
+
+
+
+        favorite = arguments?.getBoolean("favorite") ?: false
+
         name.text = arguments?.getString("name")
 
         firstname.text = arguments?.getString("firstname")
@@ -138,7 +142,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-         phoneValue = arguments?.getInt("phone").toString()
+        phoneValue = arguments?.getString("phone").toString()
          emailValue = arguments?.getString(("email")).toString()
 
 
@@ -206,6 +210,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
             }
 
             R.id.supp -> {
+
+
                 context?.let {
                     MaterialAlertDialogBuilder(it)
                         .setTitle("Suppression")
@@ -243,7 +249,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
-    private fun fetchDetail() {
+  /**  private fun fetchDetail() {
 
         lifecycleScope.launch {
             viewModel.detailAdd.collect { response ->
@@ -288,7 +294,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-    }
+    }**/
 
 
     override fun onDestroyView() {

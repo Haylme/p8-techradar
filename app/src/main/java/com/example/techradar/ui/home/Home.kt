@@ -28,12 +28,10 @@ class Home : Fragment() {
 
     private lateinit var listAdapter: ListAdapter
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = Home()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+       // checkPermissions()
+
         super.onCreate(savedInstanceState)
     }
 
@@ -102,6 +100,49 @@ class Home : Fragment() {
         )
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }
+
+
+
+
+
+  /**  private fun checkPermissions() {
+        val permissions = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        val permissionsToRequest = permissions.filter {
+            ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE)
+        }
+    }
+
+   @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // Permissions granted
+            } else {
+                // Permissions denied, show a message to the user
+                Snackbar.make(binding.root, "Permissions are required to access files.", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 1001
+    }**/
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
