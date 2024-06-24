@@ -42,7 +42,7 @@ class DetailViewModel @Inject constructor(
     }
 
 
-    fun detailUser(id: Long) {
+   /** fun detailUser(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
 
             try {
@@ -69,7 +69,7 @@ class DetailViewModel @Inject constructor(
         }
 
 
-    }
+    }**/
 
     fun updateData(id: Long, bool: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {

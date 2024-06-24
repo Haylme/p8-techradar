@@ -9,20 +9,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
-import com.example.techradar.model.SimpleResponse
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 
@@ -56,6 +50,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private lateinit var pictureUri: Uri
 
+  //  private var menuItem: MenuItem = R.menu.item.fav
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +79,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//favStatus(menuItem,favorite)
 
         userId = arguments?.getLong("Id") ?: 0
 
@@ -170,13 +169,18 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
         inflater.inflate(R.menu.appbar_menu, menu)
 
+        val favItem = menu.findItem(R.id.fav)
+        updateIcon(favItem, favorite)
+
 
     }
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when (item.itemId) {
             R.id.fav -> {
+
                 if(favorite){
                     val bool = false
                     favorite = bool
@@ -238,7 +242,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
         if ((isFavorite)) {
-            menuItem.setIcon(R.drawable.star_full)
+            menuItem.setIcon(R.drawable.baseline_star_24)
 
         } else {
 
@@ -248,6 +252,11 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
 
     }
+
+
+
+
+
 
   /**  private fun fetchDetail() {
 
