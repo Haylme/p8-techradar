@@ -159,12 +159,12 @@ class Add : Fragment() {
 
             var current = ""
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                 current = s.toString()
+                current = s.toString()
 
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-               // TODO("Not yet implemented")
+                // TODO("Not yet implemented")
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -250,7 +250,7 @@ class Add : Fragment() {
                     birthday = date.text?.trim().toString(),
                     wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
                     note = note.text?.trim().toString(),
-                    favorite = false, // Default value for new content
+                    favorite = false,
                     picture = imageUri
                 )
 

@@ -86,7 +86,7 @@ class Home : Fragment() {
 
     private fun onItemClicked(content: Content) {
         val bundle = bundleOf(
-            "id" to content.id.toString(),
+            "id" to content.id,
             "name" to content.name,
             "firstname" to content.firstname,
             "phone" to content.phone,
@@ -95,7 +95,7 @@ class Home : Fragment() {
             "wage" to content.wage,
             "note" to content.note,
             "favorite" to content.favorite,
-            "picture" to (content.picture ?: "")
+            "picture" to content.picture
 
         )
         findNavController().navigate(R.id.action_home_to_detail, bundle)

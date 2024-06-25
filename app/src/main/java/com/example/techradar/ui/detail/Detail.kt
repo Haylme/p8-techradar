@@ -18,6 +18,8 @@ import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import kotlin.properties.Delegates
 
 
@@ -28,16 +30,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private val binding get() = _binding!!
 
-
+    private var userId by Delegates.notNull<Long>()
     private var favorite by Delegates.notNull<Boolean>()
 
-    private var   userId by Delegates.notNull<Long>()
+
 
     private val viewModel: DetailViewModel by viewModels()
 
-    private lateinit var name: String
 
-    private lateinit var firstname: String
 
     private lateinit var phoneValue: String
 
@@ -47,14 +47,13 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private var wage by Delegates.notNull<Int>()
 
-    private lateinit var note: String
+   // private lateinit var note: String
 
     private lateinit var pictureUri: Uri
 
-  //  private var menuItem: MenuItem = R.menu.item.fav
-
-
-
+    private lateinit var noteText: String
+    private lateinit var nameText: String
+    private lateinit var firstnameText: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +81,24 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
 
 
-        userId = arguments?.getLong("Id") ?: 0
+        userId = arguments?.getLong("id") ?: 0L
+
+        favorite = arguments?.getBoolean("favorite") ?: false
+
+        nameText = arguments?.getString("name") ?: ""
+
+        firstnameText = arguments?.getString("firstname") ?: ""
+
+        noteText = arguments?.getString("note") ?: ""
+
+        birthday = arguments?.getString("birthday").toString()
+
+        wage = arguments?.getInt("wage") ?: 0
+
+        phoneValue = arguments?.getString("phone").toString()
+        emailValue = arguments?.getString(("email")).toString()
+
+        pictureUri = arguments?.getParcelable("pictureUri") ?: Uri.EMPTY
 
 
         val avatar = binding.avatar
@@ -96,9 +112,17 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val firstname = binding.firstname
 
 
+
+        pictureUri.let {
+            avatar.setImageURI(it)
+        }
         val backBar = binding.back
 
+        name.text = nameText
 
+        firstname.text = firstnameText
+
+        note.text = noteText
 
         backBar.setOnClickListener {
 
@@ -107,43 +131,28 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-         userId = arguments?.getString("id")?.toLongOrNull()!!
-
-      //  userId.let {
-      //      viewModel.detailUser(it)
-       //     fetchDetail()
-      //  }
+        //  userId.let {
+        //      viewModel.detailUser(it)
+        //     fetchDetail()
+        //  }
 
 
-
-
-        favorite = arguments?.getBoolean("favorite") ?: false
-
-        name.text = arguments?.getString("name")
-
-        firstname.text = arguments?.getString("firstname")
-
-        note.text = arguments?.getString("note")
-
-
-        wage = arguments?.getInt("wage") ?: 0
         wageText.text = "${wage.toString()} €"
 
-        about.text = arguments?.getString("note")
+        about.text = arguments?.getString("birthday")
 
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val date = sdf.parse(birthday)
+        val currentDate = Calendar.getInstance()
 
-        birthday = arguments?.getString("birthday").toString()
-
-
-        pictureUri = arguments?.getParcelable("pictureUri") ?: Uri.EMPTY
-
-        pictureUri.let {
-            binding.avatar.setImageURI(it)
+        date?.let {
+            val birthdayCalendar = Calendar.getInstance().apply { time = it }
+            var age = currentDate.get(Calendar.YEAR) - birthdayCalendar.get(Calendar.YEAR)
+            if (currentDate.get(Calendar.DAY_OF_YEAR) < birthdayCalendar.get(Calendar.DAY_OF_YEAR)) {
+                age--
+            }
+            about.text = "$birthday $age ans"
         }
-
-
-        phoneValue = arguments?.getString("phone").toString()
-         emailValue = arguments?.getString(("email")).toString()
 
 
         val nameSize = name.text.length
@@ -157,28 +166,26 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-        callButton.setOnClickListener{
+        callButton.setOnClickListener {
 
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneValue"))
             startActivity(intent)
 
         }
 
-        smsButton.setOnClickListener{
+        smsButton.setOnClickListener {
 
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("smsto:$phoneValue"))
+            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phoneValue"))
             startActivity(intent)
 
         }
 
-       mailButton.setOnClickListener{
+        mailButton.setOnClickListener {
 
-           val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto: $emailValue"))
-           startActivity(intent)
+            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto: $emailValue"))
+            startActivity(intent)
 
-       }
-
-
+        }
 
 
     }
@@ -206,14 +213,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
         when (item.itemId) {
             R.id.fav -> {
 
-                if(favorite){
+                if (favorite) {
                     val bool = false
                     favorite = bool
 
-                    updateIcon(item,favorite)
+                    updateIcon(item, favorite)
                     viewModel.updateData(userId, favorite)
 
-                }else{
+                } else {
                     val bool = true
                     favorite = bool
                     updateIcon(item, favorite)
@@ -227,13 +234,15 @@ class Detail : Fragment(R.layout.fragment_detail) {
             R.id.edit_button -> {
                 val bundle = Bundle().apply {
                     putLong("id", userId)
-                    putString("name", name)
-                    putString("firstname", firstname)
+                    putString("name", nameText)
+                    putString("firstname", firstnameText)
                     putString("phone", phoneValue)
                     putString("email", emailValue)
                     putInt("wage", wage)
-                    putString("note", note)
+                    putString("note", noteText)
                     putParcelable("pics", pictureUri)
+                    putString("birthday", birthday)
+                    putBoolean("favorite", favorite)
                 }
                 findNavController().navigate(R.id.action_detail_to_edit, bundle)
             }
@@ -279,53 +288,49 @@ class Detail : Fragment(R.layout.fragment_detail) {
     }
 
 
+    /**  private fun fetchDetail() {
+
+    lifecycleScope.launch {
+    viewModel.detailAdd.collect { response ->
+    when (response.status) {
+
+    is SimpleResponse.Status.Success -> {
+
+    return@collect
+
+    }
+
+    is SimpleResponse.Status.Failure -> {
+
+    lifecycleScope.launch {
+
+    viewModel.detailError.collect {
+
+    message ->
+
+    message?.let {
+    Snackbar.make(
+    binding.root,
+    message,
+    Snackbar.LENGTH_SHORT
+    )
+    .show()
+    viewModel.resetError()
+    }
+
+    }
+
+    }
+    }
+
+    else -> {}
+    }
 
 
+    }
 
 
-  /**  private fun fetchDetail() {
-
-        lifecycleScope.launch {
-            viewModel.detailAdd.collect { response ->
-                when (response.status) {
-
-                    is SimpleResponse.Status.Success -> {
-
-                        return@collect
-
-                    }
-
-                    is SimpleResponse.Status.Failure -> {
-
-                        lifecycleScope.launch {
-
-                            viewModel.detailError.collect {
-
-                                    message ->
-
-                                message?.let {
-                                    Snackbar.make(
-                                        binding.root,
-                                        message,
-                                        Snackbar.LENGTH_SHORT
-                                    )
-                                        .show()
-                                    viewModel.resetError()
-                                }
-
-                            }
-
-                        }
-                    }
-
-                    else -> {}
-                }
-
-
-            }
-
-
-        }
+    }
 
 
     }**/
