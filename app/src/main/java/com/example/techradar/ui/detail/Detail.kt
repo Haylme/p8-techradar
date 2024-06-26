@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -145,19 +146,27 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
         wageText.text = "${wage.toString()} €"
 
-        about.text = arguments?.getString("birthday")
+        about.text = birthday
 
-        val sdf = SimpleDateFormat("dd/MM/yyyy")
-        val date = sdf.parse(birthday)
-        val currentDate = Calendar.getInstance()
+        if (birthday.isNotEmpty()) {
+            try {
+                val sdf = SimpleDateFormat("dd/MM/yyyy")
+                val date = sdf.parse(birthday)
+                val currentDate = Calendar.getInstance()
 
-        date?.let {
-            val birthdayCalendar = Calendar.getInstance().apply { time = it }
-            var age = currentDate.get(Calendar.YEAR) - birthdayCalendar.get(Calendar.YEAR)
-            if (currentDate.get(Calendar.DAY_OF_YEAR) < birthdayCalendar.get(Calendar.DAY_OF_YEAR)) {
-                age--
+                date?.let {
+                    val birthdayCalendar = Calendar.getInstance().apply { time = it }
+                    var age = currentDate.get(Calendar.YEAR) - birthdayCalendar.get(Calendar.YEAR)
+                    if (currentDate.get(Calendar.DAY_OF_YEAR) < birthdayCalendar.get(Calendar.DAY_OF_YEAR)) {
+                        age--
+                    }
+                    about.text = "$birthday $age ans"
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(),"format de date incorrecte",Toast.LENGTH_LONG).show()
             }
-            about.text = "$birthday $age ans"
+        } else {
+            Toast.makeText(requireContext(),"Aucune date de naissance renseignée",Toast.LENGTH_LONG).show()
         }
 
 
@@ -192,6 +201,34 @@ class Detail : Fragment(R.layout.fragment_detail) {
             startActivity(intent)
 
         }
+
+
+
+
+        parentFragmentManager.setFragmentResultListener("editResult", this) { _, bundle ->
+            id = bundle.getLong("id")
+            nameText = bundle.getString("name") ?: ""
+            firstnameText = bundle.getString("firstname") ?: ""
+            phoneValue = bundle.getString("phone") ?: ""
+            emailValue = bundle.getString("email") ?: ""
+            wage = bundle.getInt("wage")
+            noteText = bundle.getString("note") ?: ""
+            pictureUri = bundle.getParcelable("pics") ?: Uri.EMPTY
+            birthday = bundle.getString("birthday") ?: ""
+            favorite = bundle.getBoolean("favorite")
+
+            // Update UI with the received data
+            binding.name.text = nameText
+            binding.firstname.text = firstnameText
+           // binding.phoneEditText.setText(phoneValue)
+            //binding.mailEditText.setText(emailValue)
+           // binding.wageLayout.editText?.setText("${wage.toString()} €")
+            binding.noteEditText.setText(noteText)
+            binding.avatar.setImageURI(pictureUri)
+            binding.about.text = birthday
+        }
+
+
 
 
     }

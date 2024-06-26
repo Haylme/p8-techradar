@@ -56,11 +56,12 @@ class EditViewModel @Inject constructor(
         email: String,
         date: String,
         wage: Int,
-        note: String
+        note: String,
+        picture : Uri
     ): Boolean {
         // Implement your logic here
-        return nom.isNotEmpty() && prenom.isNotEmpty() && phone.isNotEmpty() &&
-                email.isNotEmpty() && date.isNotEmpty() && wage > 0 && note.isNotEmpty()
+        return nom.isNotEmpty() || prenom.isNotEmpty() || phone.isNotEmpty() ||
+                email.isNotEmpty() || date.isNotEmpty() || wage > 0 || note.isNotEmpty() || picture != Uri.EMPTY
     }
 
     fun resetToast() {

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.example.techradar.R
 import com.example.techradar.databinding.FragmentEditBinding
 import com.example.techradar.model.Content
 import com.example.techradar.model.SimpleResponse
+import com.example.techradar.ui.detail.DetailViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -52,10 +54,28 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
     private val viewModel: EditViewModel by viewModels()
 
-    private var id by Delegates.notNull<Long>()
+    private var id: Long = 0L
 
 
-    private var imageUri: Uri? = null
+    //private var imageUri: Uri? = null
+
+    private var favorite: Boolean = false
+
+
+    private lateinit var phoneValue: String
+
+    private lateinit var emailValue: String
+
+    private lateinit var birthday: String
+
+    private var wageText :Int = 0
+
+
+    private lateinit var imageUri: Uri
+
+    private lateinit var noteText: String
+    private lateinit var nameText: String
+    private lateinit var firstnameText: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +89,9 @@ class Edit : Fragment(R.layout.fragment_edit) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditBinding.inflate(inflater, container, false)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.topAppbar)
+
+
         return binding.root
 
 
@@ -116,7 +139,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         val nom = binding.nomEditText
         val email = binding.mailEditText
         val phone = binding.phoneEditText
-        val date = binding.dateEditText
+        //val date = binding.dateEditText
         val wage = binding.wageLayout
         val note = binding.noteEditText
         val button = binding.saveButton
@@ -124,27 +147,34 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
         id = arguments?.getLong("id") ?: 0L
 
-        prenom.setText(arguments?.getString("firstname"))
-        nom.setText(arguments?.getString("name"))
-        email.setText(arguments?.getString("email"))
-        phone.setText(arguments?.getString("phone"))
-        date.setText(arguments?.getString("birthday"))
-        val wageValue = arguments?.getInt("wage")
-        if (wageValue != null) {
-            wage.editText?.setText(wageValue.toString())
-        }
-        note.setText(arguments?.getString("note"))
-
-        avatar.setImageURI(arguments?.getParcelable("pics"))
-
-        val favorite = arguments?.getBoolean("favorite")?: false
-
-        binding.topAppbar.setNavigationOnClickListener {
-            findNavController().navigate(R.id.action_edit_to_detail)
-        }
+        phoneValue = arguments?.getString("phone").toString()
+        emailValue = arguments?.getString("email").toString()
+        birthday = arguments?.getString("birthday") ?: ""
+        wageText = arguments?.getInt("wage") ?: 0
+        imageUri = arguments?.getParcelable<Uri>("pics") ?: Uri.EMPTY
+        noteText = arguments?.getString("note").toString()
+        nameText = arguments?.getString("name").toString()
+        firstnameText = arguments?.getString("firstname").toString()
+        favorite = arguments?.getBoolean("favorite") ?: false
 
 
-        if (imageUri == null) {
+
+        prenom.setText(firstnameText)
+        nom.setText(nameText)
+        email.setText(emailValue)
+        phone.setText(phoneValue)
+        dateEditText.setText(birthday)
+
+        wage.editText?.setText("${wageText.toString()} €")
+        note.setText(noteText)
+
+        //  avatar.setImageURI(arguments?.getParcelable("pics"))
+
+
+        // val favorite = arguments?.getBoolean("favorite") ?: false
+
+
+        if (imageUri == Uri.EMPTY) {
             imageUri = getDrawableUri(
                 requireContext(),
                 R.drawable.baseline_category_24
@@ -220,11 +250,13 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     prenom.text?.trim().toString(),
                     phone.text?.trim().toString(),
                     email.text?.trim().toString(),
-                    date.text?.trim().toString(),
+                    dateEditText.text?.trim().toString(),
                     wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                    note.text?.trim().toString()
-                )
+                    note.text?.trim().toString(),
+                    imageUri
 
+                )
+                avatar.setImageURI(imageUri)
 
             }
         }
@@ -234,44 +266,26 @@ class Edit : Fragment(R.layout.fragment_edit) {
         prenom.addTextChangedListener(textwatcher)
         phone.addTextChangedListener(textwatcher)
         email.addTextChangedListener(textwatcher)
-        date.addTextChangedListener(textwatcher)
+        dateEditText.addTextChangedListener(textwatcher)
         wage.editText?.addTextChangedListener(textwatcher)
         note.addTextChangedListener(textwatcher)
 
 
 
 
-
-
-
-        button.setOnClickListener {
-
-            if (viewModel.checkField(
-                    nom.text?.trim().toString(),
-                    prenom.text?.trim().toString(),
-                    phone.text?.trim().toString(),
-                    email.text?.trim().toString(),
-                    date.text?.trim().toString(),
-                    wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                    note.text?.trim().toString()
-                )
-            ) {
+        fun setupButton():Boolean {
+            button.setOnClickListener {
                 val content = Content(
-
                     name = nom.text?.trim().toString(),
                     firstname = prenom.text?.trim().toString(),
                     phone = phone.text?.trim().toString(),
                     email = email.text?.trim().toString(),
-                    birthday = date.text?.trim().toString(),
+                    birthday = dateEditText.text?.trim().toString(),
                     wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
                     note = note.text?.trim().toString(),
                     favorite = favorite,
                     picture = imageUri
                 )
-
-
-
-
 
                 lifecycleScope.launch {
                     viewModel.editAdd.collect { response ->
@@ -279,32 +293,25 @@ class Edit : Fragment(R.layout.fragment_edit) {
                             is SimpleResponse.Status.Success -> {
                                 Snackbar.make(
                                     binding.root,
-                                    "User added successfully",
+                                    "Données mis à jour",
                                     Snackbar.LENGTH_LONG
-                                )
-                                    .show()
+                                ).show()
                                 viewModel.resetToast()
                                 NavHostFragment.findNavController(this@Edit)
                                     .navigate(R.id.action_add_to_home)
                             }
 
                             is SimpleResponse.Status.Failure -> {
-
-                                lifecycleScope.launch {
-
-                                    viewModel.editError.collect { message ->
-                                        message?.let {
-                                            Snackbar.make(
-                                                binding.root,
-                                                it,
-                                                Snackbar.LENGTH_LONG
-                                            )
-                                                .show()
-                                            viewModel.resetToast()
-                                        }
+                                viewModel.editError.collect { message ->
+                                    message?.let {
+                                        Snackbar.make(
+                                            binding.root,
+                                            it,
+                                            Snackbar.LENGTH_LONG
+                                        ).show()
+                                        viewModel.resetToast()
                                     }
                                 }
-
                             }
 
                             else -> {
@@ -312,30 +319,22 @@ class Edit : Fragment(R.layout.fragment_edit) {
                                     binding.root,
                                     "An error occurred",
                                     Snackbar.LENGTH_LONG
-                                )
-                                    .show()
+                                ).show()
                             }
                         }
                     }
                 }
 
-
-
                 viewModel.resetAccountValue()
-
                 viewModel.editAccount(content)
-
-
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    "Please fill all the necessary fields",
-                    Snackbar.LENGTH_LONG
-                ).show()
             }
-
-
+            return true
         }
+
+
+
+
+
 
         dateEditText.addTextChangedListener(object : TextWatcher {
             private var current = ""
@@ -380,6 +379,51 @@ class Edit : Fragment(R.layout.fragment_edit) {
                 }
             }
         })
+
+
+
+        binding.topAppbar.setNavigationOnClickListener {
+
+            if(!setupButton()){
+
+                val resultBundle = Bundle().apply {
+                    putLong("id", id)
+                    putString("name", nameText)
+                    putString("firstname",firstnameText)
+                    putString("phone", phoneValue)
+                    putString("email", emailValue)
+                    putInt("wage", wageText)
+                    putString("note", noteText)
+                    putParcelable("pics", imageUri)
+                    putString("birthday", birthday)
+                    putBoolean("favorite", favorite)
+                }
+                parentFragmentManager.setFragmentResult("editResult", resultBundle)
+                findNavController().navigate(R.id.action_edit_to_detail)
+
+
+            }else {
+
+                val resultBundle = Bundle().apply {
+                    putLong("id", id)
+                    putString("name", nom.text?.trim().toString())
+                    putString("firstname", prenom.text?.trim().toString())
+                    putString("phone", phone.text?.trim().toString())
+                    putString("email", email.text?.trim().toString())
+                    putInt("wage", wage.editText?.text?.trim().toString().toIntOrNull() ?: 0)
+                    putString("note", note.text?.trim().toString())
+                    putParcelable("pics", imageUri)
+                    putString("birthday", dateEditText.text?.trim().toString())
+                    putBoolean("favorite", favorite)
+                }
+                parentFragmentManager.setFragmentResult("editResult", resultBundle)
+                findNavController().navigate(R.id.action_edit_to_detail)
+
+
+            }
+
+
+        }
 
 
     }
