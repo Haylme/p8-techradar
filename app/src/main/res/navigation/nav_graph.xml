@@ -47,7 +47,7 @@
         android:label="fragment_edit"
         tools:layout="@layout/fragment_edit" >
         <argument
-            android:name="userId"
+            android:name="id"
             app:argType="long" />
 
         <action

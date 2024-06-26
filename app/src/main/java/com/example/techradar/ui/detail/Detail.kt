@@ -30,13 +30,15 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private val binding get() = _binding!!
 
-    private var userId by Delegates.notNull<Long>()
+
+    private var id :Long = 0L
+
+
     private var favorite by Delegates.notNull<Boolean>()
 
 
 
     private val viewModel: DetailViewModel by viewModels()
-
 
 
     private lateinit var phoneValue: String
@@ -47,13 +49,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private var wage by Delegates.notNull<Int>()
 
-   // private lateinit var note: String
+    // private lateinit var note: String
 
     private lateinit var pictureUri: Uri
 
     private lateinit var noteText: String
     private lateinit var nameText: String
     private lateinit var firstnameText: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +84,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
 
 
-        userId = arguments?.getLong("id") ?: 0L
+        id = arguments?.getLong("id") ?: 0L
+
+
+
 
         favorite = arguments?.getBoolean("favorite") ?: false
 
@@ -218,13 +224,13 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     favorite = bool
 
                     updateIcon(item, favorite)
-                    viewModel.updateData(userId, favorite)
+                    viewModel.updateData(id, favorite)
 
                 } else {
                     val bool = true
                     favorite = bool
                     updateIcon(item, favorite)
-                    viewModel.updateData(userId, favorite)
+                    viewModel.updateData(id, favorite)
 
                 }
 
@@ -233,7 +239,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             R.id.edit_button -> {
                 val bundle = Bundle().apply {
-                    putLong("id", userId)
+                    putLong("id", id)
                     putString("name", nameText)
                     putString("firstname", firstnameText)
                     putString("phone", phoneValue)
@@ -244,6 +250,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     putString("birthday", birthday)
                     putBoolean("favorite", favorite)
                 }
+
                 findNavController().navigate(R.id.action_detail_to_edit, bundle)
             }
 
@@ -259,8 +266,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
                         }
                         .setPositiveButton("Confirmer") { dialog_, _ ->
                             dialog_.apply {
-                                viewModel.deleteCandidate(userId)
-                                Log.d("error", "onOptionsItemSelected:$userId ")
+                                viewModel.deleteCandidate(id)
+                                Log.d("error", "onOptionsItemSelected:$id ")
                                 findNavController().navigate(R.id.action_detail_to_home)
                             }
 

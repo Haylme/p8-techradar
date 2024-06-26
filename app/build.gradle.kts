@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+
+
 }
 
 android {
@@ -18,6 +20,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
+
 
 
 
@@ -51,6 +56,8 @@ android {
 }
 
 dependencies {
+
+
 
 
     implementation(libs.androidx.material3)

@@ -52,7 +52,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
     private val viewModel: EditViewModel by viewModels()
 
-    private var userId by Delegates.notNull<Long>()
+    private var id by Delegates.notNull<Long>()
 
 
     private var imageUri: Uri? = null
@@ -122,7 +122,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         val button = binding.saveButton
 
 
-        userId = arguments?.getLong("id") ?: 0L
+        id = arguments?.getLong("id") ?: 0L
 
         prenom.setText(arguments?.getString("firstname"))
         nom.setText(arguments?.getString("name"))
@@ -131,7 +131,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         date.setText(arguments?.getString("birthday"))
         val wageValue = arguments?.getInt("wage")
         if (wageValue != null) {
-            wage.editText?.setText(wageValue)
+            wage.editText?.setText(wageValue.toString())
         }
         note.setText(arguments?.getString("note"))
 
