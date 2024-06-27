@@ -81,15 +81,12 @@ class DataRepository(private val listDao: ListDao) {
     }
 
 
-
-        suspend fun updateFav(id: Long, bool: Boolean?) {
-            listDao.updateFavorite(
-                id = id,
-                listFavorite = bool
-            )
-        }
-
-
+    suspend fun updateFav(id: Long, bool: Boolean?) {
+        listDao.updateFavorite(
+            id = id,
+            listFavorite = bool
+        )
+    }
 
 
     suspend fun suppressUser(id: Long) {
@@ -98,6 +95,17 @@ class DataRepository(private val listDao: ListDao) {
 
 
     }
+
+
+    suspend fun searchFun(search: String):List<Content> {
+
+       val result = listDao.searchList(search)
+           .first()
+           .map { Content.fromDto(it) }
+
+        return result
+    }
+
 
 
 }

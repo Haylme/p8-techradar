@@ -3,16 +3,16 @@ package com.example.techradar.ui.edit
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -20,7 +20,6 @@ import com.example.techradar.R
 import com.example.techradar.databinding.FragmentEditBinding
 import com.example.techradar.model.Content
 import com.example.techradar.model.SimpleResponse
-import com.example.techradar.ui.detail.DetailViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -33,7 +32,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import kotlin.properties.Delegates
 
 
 fun getDrawableUri(context: Context, drawableId: Int): Uri {
@@ -57,7 +55,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
     private var id: Long = 0L
 
 
-    //private var imageUri: Uri? = null
+
 
     private var favorite: Boolean = false
 
@@ -327,6 +325,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
                 viewModel.resetAccountValue()
                 viewModel.editAccount(content)
+                button.isEnabled = false
             }
             return true
         }
@@ -341,12 +340,12 @@ class Edit : Fragment(R.layout.fragment_edit) {
             private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Store the current text before it changes
+
                 current = s.toString()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Do nothing here
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -371,7 +370,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                 dateEditText.setSelection(current.length)
                 dateEditText.addTextChangedListener(this)
 
-                // Handle error if the format is incorrect
+
                 try {
                     LocalDate.parse(current, formatter)
                 } catch (e: Exception) {
@@ -399,7 +398,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     putBoolean("favorite", favorite)
                 }
                 parentFragmentManager.setFragmentResult("editResult", resultBundle)
-                findNavController().navigate(R.id.action_edit_to_detail)
+                findNavController().navigate(R.id.action_edit_to_detail,resultBundle)
 
 
             }else {

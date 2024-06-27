@@ -55,6 +55,7 @@
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <com.google.android.material.search.SearchView
+                    android:id="@+id/searchViewBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -82,6 +83,18 @@
                     android:text="@string/favoris" />
             </com.google.android.material.tabs.TabLayout>
 
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
@@ -90,8 +103,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tablelayout"
-               />
+                app:layout_constraintTop_toBottomOf="@+id/tablelayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

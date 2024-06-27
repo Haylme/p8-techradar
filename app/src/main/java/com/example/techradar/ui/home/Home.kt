@@ -1,9 +1,11 @@
 package com.example.techradar.ui.home
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,7 +32,7 @@ class Home : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-       // checkPermissions()
+        // checkPermissions()
 
         super.onCreate(savedInstanceState)
     }
@@ -46,6 +48,11 @@ class Home : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val loading = binding.loading
+
+
+
         listAdapter = ListAdapter(mutableListOf()) { content ->
             onItemClicked(content)
         }
@@ -55,6 +62,21 @@ class Home : Fragment() {
         collectNotes()
 
         binding.addButton.setOnClickListener { moveTo() }
+
+
+
+        lifecycleScope.launch {
+
+            viewModel.loading.collect {
+
+                    isLoading ->
+                loading.visibility = if (isLoading) View.VISIBLE else View.GONE
+
+
+            }
+
+
+        }
 
         viewModel.allUsers()
 
@@ -70,7 +92,30 @@ class Home : Fragment() {
             override fun onTabUnselected(p0: TabLayout.Tab?) {}
             override fun onTabReselected(p0: TabLayout.Tab?) {}
         })
+
+
+        var searchString :String = ""
+        val searchBar = binding.searchBar
+        val searchViewBar = binding.searchViewBar
+
+        searchViewBar.editText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                val text = searchViewBar.editText.text.toString()
+                searchBar.setText(text)
+                searchString = text
+                true
+
+            } else {
+                false
+            }
+        }
+
+
+        viewModel.searchBarFunction(searchString)
+
+
     }
+
 
     private fun moveTo() {
         findNavController().navigate(R.id.action_home_to_add)
@@ -101,45 +146,6 @@ class Home : Fragment() {
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }
 
-
-
-
-
-  /**  private fun checkPermissions() {
-        val permissions = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-
-        val permissionsToRequest = permissions.filter {
-            ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
-        }
-
-        if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE)
-        }
-    }
-
-   @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                // Permissions granted
-            } else {
-                // Permissions denied, show a message to the user
-                Snackbar.make(binding.root, "Permissions are required to access files.", Snackbar.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    companion object {
-        private const val PERMISSION_REQUEST_CODE = 1001
-    }**/
 
 
 

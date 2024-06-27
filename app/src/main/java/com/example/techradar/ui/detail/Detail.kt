@@ -32,11 +32,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
     private val binding get() = _binding!!
 
 
-    private var id :Long = 0L
+    private var id: Long = 0L
 
 
     private var favorite by Delegates.notNull<Boolean>()
-
 
 
     private val viewModel: DetailViewModel by viewModels()
@@ -163,10 +162,15 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     about.text = "$birthday $age ans"
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(),"format de date incorrecte",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
+                    .show()
             }
         } else {
-            Toast.makeText(requireContext(),"Aucune date de naissance renseignée",Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                "Aucune date de naissance renseignée",
+                Toast.LENGTH_LONG
+            ).show()
         }
 
 
@@ -217,18 +221,44 @@ class Detail : Fragment(R.layout.fragment_detail) {
             birthday = bundle.getString("birthday") ?: ""
             favorite = bundle.getBoolean("favorite")
 
-            // Update UI with the received data
+
             binding.name.text = nameText
             binding.firstname.text = firstnameText
-           // binding.phoneEditText.setText(phoneValue)
+            // binding.phoneEditText.setText(phoneValue)
             //binding.mailEditText.setText(emailValue)
-           // binding.wageLayout.editText?.setText("${wage.toString()} €")
+            // binding.wageLayout.editText?.setText("${wage.toString()} €")
             binding.noteEditText.setText(noteText)
             binding.avatar.setImageURI(pictureUri)
             binding.about.text = birthday
+
+
+            if (birthday.isNotEmpty()) {
+                try {
+                    val sdf = SimpleDateFormat("dd/MM/yyyy")
+                    val date = sdf.parse(birthday)
+                    val currentDate = Calendar.getInstance()
+
+                    date?.let {
+                        val birthdayCalendar = Calendar.getInstance().apply { time = it }
+                        var age =
+                            currentDate.get(Calendar.YEAR) - birthdayCalendar.get(Calendar.YEAR)
+                        if (currentDate.get(Calendar.DAY_OF_YEAR) < birthdayCalendar.get(Calendar.DAY_OF_YEAR)) {
+                            age--
+                        }
+                        about.text = "$birthday $age ans"
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
+                        .show()
+                }
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Aucune date de naissance renseignée",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
-
-
 
 
     }

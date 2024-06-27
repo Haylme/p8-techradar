@@ -55,4 +55,10 @@ interface ListDao {
 
     @Query("DELETE FROM list WHERE user_Id = :id")
     suspend fun deleteUserById(id: Long)
+
+
+
+    @Query("SELECT * FROM list WHERE (list_name || ' ' || list_firstname) LIKE '%' || :search || '%' COLLATE NOCASE")
+    fun searchList(search: String): Flow<List<ListDto>>
+
 }

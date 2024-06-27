@@ -1,5 +1,7 @@
 package com.example.techradar.ui.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.techradar.data.DataRepository
@@ -27,6 +29,9 @@ class HomeViewModel @Inject constructor(
     val homeAdd: StateFlow<SimpleResponse<List<Content?>>> = _homeAdd.asStateFlow()
 
 
+    val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading.asStateFlow()
+
     fun resetToast() {
         _homeError.value = null
 
@@ -38,7 +43,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun allUsers() {
-
+        _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
 
             try {
@@ -47,17 +52,20 @@ class HomeViewModel @Inject constructor(
 
                 if (response.isNotEmpty()) {
                     _homeAdd.value = SimpleResponse.success(response)
+                    _loading.value = false
 
                 } else {
-                    val message = "No data found"
+                    val message = "Aucun candidat"
                     _homeError.value = message
                     _homeAdd.value = SimpleResponse.failure(Exception(message))
+                    _loading.value = false
                 }
 
 
             } catch (e: Exception) {
                 val message = "unknown error occurred, please try again"
                 _homeError.value = message
+                _loading.value = false
             }
         }
 
@@ -65,7 +73,7 @@ class HomeViewModel @Inject constructor(
 
 
     fun allFavorites() {
-
+        _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
 
             try {
@@ -73,18 +81,20 @@ class HomeViewModel @Inject constructor(
 
                 if (response.isNotEmpty()) {
                     _homeAdd.value = SimpleResponse.success(response)
+                    _loading.value = false
 
                 } else {
                     val message = "No data found"
                     _homeError.value = message
                     _homeAdd.value = SimpleResponse.failure(Exception(message))
+                    _loading.value = false
                 }
 
 
             } catch (e: Exception) {
                 val message = "unknown error occurred, please try again"
                 _homeError.value = message
-
+                _loading.value = false
 
             }
         }
@@ -92,5 +102,36 @@ class HomeViewModel @Inject constructor(
 
     }
 
+    fun searchBarFunction(search: String) {
 
+        _loading.value = true
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+
+                val result = dataRepository.searchFun(search)
+                if (result.isNotEmpty()) {
+                    _homeAdd.value = SimpleResponse.success(result)
+                    _loading.value = false
+
+
+                } else {
+                    val message = "No data found"
+                    _homeError.value = message
+                    _homeAdd.value = SimpleResponse.failure(Exception(message))
+                    _loading.value = false
+                }
+
+
+            } catch (e:Exception){
+
+                val message = "unknown error occurred, please try again"
+                _homeError.value = message
+                _loading.value = false
+
+            }
+
+
+        }
+    }
 }
