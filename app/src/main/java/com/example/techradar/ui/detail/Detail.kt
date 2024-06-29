@@ -10,13 +10,16 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
+import com.example.techradar.model.Content
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -84,6 +87,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
 
 
+
+
         id = arguments?.getLong("id") ?: 0L
 
 
@@ -104,7 +109,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         phoneValue = arguments?.getString("phone").toString()
         emailValue = arguments?.getString(("email")).toString()
 
-        pictureUri = arguments?.getParcelable("pictureUri") ?: Uri.EMPTY
+        pictureUri = arguments?.
 
 
         val avatar = binding.avatar
@@ -118,10 +123,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val firstname = binding.firstname
 
 
+        bindAvatar(avatar,pictureUri)
 
-        pictureUri.let {
-            avatar.setImageURI(it)
-        }
+
+      //  pictureUri.let {
+       //     avatar.setImageURI(it)
+       // }
+
+
         val backBar = binding.back
 
         name.text = nameText
@@ -162,8 +171,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     about.text = "$birthday $age ans"
                 }
             } catch (e: Exception) {
-               // Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
-               //     .show()
+                // Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
+                //     .show()
             }
         } else {
             Toast.makeText(
@@ -226,13 +235,18 @@ class Detail : Fragment(R.layout.fragment_detail) {
             binding.firstname.text = firstnameText
             // binding.phoneEditText.setText(phoneValue)
             //binding.mailEditText.setText(emailValue)
-            binding.wage.text= "${wage.toString()} €"
+            binding.wage.text = "${wage.toString()} €"
             binding.noteEditText.setText(noteText)
-            binding.avatar.setImageURI(pictureUri)
+
             binding.about.text = birthday
 
 
-           if (birthday.isNotEmpty()) {
+
+
+
+
+
+            if (birthday.isNotEmpty()) {
                 try {
                     val sdf = SimpleDateFormat("dd/MM/yyyy")
                     val date = sdf.parse(birthday)
@@ -248,8 +262,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
                         about.text = "$birthday $age ans"
                     }
                 } catch (e: Exception) {
-                  //  Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
-                       // .show()
+                    //  Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
+                    // .show()
                 }
             } else {
                 Toast.makeText(
@@ -348,6 +362,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
     }
 
 
+
     private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
         if ((isFavorite)) {
             menuItem.setIcon(R.drawable.baseline_star_24)
@@ -361,53 +376,15 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
-
-    /**  private fun fetchDetail() {
-
-    lifecycleScope.launch {
-    viewModel.detailAdd.collect { response ->
-    when (response.status) {
-
-    is SimpleResponse.Status.Success -> {
-
-    return@collect
-
-    }
-
-    is SimpleResponse.Status.Failure -> {
-
-    lifecycleScope.launch {
-
-    viewModel.detailError.collect {
-
-    message ->
-
-    message?.let {
-    Snackbar.make(
-    binding.root,
-    message,
-    Snackbar.LENGTH_SHORT
-    )
-    .show()
-    viewModel.resetError()
-    }
-
-    }
-
-    }
-    }
-
-    else -> {}
+  private  fun bindAvatar(avatar: ImageView, uri:Uri) {
+        Glide.with(avatar.context)
+            .load(uri)
+            .into(avatar)
     }
 
 
-    }
 
 
-    }
-
-
-    }**/
 
 
     override fun onDestroyView() {

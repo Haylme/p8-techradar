@@ -1,5 +1,6 @@
 package com.example.techradar.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.example.techradar.R
 import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
 import com.example.techradar.model.Content
+import com.example.techradar.ui.detail.Detail
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -141,6 +143,11 @@ class Home : Fragment() {
             "picture" to content.picture
 
         )
+        val intent = Intent(requireContext(), Detail::class.java).apply {
+
+            putExtra("picture", content.picture)
+        }
+        startActivity(intent)
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }
 
