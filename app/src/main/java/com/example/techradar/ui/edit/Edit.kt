@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,12 +36,10 @@ import java.util.TimeZone
 
 
 fun getDrawableUri(context: Context, drawableId: Int): Uri {
-    return Uri.Builder()
-        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+    return Uri.Builder().scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
         .authority(context.resources.getResourcePackageName(drawableId))
         .appendPath(context.resources.getResourceTypeName(drawableId))
-        .appendPath(context.resources.getResourceEntryName(drawableId))
-        .build()
+        .appendPath(context.resources.getResourceEntryName(drawableId)).build()
 }
 
 
@@ -55,8 +54,6 @@ class Edit : Fragment(R.layout.fragment_edit) {
     private var id: Long = 0L
 
 
-
-
     private var favorite: Boolean = false
 
 
@@ -66,7 +63,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
     private lateinit var birthday: String
 
-    private var wageText :Int = 0
+    private var wageText: Int = 0
 
 
     private lateinit var imageUri: Uri
@@ -74,6 +71,10 @@ class Edit : Fragment(R.layout.fragment_edit) {
     private lateinit var noteText: String
     private lateinit var nameText: String
     private lateinit var firstnameText: String
+
+    private var boolPicsCheck :Boolean = false
+
+    private lateinit var textwatcher : TextWatcher
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,8 +84,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditBinding.inflate(inflater, container, false)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.topAppbar)
@@ -104,20 +104,17 @@ class Edit : Fragment(R.layout.fragment_edit) {
         val dateEditText = binding.dateEditText
 
 
-        // calendar constraint time and year
         val today = MaterialDatePicker.todayInUtcMilliseconds()
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("utc"))
 
         calendar.timeInMillis = today
-        val constraintsBuilder = CalendarConstraints.Builder()
-            .setEnd(today)
+        val constraintsBuilder = CalendarConstraints.Builder().setEnd(today)
 
 
         dateButton.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .setCalendarConstraints(constraintsBuilder.build())
-                .setTitleText("Entrer une date")
+                .setCalendarConstraints(constraintsBuilder.build()).setTitleText("Entrer une date")
                 .build()
 
 
@@ -137,7 +134,6 @@ class Edit : Fragment(R.layout.fragment_edit) {
         val nom = binding.nomEditText
         val email = binding.mailEditText
         val phone = binding.phoneEditText
-        //val date = binding.dateEditText
         val wage = binding.wageLayout
         val note = binding.noteEditText
         val button = binding.saveButton
@@ -163,36 +159,40 @@ class Edit : Fragment(R.layout.fragment_edit) {
         phone.setText(phoneValue)
         dateEditText.setText(birthday)
 
-        wage.editText?.setText("${wageText.toString()} €")
+        wage.editText?.setText(wageText.toString())
         note.setText(noteText)
 
-        //  avatar.setImageURI(arguments?.getParcelable("pics"))
+        avatar.setImageURI(imageUri)
 
 
-        // val favorite = arguments?.getBoolean("favorite") ?: false
 
 
         if (imageUri == Uri.EMPTY) {
             imageUri = getDrawableUri(
-                requireContext(),
-                R.drawable.baseline_category_24
+                requireContext(), R.drawable.baseline_category_24
             )
         }
 
 
-        val imageContract =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-                if (uri != null) {
-                    imageUri = uri
-                    avatar.setImageURI(uri)
-                }
+        val imageContract = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                imageUri = uri
+                avatar.setImageURI(uri)
+
+                boolPicsCheck = true
+
+                textwatcher.afterTextChanged(null)
+
             }
+        }
 
         avatar.setOnClickListener {
             imageContract.launch("image/*")
         }
 
         avatar.setImageURI(imageUri)
+
+
 
         button.isEnabled = false
 
@@ -228,12 +228,9 @@ class Edit : Fragment(R.layout.fragment_edit) {
         })
 
 
-        val textwatcher = object : TextWatcher {
+        textwatcher = object : TextWatcher {
             override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
+                s: CharSequence?, start: Int, count: Int, after: Int
             ) {
                 //TODO("Not yet implemented")
             }
@@ -243,6 +240,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
             }
 
             override fun afterTextChanged(s: Editable?) {
+
                 button.isEnabled = viewModel.checkField(
                     nom.text?.trim().toString(),
                     prenom.text?.trim().toString(),
@@ -251,13 +249,16 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     dateEditText.text?.trim().toString(),
                     wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
                     note.text?.trim().toString(),
-                    imageUri
+                   imageUri
+
 
                 )
-                avatar.setImageURI(imageUri)
+
 
             }
         }
+
+
 
 
         nom.addTextChangedListener(textwatcher)
@@ -267,68 +268,66 @@ class Edit : Fragment(R.layout.fragment_edit) {
         dateEditText.addTextChangedListener(textwatcher)
         wage.editText?.addTextChangedListener(textwatcher)
         note.addTextChangedListener(textwatcher)
+       // avatar.
 
 
+        var bool = false
+
+        button.setOnClickListener {
+            Log.d("EditFragment", "Save button clicked")
+            val content = Content(
+                id = id,
+                name = nom.text?.trim().toString(),
+                firstname = prenom.text?.trim().toString(),
+                phone = phone.text?.trim().toString(),
+                email = email.text?.trim().toString(),
+                birthday = dateEditText.text?.trim().toString(),
+                wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                note = note.text?.trim().toString(),
+                favorite = favorite,
+                picture = imageUri
+            )
 
 
-        fun setupButton():Boolean {
-            button.setOnClickListener {
-                val content = Content(
-                    name = nom.text?.trim().toString(),
-                    firstname = prenom.text?.trim().toString(),
-                    phone = phone.text?.trim().toString(),
-                    email = email.text?.trim().toString(),
-                    birthday = dateEditText.text?.trim().toString(),
-                    wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                    note = note.text?.trim().toString(),
-                    favorite = favorite,
-                    picture = imageUri
-                )
+            lifecycleScope.launch {
+                viewModel.editAdd.collect { response ->
+                    when (response.status) {
+                        is SimpleResponse.Status.Success -> {
+                            Snackbar.make(
+                                binding.root, "Données mis à jour", Snackbar.LENGTH_LONG
+                            ).show()
+                            bool = true
+                            viewModel.resetToast()
+                            button.isEnabled = false
+                        }
 
-                lifecycleScope.launch {
-                    viewModel.editAdd.collect { response ->
-                        when (response.status) {
-                            is SimpleResponse.Status.Success -> {
-                                Snackbar.make(
-                                    binding.root,
-                                    "Données mis à jour",
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                                viewModel.resetToast()
-                                NavHostFragment.findNavController(this@Edit)
-                                    .navigate(R.id.action_add_to_home)
-                            }
-
-                            is SimpleResponse.Status.Failure -> {
-                                viewModel.editError.collect { message ->
-                                    message?.let {
-                                        Snackbar.make(
-                                            binding.root,
-                                            it,
-                                            Snackbar.LENGTH_LONG
-                                        ).show()
-                                        viewModel.resetToast()
-                                    }
+                        is SimpleResponse.Status.Failure -> {
+                            viewModel.editError.collect { message ->
+                                message?.let {
+                                    Snackbar.make(
+                                        binding.root, it, Snackbar.LENGTH_LONG
+                                    ).show()
+                                    bool = false
+                                    viewModel.resetToast()
+                                    button.isEnabled = false
                                 }
                             }
+                        }
 
-                            else -> {
-                                Snackbar.make(
-                                    binding.root,
-                                    "An error occurred",
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
+                        else -> {
+                            Snackbar.make(
+                                binding.root, "An error occurred", Snackbar.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
-
-                viewModel.resetAccountValue()
-                viewModel.editAccount(content)
-                button.isEnabled = false
             }
-            return true
+            viewModel.editAccount(content,id)
+            viewModel.resetAccountValue()
+
+            button.isEnabled = false
         }
+
 
 
 
@@ -383,12 +382,12 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
         binding.topAppbar.setNavigationOnClickListener {
 
-            if(!setupButton()){
+            if (!bool) {
 
                 val resultBundle = Bundle().apply {
                     putLong("id", id)
                     putString("name", nameText)
-                    putString("firstname",firstnameText)
+                    putString("firstname", firstnameText)
                     putString("phone", phoneValue)
                     putString("email", emailValue)
                     putInt("wage", wageText)
@@ -398,10 +397,10 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     putBoolean("favorite", favorite)
                 }
                 parentFragmentManager.setFragmentResult("editResult", resultBundle)
-                findNavController().navigate(R.id.action_edit_to_detail,resultBundle)
+                findNavController().navigate(R.id.action_edit_to_detail, resultBundle)
 
 
-            }else {
+            } else {
 
                 val resultBundle = Bundle().apply {
                     putLong("id", id)
@@ -426,6 +425,9 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
     }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

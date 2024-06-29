@@ -75,14 +75,14 @@ class EditViewModel @Inject constructor(
     }
 
 
-    fun editAccount(content: Content) {
+    fun editAccount(content: Content,id:Long) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
 
-                val response = dataRepository.editUser(content)
+                val response = dataRepository.editUser(content,id)
 
-                if (response) {
+                if (response ) {
 
                     _editAdd.value = SimpleResponse.success(content)
 

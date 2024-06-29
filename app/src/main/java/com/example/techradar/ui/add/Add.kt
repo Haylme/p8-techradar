@@ -54,13 +54,7 @@ class Add : Fragment() {
 
     private var imageUri: Uri? = null
 
-    /**private val imageContract =
-    registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-    if (uri != null) {
-    imageUri = uri
-    binding.avatar.setImageURI(uri)
-    }
-    }**/
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

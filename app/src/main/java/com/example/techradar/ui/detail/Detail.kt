@@ -162,8 +162,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     about.text = "$birthday $age ans"
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
-                    .show()
+               // Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
+               //     .show()
             }
         } else {
             Toast.makeText(
@@ -226,13 +226,13 @@ class Detail : Fragment(R.layout.fragment_detail) {
             binding.firstname.text = firstnameText
             // binding.phoneEditText.setText(phoneValue)
             //binding.mailEditText.setText(emailValue)
-            // binding.wageLayout.editText?.setText("${wage.toString()} €")
+            binding.wage.text= "${wage.toString()} €"
             binding.noteEditText.setText(noteText)
             binding.avatar.setImageURI(pictureUri)
             binding.about.text = birthday
 
 
-            if (birthday.isNotEmpty()) {
+           if (birthday.isNotEmpty()) {
                 try {
                     val sdf = SimpleDateFormat("dd/MM/yyyy")
                     val date = sdf.parse(birthday)
@@ -248,8 +248,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
                         about.text = "$birthday $age ans"
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
-                        .show()
+                  //  Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
+                       // .show()
                 }
             } else {
                 Toast.makeText(

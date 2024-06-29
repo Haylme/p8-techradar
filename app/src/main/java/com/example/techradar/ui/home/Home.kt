@@ -32,7 +32,7 @@ class Home : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // checkPermissions()
+
 
         super.onCreate(savedInstanceState)
     }
@@ -94,24 +94,22 @@ class Home : Fragment() {
         })
 
 
-        var searchString :String = ""
+        var searchString: String = ""
         val searchBar = binding.searchBar
         val searchViewBar = binding.searchViewBar
 
         searchViewBar.editText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 val text = searchViewBar.editText.text.toString()
-                searchBar.setText(text)
                 searchString = text
+                viewModel.searchBarFunction(searchString)
+
                 true
 
             } else {
                 false
             }
         }
-
-
-        viewModel.searchBarFunction(searchString)
 
 
     }
@@ -145,9 +143,6 @@ class Home : Fragment() {
         )
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }
-
-
-
 
 
     override fun onDestroyView() {

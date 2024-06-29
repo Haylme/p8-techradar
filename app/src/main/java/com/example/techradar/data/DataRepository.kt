@@ -60,7 +60,7 @@ class DataRepository(private val listDao: ListDao) {
     }
 
 
-    suspend fun editUser(content: Content): Boolean {
+    suspend fun editUser(content: Content,id:Long): Boolean {
 
 
         val rowUpdate = listDao.updateUser(
