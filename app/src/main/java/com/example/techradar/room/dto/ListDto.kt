@@ -39,7 +39,7 @@ data class ListDto(
     var listFavorite: Boolean = false,
 
     @ColumnInfo(name = "list_picture")
-    var listPicture: Uri?
+    var listPicture: String?
 
 
 )

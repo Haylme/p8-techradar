@@ -10,13 +10,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentEditBinding
 import com.example.techradar.model.Content
@@ -66,13 +68,13 @@ class Edit : Fragment(R.layout.fragment_edit) {
     private var wageText: Int = 0
 
 
-    private lateinit var imageUri: Uri
+    private lateinit var imageUri: String
 
     private lateinit var noteText: String
     private lateinit var nameText: String
     private lateinit var firstnameText: String
 
-    private var boolPicsCheck :Boolean = false
+
 
     private lateinit var textwatcher : TextWatcher
 
@@ -145,7 +147,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         emailValue = arguments?.getString("email").toString()
         birthday = arguments?.getString("birthday") ?: ""
         wageText = arguments?.getInt("wage") ?: 0
-        imageUri = arguments?.getParcelable<Uri>("pics") ?: Uri.EMPTY
+        imageUri = arguments?.getString("pics").toString()
         noteText = arguments?.getString("note").toString()
         nameText = arguments?.getString("name").toString()
         firstnameText = arguments?.getString("firstname").toString()
@@ -162,24 +164,26 @@ class Edit : Fragment(R.layout.fragment_edit) {
         wage.editText?.setText(wageText.toString())
         note.setText(noteText)
 
-        avatar.setImageURI(imageUri)
+        imageUri = arguments?.getString("pics").toString()
+        bindAvatar(binding.avatar, imageUri)
 
 
 
 
-        if (imageUri == Uri.EMPTY) {
-            imageUri = getDrawableUri(
+        if (imageUri.isEmpty()) {
+            imageUri = getDrawable(
                 requireContext(), R.drawable.baseline_category_24
-            )
+            ).toString()
         }
 
 
         val imageContract = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                imageUri = uri
-                avatar.setImageURI(uri)
+                imageUri = uri.toString()
 
-                boolPicsCheck = true
+                bindAvatar(avatar, imageUri)
+
+
 
                 textwatcher.afterTextChanged(null)
 
@@ -190,7 +194,8 @@ class Edit : Fragment(R.layout.fragment_edit) {
             imageContract.launch("image/*")
         }
 
-        avatar.setImageURI(imageUri)
+       // imageUri = arguments?.getString("picture").toString()
+        bindAvatar(binding.avatar, imageUri)
 
 
 
@@ -268,7 +273,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         dateEditText.addTextChangedListener(textwatcher)
         wage.editText?.addTextChangedListener(textwatcher)
         note.addTextChangedListener(textwatcher)
-       // avatar.
+
 
 
         var bool = false
@@ -285,7 +290,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                 wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
                 note = note.text?.trim().toString(),
                 favorite = favorite,
-                picture = imageUri
+                picture = imageUri.toString()
             )
 
 
@@ -392,7 +397,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     putString("email", emailValue)
                     putInt("wage", wageText)
                     putString("note", noteText)
-                    putParcelable("pics", imageUri)
+                    putString("pics", imageUri)
                     putString("birthday", birthday)
                     putBoolean("favorite", favorite)
                 }
@@ -410,7 +415,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     putString("email", email.text?.trim().toString())
                     putInt("wage", wage.editText?.text?.trim().toString().toIntOrNull() ?: 0)
                     putString("note", note.text?.trim().toString())
-                    putParcelable("pics", imageUri)
+                    putString("pics", imageUri)
                     putString("birthday", dateEditText.text?.trim().toString())
                     putBoolean("favorite", favorite)
                 }
@@ -425,7 +430,12 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
     }
-
+    private fun bindAvatar(avatar: ImageView, str:String) {
+        val uri = Uri.parse((str))
+        Glide.with(avatar.context)
+            .load(uri)
+            .into(avatar)
+    }
 
 
 

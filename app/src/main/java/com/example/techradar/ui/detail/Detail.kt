@@ -54,7 +54,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     // private lateinit var note: String
 
-    private lateinit var pictureUri: Uri
+    private lateinit var pictureUri: String
 
     private lateinit var noteText: String
     private lateinit var nameText: String
@@ -109,7 +109,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
         phoneValue = arguments?.getString("phone").toString()
         emailValue = arguments?.getString(("email")).toString()
 
-        pictureUri = arguments?.
+        pictureUri = arguments?.getString("picture").toString()
+        bindAvatar(binding.avatar, pictureUri)
 
 
         val avatar = binding.avatar
@@ -123,12 +124,9 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val firstname = binding.firstname
 
 
-        bindAvatar(avatar,pictureUri)
-
-
-      //  pictureUri.let {
-       //     avatar.setImageURI(it)
-       // }
+        //  pictureUri.let {
+        //     avatar.setImageURI(it)
+        // }
 
 
         val backBar = binding.back
@@ -226,7 +224,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
             emailValue = bundle.getString("email") ?: ""
             wage = bundle.getInt("wage")
             noteText = bundle.getString("note") ?: ""
-            pictureUri = bundle.getParcelable("pics") ?: Uri.EMPTY
+            pictureUri = bundle.getString("pics").toString()
             birthday = bundle.getString("birthday") ?: ""
             favorite = bundle.getBoolean("favorite")
 
@@ -327,7 +325,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     putString("email", emailValue)
                     putInt("wage", wage)
                     putString("note", noteText)
-                    putParcelable("pics", pictureUri)
+                    putString("pics", pictureUri)
                     putString("birthday", birthday)
                     putBoolean("favorite", favorite)
                 }
@@ -362,7 +360,6 @@ class Detail : Fragment(R.layout.fragment_detail) {
     }
 
 
-
     private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
         if ((isFavorite)) {
             menuItem.setIcon(R.drawable.baseline_star_24)
@@ -376,15 +373,12 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
-  private  fun bindAvatar(avatar: ImageView, uri:Uri) {
+    private fun bindAvatar(avatar: ImageView, str:String) {
+        val uri = Uri.parse((str))
         Glide.with(avatar.context)
             .load(uri)
             .into(avatar)
     }
-
-
-
-
 
 
     override fun onDestroyView() {

@@ -52,7 +52,7 @@ class Add : Fragment() {
     private val viewModel: AddViewModel by viewModels()
 
 
-    private var imageUri: Uri? = null
+    private var imageUri: String? = null
 
 
 
@@ -127,14 +127,14 @@ class Add : Fragment() {
 
 
         if (imageUri == null) {
-            imageUri = getDrawableUri(requireContext(), R.drawable.baseline_category_24)
+            imageUri = getDrawableUri(requireContext(), R.drawable.baseline_category_24).toString()
         }
 
 
         val imageContract =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 if (uri != null) {
-                    imageUri = uri
+                    imageUri = uri.toString()
                     avatar.setImageURI(uri)
                 }
             }
@@ -143,7 +143,7 @@ class Add : Fragment() {
             imageContract.launch("image/*")
         }
 
-        avatar.setImageURI(imageUri)
+        avatar.setImageURI(imageUri?.let { Uri.parse(it) })
 
         button.isEnabled = false
 
@@ -245,7 +245,7 @@ class Add : Fragment() {
                     wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
                     note = note.text?.trim().toString(),
                     favorite = false,
-                    picture = imageUri
+                    picture = imageUri.toString()
                 )
 
 

@@ -13,7 +13,7 @@ data class Content(
     val wage: Int,
     val note: String,
     var favorite: Boolean,
-    var picture: Uri?
+    var picture: String?
 ) {
 
 

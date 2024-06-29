@@ -140,14 +140,13 @@ class Home : Fragment() {
             "wage" to content.wage,
             "note" to content.note,
             "favorite" to content.favorite,
-            "picture" to content.picture
+            "picture" to content.picture,
+
 
         )
-        val intent = Intent(requireContext(), Detail::class.java).apply {
 
-            putExtra("picture", content.picture)
-        }
-        startActivity(intent)
+
+
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }
 
