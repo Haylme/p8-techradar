@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.example.techradar.R
 import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
 import com.example.techradar.model.Content
+import com.example.techradar.model.SimpleResponse
 import com.example.techradar.ui.detail.Detail
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,7 +99,7 @@ class Home : Fragment() {
 
 
         var searchString: String = ""
-        val searchBar = binding.searchBar
+        //val searchBar = binding.searchBar
         val searchViewBar = binding.searchViewBar
 
         searchViewBar.editText.setOnEditorActionListener { v, actionId, event ->
@@ -123,8 +125,35 @@ class Home : Fragment() {
 
     private fun collectNotes() {
         lifecycleScope.launch {
-            viewModel.homeAdd.collect {
-                listAdapter.updateList(it)
+            viewModel.homeAdd.collect { response ->
+                when (response.status) {
+                    is SimpleResponse.Status.Success -> {
+                        return@collect
+
+
+                    }
+
+                    is SimpleResponse.Status.Failure -> {
+                        lifecycleScope.launch {
+                            viewModel.homeError.collect {
+                                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+
+
+                            }
+                        }
+
+                    }
+
+                    else -> {
+                        lifecycleScope.launch {
+
+                            viewModel.homeError.collect {
+
+                                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -143,7 +172,7 @@ class Home : Fragment() {
             "picture" to content.picture,
 
 
-        )
+            )
 
 
 

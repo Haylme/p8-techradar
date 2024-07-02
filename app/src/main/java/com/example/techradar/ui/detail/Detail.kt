@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
-import com.example.techradar.model.Content
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -124,9 +123,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val firstname = binding.firstname
 
 
-        //  pictureUri.let {
-        //     avatar.setImageURI(it)
-        // }
+
 
 
         val backBar = binding.back
@@ -238,7 +235,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             binding.about.text = birthday
 
-
+            bindAvatar(avatar, pictureUri)
 
 
 

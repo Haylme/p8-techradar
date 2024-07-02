@@ -58,6 +58,10 @@ android {
 dependencies {
 
 
+    testImplementation ("io.mockk:mockk:1.9.3")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+
 
 
     implementation(libs.androidx.material3)
