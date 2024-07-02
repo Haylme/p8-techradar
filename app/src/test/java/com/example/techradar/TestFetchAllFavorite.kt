@@ -53,7 +53,7 @@ class TestFetchAllFavorite {
 
         )
 
-        var fakeUserContet = Content (
+        val fakeUserContent = Content (
 
             id = 1,
             name = "jeannot",
@@ -74,6 +74,7 @@ class TestFetchAllFavorite {
         val result = dataRepository.fetchAllFavorites()
 
         assert(result.isNotEmpty()).also { println("result : ${result[0]}") }
+        assert(result[0] == fakeUserContent)
         verify(listDao).getAllFavoriteUsers()
 
     }

@@ -3,7 +3,6 @@ package com.example.techradar
 import com.example.techradar.data.DataRepository
 import com.example.techradar.model.Content
 import com.example.techradar.room.dao.ListDao
-import com.example.techradar.room.dto.ListDto
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
