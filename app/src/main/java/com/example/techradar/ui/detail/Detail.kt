@@ -15,12 +15,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
+import com.example.techradar.model.SimpleResponse
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.properties.Delegates
@@ -123,9 +126,6 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val firstname = binding.firstname
 
 
-
-
-
         val backBar = binding.back
 
         name.text = nameText
@@ -141,10 +141,28 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-        //  userId.let {
-        //      viewModel.detailUser(it)
-        //     fetchDetail()
-        //  }
+      /**  lifecycleScope.launch {
+
+            viewModel.translate.collect { response ->
+                when (response.status) {
+                    is SimpleResponse.Status.Success -> {
+
+                        viewModel.translateDate(birthday, wage)
+
+                    }
+
+                    else -> {
+                        return@collect
+                    }
+                }
+
+
+            }
+
+        }**/
+
+
+
 
 
         wageText.text = "${wage.toString()} €"
@@ -370,12 +388,24 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     }
 
-    private fun bindAvatar(avatar: ImageView, str:String) {
+    private fun bindAvatar(avatar: ImageView, str: String) {
         val uri = Uri.parse((str))
         Glide.with(avatar.context)
             .load(uri)
             .into(avatar)
     }
+
+
+    /**  private fun language (){
+
+    viewModel.getSystemLanguage()
+    }
+
+    private fun currency (){
+
+    viewModel.getCurrency()
+
+    }**/
 
 
     override fun onDestroyView() {

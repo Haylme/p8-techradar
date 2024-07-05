@@ -128,7 +128,7 @@ class Home : Fragment() {
             viewModel.homeAdd.collect { response ->
                 when (response.status) {
                     is SimpleResponse.Status.Success -> {
-                        return@collect
+                        listAdapter.updateList(response)
 
 
                     }

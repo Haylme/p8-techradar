@@ -1,5 +1,6 @@
 package com.example.techradar.ui.detail
 
+import Curencies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.techradar.data.DataRepository
@@ -11,12 +12,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Currency
+import java.util.Locale
 import javax.inject.Inject
 
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val dataRepository: DataRepository
+    private val dataRepository: DataRepository,
+
 ) : ViewModel() {
 
 
@@ -30,6 +34,8 @@ class DetailViewModel @Inject constructor(
     private val _updateUserFav = MutableStateFlow(SimpleResponse.initial<Boolean>())
     val updateUserFav: StateFlow<SimpleResponse<Boolean>> = _updateUserFav.asStateFlow()
 
+    private val _translate = MutableStateFlow(SimpleResponse.initial<Curencies>())
+    val translate: StateFlow<SimpleResponse<Curencies>> = _translate.asStateFlow()
 
     fun resetToast() {
         _detailError.value = null
@@ -42,34 +48,70 @@ class DetailViewModel @Inject constructor(
     }
 
 
-   /** fun detailUser(id: Long) {
+     fun getSystemLanguage(): String {
+
+        return Locale.getDefault().language
+
+    }
+
+     fun getCurrency():String {
+
+        val defaultCurrency = Currency.getInstance(Locale.getDefault()).currencyCode
+
+
+
+        return defaultCurrency
+
+
+    }
+
+
+    fun translateDate(date: String, to: Int) {
+
         viewModelScope.launch(Dispatchers.IO) {
 
-            try {
-                val detail = dataRepository.fetchDetailUser(id)
-                if (detail != null) {
+           val lang:String = getSystemLanguage()
+
+            val result: Curencies = dataRepository.fetchTranslate(date, to)
 
 
-                    _detailAdd.value = SimpleResponse.success(detail)
 
-                } else {
-                    _detailAdd.value = SimpleResponse.failure(Exception("No user found"))
-                    _detailError.value = "No user found"
-                }
-
-
-            } catch (e: Exception) {
-
-                val message = "Error when fetching user account, please try again"
-                _detailError.value = message
-
-            }
+            SimpleResponse.success(result)
+            _translate.value = SimpleResponse.success(result)
 
 
         }
 
 
+    }
+
+
+    /**  fun gettranslate(): Pair<String, Int> {
+
+    val systemLanguage = getSystemLanguage()
+    val currency = getCurrency()
+    val date: String
+    val to: Int
+    when (systemLanguage) {
+
+
+    "fr" -> {
+    date = "dd/MM/yyyy"
+    to = currency
+
+    }
+
+    "en" -> {
+    date = "MM/dd/yyyy"
+
+    to = currency
+
+
+    }
+    }
+    return Pair(date,to)
     }**/
+
 
     fun updateData(id: Long, bool: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -87,10 +129,11 @@ class DetailViewModel @Inject constructor(
                 dataRepository.suppressUser(id)
                 _detailAdd.value = SimpleResponse.success(null)
             } catch (e: Exception) {
-                _detailAdd.value = SimpleResponse.failure(Exception ("Unknown error"))
+                _detailAdd.value = SimpleResponse.failure(Exception("Unknown error"))
                 _detailError.value = "Unknown error"
             }
         }
     }
 
 }
+

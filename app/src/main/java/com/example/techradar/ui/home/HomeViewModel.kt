@@ -22,14 +22,14 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private var _homeError = MutableStateFlow<String?>(null)
+    private var _homeError = MutableStateFlow<String?>("")
     val homeError: StateFlow<String?> = _homeError
 
     private val _homeAdd = MutableStateFlow(SimpleResponse.initial<List<Content?>>())
     val homeAdd: StateFlow<SimpleResponse<List<Content?>>> = _homeAdd.asStateFlow()
 
 
-    val _loading = MutableStateFlow(false)
+    private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
     fun resetToast() {

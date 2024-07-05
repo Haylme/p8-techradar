@@ -1,14 +1,20 @@
 package com.example.techradar.data
 
+import Curencies
 import android.net.Uri
 import com.example.techradar.model.Content
+import com.example.techradar.retrofit.CallApi
 import com.example.techradar.room.dao.ListDao
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 
-class DataRepository(private val listDao: ListDao) {
+class DataRepository(
+    private val listDao: ListDao,
+
+
+    ) {
 
 
     suspend fun addUser(content: Content): Boolean {
@@ -17,10 +23,7 @@ class DataRepository(private val listDao: ListDao) {
     }
 
 
-    /** suspend fun saveImageUri(id:Long,uri: Uri) {
 
-    listDao.updateImageUri(id,uri)
-    }**/
 
 
     suspend fun fetchDetailUser(id: Long): Content? {
@@ -105,6 +108,11 @@ class DataRepository(private val listDao: ListDao) {
 
         return result
     }
+
+    suspend fun fetchTranslate(date:String?, to:Int?): Curencies {
+        return CallApi.fetchTranslateData(date,to)
+    }
+
 
 
 

@@ -54,21 +54,7 @@ class TestFetchDetailUser {
 
         )
 
-        var fakeUserContet = Content(
 
-            id = 1,
-            name = "jeannot",
-            firstname = "lapin",
-            phone = "044324785",
-            email = "jeannot@exemple.fr",
-            birthday = "14/12/2023",
-            wage = 45,
-            note = "to be or not to be that is the question",
-            favorite = true,
-            picture = null
-
-
-        )
 
 
         `when`(listDao.getDetailUser(1)).thenReturn(flowOf(fakeUserDto))
