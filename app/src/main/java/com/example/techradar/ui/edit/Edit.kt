@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
@@ -75,8 +76,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
     private lateinit var firstnameText: String
 
 
-
-    private lateinit var textwatcher : TextWatcher
+    private lateinit var textwatcher: TextWatcher
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -194,13 +194,11 @@ class Edit : Fragment(R.layout.fragment_edit) {
             imageContract.launch("image/*")
         }
 
-       // imageUri = arguments?.getString("picture").toString()
+        // imageUri = arguments?.getString("picture").toString()
         bindAvatar(binding.avatar, imageUri)
 
 
-
-        button.isEnabled = false
-
+        // button.isEnabled = false
 
 
         email.addTextChangedListener(object : TextWatcher {
@@ -246,7 +244,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
             override fun afterTextChanged(s: Editable?) {
 
-                button.isEnabled = viewModel.checkField(
+                viewModel.checkField(
                     nom.text?.trim().toString(),
                     prenom.text?.trim().toString(),
                     phone.text?.trim().toString(),
@@ -254,9 +252,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     dateEditText.text?.trim().toString(),
                     wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
                     note.text?.trim().toString(),
-                   imageUri
-
-
+                    imageUri
                 )
 
 
@@ -266,7 +262,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
 
-        nom.addTextChangedListener(textwatcher)
+        nom.addTextChangedListener(textwatcher) ?: nom.error
         prenom.addTextChangedListener(textwatcher)
         phone.addTextChangedListener(textwatcher)
         email.addTextChangedListener(textwatcher)
@@ -275,11 +271,64 @@ class Edit : Fragment(R.layout.fragment_edit) {
         note.addTextChangedListener(textwatcher)
 
 
-
         var bool = false
 
+        val check = viewModel.checkField(
+            nom.text?.trim().toString(),
+            prenom.text?.trim().toString(),
+            phone.text?.trim().toString(),
+            email.text?.trim().toString(),
+            dateEditText.text?.trim().toString(),
+            wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+            note.text?.trim().toString(),
+            imageUri
+        )
+
         button.setOnClickListener {
-            Log.d("EditFragment", "Save button clicked")
+            if (!check) {
+
+                if (nom.text?.trim().isNullOrEmpty()) {
+                    nom.error = "@string/champ_obligatoire"
+
+                }
+
+                if (prenom.text?.trim().isNullOrEmpty()) {
+                    prenom.error = "@string/champ_obligatoire"
+
+                }
+
+                if (phone.text?.trim().isNullOrEmpty()) {
+                    phone.error = "@string/champ_obligatoire"
+
+                }
+
+                if (email.text?.trim().isNullOrEmpty()) {
+                    email.error = "@string/champ_obligatoire"
+
+                }
+
+                if (dateEditText.text?.trim().isNullOrEmpty()) {
+                    dateEditText.error = "@string/champ_obligatoire"
+
+                }
+
+                if (wage.editText?.text?.trim().isNullOrEmpty()) {
+                    wage.editText?.error = "@string/champ_obligatoire"
+
+                }
+
+                if (note.text?.trim().isNullOrEmpty()) {
+                    note.error = "@string/champ_obligatoire"
+
+                }
+                Toast.makeText(
+                    requireContext(),
+                    "@string/veuillez_remplir_tous_les_champs",
+                    Toast.LENGTH_LONG
+                ).show()
+
+            }
+
             val content = Content(
                 id = id,
                 name = nom.text?.trim().toString(),
@@ -292,7 +341,6 @@ class Edit : Fragment(R.layout.fragment_edit) {
                 favorite = favorite,
                 picture = imageUri.toString()
             )
-
 
             lifecycleScope.launch {
                 viewModel.editAdd.collect { response ->
@@ -327,11 +375,12 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     }
                 }
             }
-            viewModel.editAccount(content,id)
+            viewModel.editAccount(content, id)
             viewModel.resetAccountValue()
 
-            button.isEnabled = false
+            // button.isEnabled = false
         }
+
 
 
 
@@ -430,13 +479,13 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
     }
-    private fun bindAvatar(avatar: ImageView, str:String) {
+
+    private fun bindAvatar(avatar: ImageView, str: String) {
         val uri = Uri.parse((str))
         Glide.with(avatar.context)
             .load(uri)
             .into(avatar)
     }
-
 
 
     override fun onDestroyView() {

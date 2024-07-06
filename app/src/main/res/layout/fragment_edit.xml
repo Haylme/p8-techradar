@@ -29,7 +29,7 @@
                 android:background="@color/top_bar"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/backstack"
-                app:title="Modifier un candidat" />
+                app:title="@string/modifier_un_candidat" />
 
 
         </com.google.android.material.appbar.AppBarLayout>

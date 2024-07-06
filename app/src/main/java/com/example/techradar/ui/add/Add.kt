@@ -55,8 +55,6 @@ class Add : Fragment() {
     private var imageUri: String? = null
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -145,7 +143,7 @@ class Add : Fragment() {
 
         avatar.setImageURI(imageUri?.let { Uri.parse(it) })
 
-        button.isEnabled = false
+       // button.isEnabled = false
 
 
 
@@ -194,7 +192,7 @@ class Add : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                button.isEnabled = viewModel.checkField(
+                viewModel.checkField(
                     nom.text?.trim().toString(),
                     prenom.text?.trim().toString(),
                     phone.text?.trim().toString(),
@@ -218,152 +216,183 @@ class Add : Fragment() {
         note.addTextChangedListener(textwatcher)
 
 
-
-
-
+        val check = viewModel.checkField(
+            nom.text?.trim().toString(),
+            prenom.text?.trim().toString(),
+            phone.text?.trim().toString(),
+            email.text?.trim().toString(),
+            date.text?.trim().toString(),
+            wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+            note.text?.trim().toString()
+        )
 
 
         button.setOnClickListener {
 
-            if (viewModel.checkField(
-                    nom.text?.trim().toString(),
-                    prenom.text?.trim().toString(),
-                    phone.text?.trim().toString(),
-                    email.text?.trim().toString(),
-                    date.text?.trim().toString(),
-                    wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                    note.text?.trim().toString()
-                )
-            ) {
-                val content = Content(
+            if (!check) {
 
-                    name = nom.text?.trim().toString(),
-                    firstname = prenom.text?.trim().toString(),
-                    phone = phone.text?.trim().toString(),
-                    email = email.text?.trim().toString(),
-                    birthday = date.text?.trim().toString(),
-                    wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                    note = note.text?.trim().toString(),
-                    favorite = false,
-                    picture = imageUri.toString()
-                )
+                if (nom.text?.trim().isNullOrEmpty()) {
+                    nom.error = "@string/champ_obligatoire"
 
+                }
 
-                lifecycleScope.launch {
-                    viewModel.userAdd.collect { response ->
-                        when (response.status) {
-                            is SimpleResponse.Status.Success -> {
-                                Snackbar.make(
-                                    binding.root,
-                                    "User added successfully",
-                                    Snackbar.LENGTH_LONG
-                                )
-                                    .show()
-                                viewModel.resetToast()
-                                NavHostFragment.findNavController(this@Add)
-                                    .navigate(R.id.action_add_to_home)
-                            }
+                if (prenom.text?.trim().isNullOrEmpty()) {
+                    prenom.error = "@string/champ_obligatoire"
 
-                            is SimpleResponse.Status.Failure -> {
+                }
 
-                                lifecycleScope.launch {
+                if (phone.text?.trim().isNullOrEmpty()) {
+                    phone.error = "@string/champ_obligatoire"
 
-                                    viewModel.error.collect { message ->
-                                        message?.let {
-                                            Snackbar.make(
-                                                binding.root,
-                                                it,
-                                                Snackbar.LENGTH_LONG
-                                            )
-                                                .show()
-                                            viewModel.resetToast()
-                                        }
-                                    }
-                                }
+                }
 
-                            }
+                if (email.text?.trim().isNullOrEmpty()) {
+                    email.error = "@string/champ_obligatoire"
 
-                            else -> {
-                                Snackbar.make(
-                                    binding.root,
-                                    "An error occurred",
-                                    Snackbar.LENGTH_LONG
-                                )
-                                    .show()
-                            }
-                        }
-                    }
+                }
+
+                if (dateEditText.text?.trim().isNullOrEmpty()) {
+                    dateEditText.error = "@string/champ_obligatoire"
+
+                }
+
+                if (wage.editText?.text?.trim().isNullOrEmpty()) {
+                    wage.editText?.error = "@string/champ_obligatoire"
+
+                }
+
+                if (note.text?.trim().isNullOrEmpty()) {
+                    note.error = "@string/champ_obligatoire"
+
                 }
 
 
-
-                viewModel.resetAccountValue()
-
-                viewModel.addNewUser(content)
-
-
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    "Please fill all the necessary fields",
-                    Snackbar.LENGTH_LONG
-                ).show()
             }
+
+
+            val content = Content(
+
+                name = nom.text?.trim().toString(),
+                firstname = prenom.text?.trim().toString(),
+                phone = phone.text?.trim().toString(),
+                email = email.text?.trim().toString(),
+                birthday = date.text?.trim().toString(),
+                wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                note = note.text?.trim().toString(),
+                favorite = false,
+                picture = imageUri.toString()
+            )
+
+
+            lifecycleScope.launch {
+                viewModel.userAdd.collect { response ->
+                    when (response.status) {
+                        is SimpleResponse.Status.Success -> {
+                            Snackbar.make(
+                                binding.root,
+                                "User added successfully",
+                                Snackbar.LENGTH_LONG
+                            )
+                                .show()
+                            viewModel.resetToast()
+                            NavHostFragment.findNavController(this@Add)
+                                .navigate(R.id.action_add_to_home)
+                        }
+
+                        is SimpleResponse.Status.Failure -> {
+
+                            lifecycleScope.launch {
+
+                                viewModel.error.collect { message ->
+                                    message?.let {
+                                        Snackbar.make(
+                                            binding.root,
+                                            it,
+                                            Snackbar.LENGTH_LONG
+                                        )
+                                            .show()
+                                        viewModel.resetToast()
+                                    }
+                                }
+                            }
+
+                        }
+
+                        else -> {
+                            Snackbar.make(
+                                binding.root,
+                                "An error occurred",
+                                Snackbar.LENGTH_LONG
+                            )
+                                .show()
+                        }
+                    }
+                }
+            }
+
+
+
+            viewModel.resetAccountValue()
+
+            viewModel.addNewUser(content)
 
 
         }
 
-        dateEditText.addTextChangedListener(object : TextWatcher {
-            private var current = ""
-            private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Store the current text before it changes
-                current = s.toString()
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Do nothing here
-            }
+    dateEditText.addTextChangedListener(
+    object : TextWatcher {
+        private var current = ""
+        private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-            override fun afterTextChanged(s: Editable?) {
-                if (s == null) return
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // Store the current text before it changes
+            current = s.toString()
+        }
 
-                val userInput = s.toString()
-                if (userInput == current) return
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            // Do nothing here
+        }
 
-                val cleanInput = userInput.replace("\\D".toRegex(), "")
-                val formattedInput = StringBuilder()
+        override fun afterTextChanged(s: Editable?) {
+            if (s == null) return
 
-                for (i in cleanInput.indices) {
-                    formattedInput.append(cleanInput[i])
-                    if ((i == 1 || i == 3) && i != cleanInput.length - 1) {
-                        formattedInput.append('/')
-                    }
-                }
+            val userInput = s.toString()
+            if (userInput == current) return
 
-                current = formattedInput.toString()
-                dateEditText.removeTextChangedListener(this)
-                dateEditText.setText(current)
-                dateEditText.setSelection(current.length)
-                dateEditText.addTextChangedListener(this)
+            val cleanInput = userInput.replace("\\D".toRegex(), "")
+            val formattedInput = StringBuilder()
 
-                // Handle error if the format is incorrect
-                try {
-                    LocalDate.parse(current, formatter)
-                } catch (e: Exception) {
-                    dateEditText.error = "format de date invalide"
+            for (i in cleanInput.indices) {
+                formattedInput.append(cleanInput[i])
+                if ((i == 1 || i == 3) && i != cleanInput.length - 1) {
+                    formattedInput.append('/')
                 }
             }
-        })
+
+            current = formattedInput.toString()
+            dateEditText.removeTextChangedListener(this)
+            dateEditText.setText(current)
+            dateEditText.setSelection(current.length)
+            dateEditText.addTextChangedListener(this)
+
+            // Handle error if the format is incorrect
+            try {
+                LocalDate.parse(current, formatter)
+            } catch (e: Exception) {
+                dateEditText.error = "format de date invalide"
+            }
+        }
+    })
 
 
-    }
+}
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+}
 }
 
 

@@ -141,7 +141,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-      /**  lifecycleScope.launch {
+        lifecycleScope.launch {
 
             viewModel.translate.collect { response ->
                 when (response.status) {
@@ -159,15 +159,14 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             }
 
-        }**/
+        }
 
 
 
 
 
-        wageText.text = "${wage.toString()} €"
+        wageText.text = getString(wage, getString(R.string.euro))
 
-        about.text = birthday
 
         if (birthday.isNotEmpty()) {
             try {
@@ -181,18 +180,19 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     if (currentDate.get(Calendar.DAY_OF_YEAR) < birthdayCalendar.get(Calendar.DAY_OF_YEAR)) {
                         age--
                     }
-                    about.text = "$birthday $age ans"
+                    about.text =
+                        getString(R.string.about_text, birthday, age, getString(R.string.ans))
                 }
             } catch (e: Exception) {
                 // Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
                 //     .show()
             }
         } else {
-            Toast.makeText(
-                requireContext(),
-                "Aucune date de naissance renseignée",
-                Toast.LENGTH_LONG
-            ).show()
+            // Toast.makeText(
+            //    requireContext(),
+            //  "Aucune date de naissance renseignée",
+            // Toast.LENGTH_LONG
+            // ).show()
         }
 
 
@@ -248,8 +248,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
             binding.firstname.text = firstnameText
             // binding.phoneEditText.setText(phoneValue)
             //binding.mailEditText.setText(emailValue)
-            binding.wage.text = "${wage.toString()} €"
-            binding.noteEditText.setText(noteText)
+            binding.wage.text = getString(wage, getString(R.string.euro))
+            binding.noteEditText.text = noteText
 
             binding.about.text = birthday
 
@@ -272,7 +272,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
                         if (currentDate.get(Calendar.DAY_OF_YEAR) < birthdayCalendar.get(Calendar.DAY_OF_YEAR)) {
                             age--
                         }
-                        about.text = "$birthday $age ans"
+                        about.text =
+                            getString(R.string.about_text, birthday, age, getString(R.string.ans))
                     }
                 } catch (e: Exception) {
                     //  Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
@@ -305,112 +306,134 @@ class Detail : Fragment(R.layout.fragment_detail) {
         updateIcon(favItem, favorite)
 
 
+        val suppItem = menu.findItem(R.id.supp)
+        val suppView = suppItem.actionView
+        suppView?.setOnLongClickListener {
+            Toast.makeText(requireContext(), getString(R.string.supprimer), Toast.LENGTH_SHORT)
+                .show()
+            true
+        }
+
+        val favView = favItem.actionView
+        favView?.setOnLongClickListener {
+            Toast.makeText(requireContext(), getString(R.string.favoris), Toast.LENGTH_LONG).show()
+            true
+
+        }
+        val editItem = menu.findItem(R.id.edit_button)
+        val editView = editItem.actionView
+        editView?.setOnLongClickListener {
+            Toast.makeText(requireContext(), getString(R.string.edit), Toast.LENGTH_LONG).show()
+            true
+
+        }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        @Deprecated("Deprecated in Java")
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item.itemId) {
-            R.id.fav -> {
 
-                if (favorite) {
-                    val bool = false
-                    favorite = bool
+            when (item.itemId) {
+                R.id.fav -> {
 
-                    updateIcon(item, favorite)
-                    viewModel.updateData(id, favorite)
+                    if (favorite) {
+                        val bool = false
+                        favorite = bool
 
-                } else {
-                    val bool = true
-                    favorite = bool
-                    updateIcon(item, favorite)
-                    viewModel.updateData(id, favorite)
+                        updateIcon(item, favorite)
+                        viewModel.updateData(id, favorite)
+
+                    } else {
+                        val bool = true
+                        favorite = bool
+                        updateIcon(item, favorite)
+                        viewModel.updateData(id, favorite)
+
+                    }
+
 
                 }
 
+                R.id.edit_button -> {
+                    val bundle = Bundle().apply {
+                        putLong("id", id)
+                        putString("name", nameText)
+                        putString("firstname", firstnameText)
+                        putString("phone", phoneValue)
+                        putString("email", emailValue)
+                        putInt("wage", wage)
+                        putString("note", noteText)
+                        putString("pics", pictureUri)
+                        putString("birthday", birthday)
+                        putBoolean("favorite", favorite)
+                    }
 
-            }
-
-            R.id.edit_button -> {
-                val bundle = Bundle().apply {
-                    putLong("id", id)
-                    putString("name", nameText)
-                    putString("firstname", firstnameText)
-                    putString("phone", phoneValue)
-                    putString("email", emailValue)
-                    putInt("wage", wage)
-                    putString("note", noteText)
-                    putString("pics", pictureUri)
-                    putString("birthday", birthday)
-                    putBoolean("favorite", favorite)
+                    findNavController().navigate(R.id.action_detail_to_edit, bundle)
                 }
 
-                findNavController().navigate(R.id.action_detail_to_edit, bundle)
-            }
-
-            R.id.supp -> {
+                R.id.supp -> {
 
 
-                context?.let {
-                    MaterialAlertDialogBuilder(it)
-                        .setTitle("Suppression")
-                        .setMessage("Etes-vous certain de vouloir supprimer ce candidat ? Cette action est irréversible")
-                        .setNegativeButton("Annuler") { dialog, _ ->
-                            dialog.cancel()
-                        }
-                        .setPositiveButton("Confirmer") { dialog_, _ ->
-                            dialog_.apply {
-                                viewModel.deleteCandidate(id)
-                                Log.d("error", "onOptionsItemSelected:$id ")
-                                findNavController().navigate(R.id.action_detail_to_home)
+                    context?.let {
+                        MaterialAlertDialogBuilder(it)
+                            .setTitle("@string/suppression")
+                            .setMessage("@string/supprimer_candidat")
+                            .setNegativeButton("@string/annuler") { dialog, _ ->
+                                dialog.cancel()
                             }
+                            .setPositiveButton("@strig/confirmer") { dialog_, _ ->
+                                dialog_.apply {
+                                    viewModel.deleteCandidate(id)
+                                    // Log.d("error", "onOptionsItemSelected:$id ")
+                                    findNavController().navigate(R.id.action_detail_to_home)
+                                }
 
-                        }
+                            }
+                    }
+                        ?.show()
                 }
-                    ?.show()
             }
-        }
 
-        return true
-    }
-
-
-    private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
-        if ((isFavorite)) {
-            menuItem.setIcon(R.drawable.baseline_star_24)
-
-        } else {
-
-            menuItem.setIcon(R.drawable.favorite_foreground)
-
+            return true
         }
 
 
+        private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
+            if ((isFavorite)) {
+                menuItem.setIcon(R.drawable.baseline_star_24)
+
+            } else {
+
+                menuItem.setIcon(R.drawable.favorite_foreground)
+
+            }
+
+
+        }
+
+        private fun bindAvatar(avatar: ImageView, str: String) {
+            val uri = Uri.parse((str))
+            Glide.with(avatar.context)
+                .load(uri)
+                .into(avatar)
+        }
+
+
+        /**  private fun language (){
+
+        viewModel.getSystemLanguage()
+        }
+
+        private fun currency (){
+
+        viewModel.getCurrency()
+
+        }**/
+
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
+
     }
-
-    private fun bindAvatar(avatar: ImageView, str: String) {
-        val uri = Uri.parse((str))
-        Glide.with(avatar.context)
-            .load(uri)
-            .into(avatar)
-    }
-
-
-    /**  private fun language (){
-
-    viewModel.getSystemLanguage()
-    }
-
-    private fun currency (){
-
-    viewModel.getCurrency()
-
-    }**/
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-}

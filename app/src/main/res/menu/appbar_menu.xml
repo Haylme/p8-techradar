@@ -23,6 +23,7 @@
         android:id="@+id/supp"
         android:icon="@drawable/delete"
         android:title="@string/supprimer"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        />
 
 </menu>

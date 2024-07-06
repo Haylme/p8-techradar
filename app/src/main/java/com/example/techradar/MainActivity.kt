@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
 
-      //  val menuId = R.id.home // Replace this with the actual menuId you want to use
+      //  val menuId = R.id.home //
 
        /** if (savedInstanceState == null) {
             val fragment = getFragmentById(menuId)

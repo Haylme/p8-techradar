@@ -98,7 +98,7 @@ class Home : Fragment() {
         })
 
 
-        var searchString: String = ""
+        var searchString: String
         //val searchBar = binding.searchBar
         val searchViewBar = binding.searchViewBar
 

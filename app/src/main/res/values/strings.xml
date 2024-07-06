@@ -8,11 +8,18 @@
     <string name="supprimer">supprimer</string>
     <string name="avatar_picture">avatar_picture</string>
     <string name="appel">Appel</string>
-    <string name="Sms">Sms</string>
+    <string name="Sms">SMS</string>
     <string name="Email">Email</string>
     <string name="call_button_item">call_button_item</string>
     <string name="A_propos">A propos</string>
-    <string name="exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan">Exemple : Je m\'appelle John Doe, j\'ai 25 ans et je suis éleveur de porc en Afghanistan</string>
+    <string name="exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan">
+        Je m\'appelle John Doe, j\'ai 25 ans et je suis éleveur de porc en Afghanistan.
+    </string>
+    <string name="modifier_un_candidat">Modifier un candidat</string>
+
+
+    <string name="champ_obligatoire">Champ obligatoire</string>
+
     <string name="Prétentions_salariales">Prétentions salariales</string>
     <string name="_3500">3500€</string>
     <string name="Notes">Notes</string>
@@ -31,11 +38,32 @@
     <string name="jj_mm_aaaa">jj/mm/aaaa</string>
     <string name="Note">Note</string>
     <string name="edit_icon">edit_icon</string>
+    <string name="euro">€</string>
+
+    <string name="ans">ans</string>
+
 
     <string name="error_mail">format d\'email invalide</string>
     <string name="wadge_layout">wadge_layout</string>
     <string name="Sauvegarder">Sauvegarder</string>
     <string name="home">home</string>
     <string name="backstack">backstack</string>
+
+
+    <string name="about_text">%1$s %2$d %3$s</string>
+    <string name="veuillez_remplir_au_moins_un_champ">Veuillez remplir au moins un champ</string>
+
+    <string name="supprimer_candidat">Etes-vous sûr de vouloir supprimer ce candidat? Cette action est irréversible.</string>
+
+    <string name="annuler">Annuler</string>
+
+    <string name="confirmer">Confirmer</string>
+
+    <string name="suppression">Suppression</string>
+
+
+
+
+
 
 </resources>
