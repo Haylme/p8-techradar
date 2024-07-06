@@ -166,7 +166,7 @@ class Add : Fragment() {
 
                 val isValidMail = if (viewModel.checkMail(userMail)) true
                 else {
-                    binding.mailEditText.error = "format d'email invalide"
+                    binding.mailEditText.error = "@string/format"
                     false
                 }
                 if (isValidMail) current = userMail

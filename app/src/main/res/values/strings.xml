@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">tech radar</string>
     <string name="rechercher_un_candidat">rechercher un candidat</string>
-    <string name="tous">tous</string>
-    <string name="favoris">favoris</string>
+    <string name="tous">Tous</string>
+    <string name="favoris">Favoris</string>
     <string name="fab_add_content">fab_add_content</string>
     <string name="edit">edit</string>
     <string name="supprimer">supprimer</string>
@@ -12,7 +12,7 @@
     <string name="Email">Email</string>
     <string name="call_button_item">call_button_item</string>
     <string name="A_propos">A propos</string>
-    <string name="exemple_je_m_appelle_john_doe_j_ai_25_ans_et_je_suis_leveur_de_porc_en_afghanistan">
+    <string name="placeholder">
         Je m\'appelle John Doe, j\'ai 25 ans et je suis éleveur de porc en Afghanistan.
     </string>
     <string name="modifier_un_candidat">Modifier un candidat</string>
@@ -61,9 +61,9 @@
 
     <string name="suppression">Suppression</string>
 
+    <string name="format">Format invalide</string>
 
-
-
+    <string name="ajouter">Ajouter un candidat</string>
 
 
 </resources>

@@ -29,7 +29,7 @@
                 android:background="@color/top_bar"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/backstack"
-                app:title="Ajouter un candidat" />
+                app:title="@string/ajouter" />
 
 
         </com.google.android.material.appbar.AppBarLayout>
