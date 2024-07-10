@@ -244,11 +244,11 @@ class Detail : Fragment(R.layout.fragment_detail) {
             favorite = bundle.getBoolean("favorite")
 
 
-            binding.name.text = nameText
-            binding.firstname.text = firstnameText
+            name.text = nameText
+            firstname.text = firstnameText
             // binding.phoneEditText.setText(phoneValue)
             //binding.mailEditText.setText(emailValue)
-            binding.wage.text = getString(wage, getString(R.string.euro))
+            wageText.text = getString(R.string.wage_text, wage, getString(R.string.euro))
             binding.noteEditText.text = noteText
 
             binding.about.text = birthday
