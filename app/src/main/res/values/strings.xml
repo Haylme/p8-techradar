@@ -38,6 +38,8 @@
     <string name="jj_mm_aaaa">jj/mm/aaaa</string>
     <string name="Note">Note</string>
     <string name="edit_icon">edit_icon</string>
+
+    <string name="wage_text">%1$d %2$s</string>
     <string name="euro">€</string>
 
     <string name="ans">ans</string>

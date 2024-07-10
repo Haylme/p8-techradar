@@ -165,7 +165,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
 
 
-        wageText.text = getString(wage, getString(R.string.euro))
+        wageText.text = getString(R.string.wage_text, wage, getString(R.string.euro))
 
 
         if (birthday.isNotEmpty()) {
@@ -329,111 +329,111 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
     }
 
-        @Deprecated("Deprecated in Java")
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
 
-            when (item.itemId) {
-                R.id.fav -> {
+        when (item.itemId) {
+            R.id.fav -> {
 
-                    if (favorite) {
-                        val bool = false
-                        favorite = bool
+                if (favorite) {
+                    val bool = false
+                    favorite = bool
 
-                        updateIcon(item, favorite)
-                        viewModel.updateData(id, favorite)
+                    updateIcon(item, favorite)
+                    viewModel.updateData(id, favorite)
 
-                    } else {
-                        val bool = true
-                        favorite = bool
-                        updateIcon(item, favorite)
-                        viewModel.updateData(id, favorite)
-
-                    }
-
+                } else {
+                    val bool = true
+                    favorite = bool
+                    updateIcon(item, favorite)
+                    viewModel.updateData(id, favorite)
 
                 }
 
-                R.id.edit_button -> {
-                    val bundle = Bundle().apply {
-                        putLong("id", id)
-                        putString("name", nameText)
-                        putString("firstname", firstnameText)
-                        putString("phone", phoneValue)
-                        putString("email", emailValue)
-                        putInt("wage", wage)
-                        putString("note", noteText)
-                        putString("pics", pictureUri)
-                        putString("birthday", birthday)
-                        putBoolean("favorite", favorite)
-                    }
-
-                    findNavController().navigate(R.id.action_detail_to_edit, bundle)
-                }
-
-                R.id.supp -> {
-
-
-                    context?.let {
-                        MaterialAlertDialogBuilder(it)
-                            .setTitle("@string/suppression")
-                            .setMessage("@string/supprimer_candidat")
-                            .setNegativeButton("@string/annuler") { dialog, _ ->
-                                dialog.cancel()
-                            }
-                            .setPositiveButton("@strig/confirmer") { dialog_, _ ->
-                                dialog_.apply {
-                                    viewModel.deleteCandidate(id)
-                                    // Log.d("error", "onOptionsItemSelected:$id ")
-                                    findNavController().navigate(R.id.action_detail_to_home)
-                                }
-
-                            }
-                    }
-                        ?.show()
-                }
-            }
-
-            return true
-        }
-
-
-        private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
-            if ((isFavorite)) {
-                menuItem.setIcon(R.drawable.baseline_star_24)
-
-            } else {
-
-                menuItem.setIcon(R.drawable.favorite_foreground)
 
             }
 
+            R.id.edit_button -> {
+                val bundle = Bundle().apply {
+                    putLong("id", id)
+                    putString("name", nameText)
+                    putString("firstname", firstnameText)
+                    putString("phone", phoneValue)
+                    putString("email", emailValue)
+                    putInt("wage", wage)
+                    putString("note", noteText)
+                    putString("pics", pictureUri)
+                    putString("birthday", birthday)
+                    putBoolean("favorite", favorite)
+                }
+
+                findNavController().navigate(R.id.action_detail_to_edit, bundle)
+            }
+
+            R.id.supp -> {
+
+
+                context?.let {
+                    MaterialAlertDialogBuilder(it)
+                        .setTitle(R.string.suppression)
+                        .setMessage(R.string.supprimer_candidat)
+                        .setNegativeButton(R.string.annuler) { dialog, _ ->
+                            dialog.cancel()
+                        }
+                        .setPositiveButton(R.string.confirmer) { dialog_, _ ->
+                            dialog_.apply {
+                                viewModel.deleteCandidate(id)
+                                // Log.d("error", "onOptionsItemSelected:$id ")
+                                findNavController().navigate(R.id.action_detail_to_home)
+                            }
+
+                        }
+                }
+                    ?.show()
+            }
+        }
+
+        return true
+    }
+
+
+    private fun updateIcon(menuItem: MenuItem, isFavorite: Boolean) {
+        if ((isFavorite)) {
+            menuItem.setIcon(R.drawable.baseline_star_24)
+
+        } else {
+
+            menuItem.setIcon(R.drawable.favorite_foreground)
 
         }
 
-        private fun bindAvatar(avatar: ImageView, str: String) {
-            val uri = Uri.parse((str))
-            Glide.with(avatar.context)
-                .load(uri)
-                .into(avatar)
-        }
-
-
-        /**  private fun language (){
-
-        viewModel.getSystemLanguage()
-        }
-
-        private fun currency (){
-
-        viewModel.getCurrency()
-
-        }**/
-
-
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
-        }
 
     }
+
+    private fun bindAvatar(avatar: ImageView, str: String) {
+        val uri = Uri.parse((str))
+        Glide.with(avatar.context)
+            .load(uri)
+            .into(avatar)
+    }
+
+
+    /**  private fun language (){
+
+    viewModel.getSystemLanguage()
+    }
+
+    private fun currency (){
+
+    viewModel.getCurrency()
+
+    }**/
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+}

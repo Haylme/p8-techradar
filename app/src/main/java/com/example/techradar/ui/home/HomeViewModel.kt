@@ -86,7 +86,7 @@ class HomeViewModel @Inject constructor(
                 } else {
                     val message = "No data found"
                     _homeError.value = message
-                    _homeAdd.value = SimpleResponse.failure(Exception(message))
+                    _homeAdd.value = SimpleResponse.success(emptyList())
                     _loading.value = false
                 }
 

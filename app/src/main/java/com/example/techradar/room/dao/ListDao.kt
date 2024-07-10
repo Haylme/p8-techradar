@@ -29,7 +29,7 @@ interface ListDao {
 
 
 
-    @Query("SELECT * FROM list WHERE list_favorite = true")
+    @Query("SELECT * FROM list WHERE list_favorite = true Order By user_Id DESC")
     fun getAllFavoriteUsers(): Flow<List<ListDto>>
 
 

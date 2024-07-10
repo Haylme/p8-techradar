@@ -62,11 +62,11 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(listDao: ListDao) {
-            val imagePath = "/storage/emulated/0/DCIM/louis.jpg"
-            val imageUri = Uri.fromFile(File(imagePath))
+           // val imagePath = "/storage/emulated/0/DCIM/louis.jpg"
+           // val imageUri = Uri.fromFile(File(imagePath))
 
-            val imagePath2 = "/storage/emulated/0/DCIM/kitano.jpg"
-            val imageUri2 = Uri.fromFile(File(imagePath2))
+            //val imagePath2 = "/storage/emulated/0/DCIM/kitano.jpg"
+            //val imageUri2 = Uri.fromFile(File(imagePath2))
 
             listDao.insertUser(
                 ListDto(
@@ -78,7 +78,7 @@ abstract class AppDataBase : RoomDatabase() {
                     listWage = 3800,
                     listNote = "Je suis un très grand acteur du cinéma français.Comme l'eau sur terre, je me fais hélas rare.",
                     listFavorite = false,
-                    listPicture = imageUri.toString()
+                    listPicture = null
                 )
             )
 
@@ -92,7 +92,7 @@ abstract class AppDataBase : RoomDatabase() {
                     listWage = 300000,
                     listNote = "i can speak japanese and english with more than 20 years experience as famous japanese actor. My favorite role part is playing a yakuza or a samurai",
                     listFavorite = false,
-                    listPicture = imageUri2.toString()
+                    listPicture = null
                 )
             )
         }
