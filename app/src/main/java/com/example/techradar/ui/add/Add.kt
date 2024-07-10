@@ -216,132 +216,108 @@ class Add : Fragment() {
         note.addTextChangedListener(textwatcher)
 
 
-        val check = viewModel.checkField(
-            nom.text?.trim().toString(),
-            prenom.text?.trim().toString(),
-            phone.text?.trim().toString(),
-            email.text?.trim().toString(),
-            date.text?.trim().toString(),
-            wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-            note.text?.trim().toString()
-        )
+
 
 
         button.setOnClickListener {
+            val isValid = viewModel.checkField(
+                nom.text?.trim().toString(),
+                prenom.text?.trim().toString(),
+                phone.text?.trim().toString(),
+                email.text?.trim().toString(),
+                date.text?.trim().toString(),
+                wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                note.text?.trim().toString()
+            )
 
-            if (!check) {
-
+            if (!isValid) {
                 if (nom.text?.trim().isNullOrEmpty()) {
-                    nom.error = "@string/champ_obligatoire"
-
+                    nom.error = getString(R.string.champ_obligatoire)
                 }
 
                 if (prenom.text?.trim().isNullOrEmpty()) {
-                    prenom.error = "@string/champ_obligatoire"
-
+                    prenom.error = getString(R.string.champ_obligatoire)
                 }
 
                 if (phone.text?.trim().isNullOrEmpty()) {
-                    phone.error = "@string/champ_obligatoire"
-
+                    phone.error = getString(R.string.champ_obligatoire)
                 }
 
                 if (email.text?.trim().isNullOrEmpty()) {
-                    email.error = "@string/champ_obligatoire"
-
+                    email.error = getString(R.string.champ_obligatoire)
                 }
 
                 if (dateEditText.text?.trim().isNullOrEmpty()) {
-                    dateEditText.error = "@string/champ_obligatoire"
-
+                    dateEditText.error = getString(R.string.champ_obligatoire)
                 }
 
                 if (wage.editText?.text?.trim().isNullOrEmpty()) {
-                    wage.editText?.error = "@string/champ_obligatoire"
-
+                    wage.editText?.error = getString(R.string.champ_obligatoire)
                 }
 
                 if (note.text?.trim().isNullOrEmpty()) {
-                    note.error = "@string/champ_obligatoire"
-
+                    note.error = getString(R.string.champ_obligatoire)
                 }
+            } else {
+                val content = Content(
+                    name = nom.text?.trim().toString(),
+                    firstname = prenom.text?.trim().toString(),
+                    phone = phone.text?.trim().toString(),
+                    email = email.text?.trim().toString(),
+                    birthday = date.text?.trim().toString(),
+                    wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                    note = note.text?.trim().toString(),
+                    favorite = false,
+                    picture = imageUri.toString()
+                )
 
-
-            }
-
-
-            val content = Content(
-
-                name = nom.text?.trim().toString(),
-                firstname = prenom.text?.trim().toString(),
-                phone = phone.text?.trim().toString(),
-                email = email.text?.trim().toString(),
-                birthday = date.text?.trim().toString(),
-                wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                note = note.text?.trim().toString(),
-                favorite = false,
-                picture = imageUri.toString()
-            )
-
-
-            lifecycleScope.launch {
-                viewModel.userAdd.collect { response ->
-                    when (response.status) {
-                        is SimpleResponse.Status.Success -> {
-                            Snackbar.make(
-                                binding.root,
-                                "User added successfully",
-                                Snackbar.LENGTH_LONG
-                            )
-                                .show()
-                            viewModel.resetToast()
-                            NavHostFragment.findNavController(this@Add)
-                                .navigate(R.id.action_add_to_home)
-                        }
-
-                        is SimpleResponse.Status.Failure -> {
-
-                            lifecycleScope.launch {
-
-                                viewModel.error.collect { message ->
-                                    message?.let {
-                                        Snackbar.make(
-                                            binding.root,
-                                            it,
-                                            Snackbar.LENGTH_LONG
-                                        )
-                                            .show()
-                                        viewModel.resetToast()
+                lifecycleScope.launch {
+                    viewModel.userAdd.collect { response ->
+                        when (response.status) {
+                            is SimpleResponse.Status.Success -> {
+                                Snackbar.make(
+                                    binding.root,
+                                    "User added successfully",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                                viewModel.resetToast()
+                                NavHostFragment.findNavController(this@Add)
+                                    .navigate(R.id.action_add_to_home)
+                            }
+                            is SimpleResponse.Status.Failure -> {
+                                lifecycleScope.launch {
+                                    viewModel.error.collect { message ->
+                                        message?.let {
+                                            Snackbar.make(
+                                                binding.root,
+                                                it,
+                                                Snackbar.LENGTH_LONG
+                                            ).show()
+                                            viewModel.resetToast()
+                                        }
                                     }
                                 }
                             }
-
-                        }
-
-                        else -> {
-                            Snackbar.make(
-                                binding.root,
-                                "An error occurred",
-                                Snackbar.LENGTH_LONG
-                            )
-                                .show()
+                            else -> {
+                                Snackbar.make(
+                                    binding.root,
+                                    "An error occurred",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     }
                 }
+
+                viewModel.resetAccountValue()
+                viewModel.addNewUser(content)
             }
-
-
-
-            viewModel.resetAccountValue()
-
-            viewModel.addNewUser(content)
-
-
         }
 
 
 
-    dateEditText.addTextChangedListener(
+
+        dateEditText.addTextChangedListener(
     object : TextWatcher {
         private var current = ""
         private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")

@@ -38,15 +38,15 @@ interface ListDao {
     @Query("""
         UPDATE list
         SET 
-            list_name = CASE WHEN :listName IS NOT NULL THEN :listName ELSE list_name END,
-            list_firstname = CASE WHEN :listFirstname IS NOT NULL THEN :listFirstname ELSE list_firstname END,
-            list_phone = CASE WHEN :listPhone IS NOT NULL THEN :listPhone ELSE list_phone END,
-            list_email = CASE WHEN :listEmail IS NOT NULL THEN :listEmail ELSE list_email END,
-            list_birthday = CASE WHEN :listBirthday IS NOT NULL THEN :listBirthday ELSE list_birthday END,
-            list_wage = CASE WHEN :listWage IS NOT NULL THEN :listWage ELSE list_wage END,
-            list_note = CASE WHEN :listNote IS NOT NULL THEN :listNote ELSE list_note END,
-            list_favorite = CASE WHEN :listFavorite IS NOT NULL THEN :listFavorite ELSE list_favorite END,
-            list_picture = CASE WHEN :listPicture IS NOT NULL THEN :listPicture ELSE list_picture END
+           list_name = CASE WHEN :listName IS NOT NULL AND :listName != list_name THEN :listName ELSE list_name END,
+    list_firstname = CASE WHEN :listFirstname IS NOT NULL AND :listFirstname != list_firstname THEN :listFirstname ELSE list_firstname END,
+    list_phone = CASE WHEN :listPhone IS NOT NULL AND :listPhone != list_phone THEN :listPhone ELSE list_phone END,
+    list_email = CASE WHEN :listEmail IS NOT NULL AND :listEmail != list_email THEN :listEmail ELSE list_email END,
+    list_birthday = CASE WHEN :listBirthday IS NOT NULL AND :listBirthday != list_birthday THEN :listBirthday ELSE list_birthday END,
+    list_wage = CASE WHEN :listWage IS NOT NULL AND :listWage != list_wage THEN :listWage ELSE list_wage END,
+    list_note = CASE WHEN :listNote IS NOT NULL AND :listNote != list_note THEN :listNote ELSE list_note END,
+    list_favorite = CASE WHEN :listFavorite IS NOT NULL AND :listFavorite != list_favorite THEN :listFavorite ELSE list_favorite END,
+    list_picture = CASE WHEN :listPicture IS NOT NULL AND :listPicture != list_picture THEN :listPicture ELSE list_picture END
         WHERE user_Id = :id
     """)
     suspend fun updateUser(

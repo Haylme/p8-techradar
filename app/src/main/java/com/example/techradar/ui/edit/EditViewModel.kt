@@ -59,7 +59,7 @@ class EditViewModel @Inject constructor(
         note: String,
         picture: String
     ): Boolean {
-        // Implement your logic here
+
         return nom.isNotEmpty() || prenom.isNotEmpty() || phone.isNotEmpty() ||
                 email.isNotEmpty() || date.isNotEmpty() || wage > 0 || note.isNotEmpty() || picture.isNotEmpty()
     }

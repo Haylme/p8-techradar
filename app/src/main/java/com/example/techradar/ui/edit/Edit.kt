@@ -239,7 +239,17 @@ class Edit : Fragment(R.layout.fragment_edit) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //TODO("Not yet implemented")
+
+
+                nom.error = null
+                prenom.error = null
+                phone.error = null
+                email.error = null
+                dateEditText.error = null
+                wage.editText?.error = null
+                note.error = null
+
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -262,7 +272,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
 
-        nom.addTextChangedListener(textwatcher) ?: nom.error
+        nom.addTextChangedListener(textwatcher)
         prenom.addTextChangedListener(textwatcher)
         phone.addTextChangedListener(textwatcher)
         email.addTextChangedListener(textwatcher)
@@ -273,113 +283,130 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
         var bool = false
 
-        val check = viewModel.checkField(
-            nom.text?.trim().toString(),
-            prenom.text?.trim().toString(),
-            phone.text?.trim().toString(),
-            email.text?.trim().toString(),
-            dateEditText.text?.trim().toString(),
-            wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-            note.text?.trim().toString(),
-            imageUri
-        )
+
 
         button.setOnClickListener {
-            if (!check) {
+            val nameCheck = nom.text?.trim().toString()
+            val firstnameCheck = prenom.text?.trim().toString()
+            val phoneCheck = phone.text?.trim().toString()
+            val emailCheck = email.text?.trim().toString()
+            val dateCheck = dateEditText.text?.trim().toString()
+            val wageCheck = wage.editText?.text?.trim().toString()
+            val noteCheck = note.text?.trim().toString()
+            val imageUriCheck = imageUri
 
-                if (nom.text?.trim().isNullOrEmpty()) {
-                    nom.error = "@string/champ_obligatoire"
-
-                }
-
-                if (prenom.text?.trim().isNullOrEmpty()) {
-                    prenom.error = "@string/champ_obligatoire"
-
-                }
-
-                if (phone.text?.trim().isNullOrEmpty()) {
-                    phone.error = "@string/champ_obligatoire"
-
-                }
-
-                if (email.text?.trim().isNullOrEmpty()) {
-                    email.error = "@string/champ_obligatoire"
-
-                }
-
-                if (dateEditText.text?.trim().isNullOrEmpty()) {
-                    dateEditText.error = "@string/champ_obligatoire"
-
-                }
-
-                if (wage.editText?.text?.trim().isNullOrEmpty()) {
-                    wage.editText?.error = "@string/champ_obligatoire"
-
-                }
-
-                if (note.text?.trim().isNullOrEmpty()) {
-                    note.error = "@string/champ_obligatoire"
-
-                }
-                Toast.makeText(
-                    requireContext(),
-                    "@string/veuillez_remplir_tous_les_champs",
-                    Toast.LENGTH_LONG
-                ).show()
-
-            }
-
-            val content = Content(
-                id = id,
-                name = nom.text?.trim().toString(),
-                firstname = prenom.text?.trim().toString(),
-                phone = phone.text?.trim().toString(),
-                email = email.text?.trim().toString(),
-                birthday = dateEditText.text?.trim().toString(),
-                wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
-                note = note.text?.trim().toString(),
-                favorite = favorite,
-                picture = imageUri.toString()
+            val isValid = viewModel.checkField(
+                nameCheck,
+                firstnameCheck,
+                phoneCheck,
+                emailCheck,
+                dateCheck,
+                wageCheck.toIntOrNull() ?: 0,
+                noteCheck,
+                imageUriCheck
             )
 
-            lifecycleScope.launch {
-                viewModel.editAdd.collect { response ->
-                    when (response.status) {
-                        is SimpleResponse.Status.Success -> {
-                            Snackbar.make(
-                                binding.root, "Données mis à jour", Snackbar.LENGTH_LONG
-                            ).show()
-                            bool = true
-                            viewModel.resetToast()
-                            button.isEnabled = false
-                        }
+            val hasChanges = (
+                    phoneValue != phoneCheck ||
+                            emailValue != emailCheck ||
+                            birthday != dateCheck ||
+                            wageText != (wageCheck.toIntOrNull() ?: 0) ||
+                            imageUri != imageUriCheck ||
+                            noteText != noteCheck ||
+                            nameText != nameCheck ||
+                            firstnameText != firstnameCheck
+                    )
 
-                        is SimpleResponse.Status.Failure -> {
-                            viewModel.editError.collect { message ->
-                                message?.let {
-                                    Snackbar.make(
-                                        binding.root, it, Snackbar.LENGTH_LONG
-                                    ).show()
-                                    bool = false
-                                    viewModel.resetToast()
-                                    button.isEnabled = false
+            if (!isValid || !hasChanges) {
+                if (nom.text?.trim().isNullOrEmpty() || nom.text?.trim().toString() == nameText) {
+                    nom.error = getString(R.string.champ_obligatoire)
+                }
+
+                if (prenom.text?.trim().isNullOrEmpty() || prenom.text?.trim() == firstnameText) {
+                    prenom.error = getString(R.string.champ_obligatoire)
+                }
+
+                if (phone.text?.trim().isNullOrEmpty() || phone.text?.trim() == phoneValue) {
+                    phone.error = getString(R.string.champ_obligatoire)
+                }
+
+                if (email.text?.trim().isNullOrEmpty() || email.text?.trim() == emailValue) {
+                    email.error = getString(R.string.champ_obligatoire)
+                }
+
+                if (dateEditText.text?.trim()
+                        .isNullOrEmpty() || dateEditText.text?.trim() == birthday
+                ) {
+                    dateEditText.error = getString(R.string.champ_obligatoire)
+                }
+
+                if (wage.editText?.text?.trim().isNullOrEmpty() || wage.editText?.text?.trim()
+                        .toString().toIntOrNull() == wageText
+                ) {
+                    wage.editText?.error = getString(R.string.champ_obligatoire)
+                }
+
+                if (note.text?.trim().isNullOrEmpty() || note.text?.trim() == noteText) {
+                    note.error = getString(R.string.champ_obligatoire)
+                }
+
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.veuillez_remplir_au_moins_un_champ),
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                val content = Content(
+                    id = id,
+                    name = nom.text?.trim().toString(),
+                    firstname = prenom.text?.trim().toString(),
+                    phone = phone.text?.trim().toString(),
+                    email = email.text?.trim().toString(),
+                    birthday = dateEditText.text?.trim().toString(),
+                    wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                    note = note.text?.trim().toString(),
+                    favorite = favorite,
+                    picture = imageUri.toString()
+                )
+
+                lifecycleScope.launch {
+                    viewModel.editAdd.collect { response ->
+                        when (response.status) {
+                            is SimpleResponse.Status.Success -> {
+                                Snackbar.make(
+                                    binding.root, "Données mis à jour", Snackbar.LENGTH_LONG
+                                ).show()
+                                bool = true
+                                viewModel.resetToast()
+                                // button.isEnabled = false
+                            }
+
+                            is SimpleResponse.Status.Failure -> {
+                                viewModel.editError.collect { message ->
+                                    message?.let {
+                                        Snackbar.make(
+                                            binding.root, it, Snackbar.LENGTH_LONG
+                                        ).show()
+                                        bool = false
+                                        viewModel.resetToast()
+                                        //button.isEnabled = false
+                                    }
                                 }
                             }
-                        }
 
-                        else -> {
-                            Snackbar.make(
-                                binding.root, "An error occurred", Snackbar.LENGTH_LONG
-                            ).show()
+                            else -> {
+                                Snackbar.make(
+                                    binding.root, "An error occurred", Snackbar.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     }
                 }
+                viewModel.editAccount(content, id)
+                viewModel.resetAccountValue()
             }
-            viewModel.editAccount(content, id)
-            viewModel.resetAccountValue()
-
-            // button.isEnabled = false
         }
+
 
 
 
