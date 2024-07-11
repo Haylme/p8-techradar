@@ -269,7 +269,13 @@ class Edit : Fragment(R.layout.fragment_edit) {
             }
         }
 
-
+        nom.removeTextChangedListener(textwatcher)
+        prenom.removeTextChangedListener(textwatcher)
+        phone.removeTextChangedListener(textwatcher)
+        email.removeTextChangedListener(textwatcher)
+        dateEditText.removeTextChangedListener(textwatcher)
+        wage.editText?.removeTextChangedListener(textwatcher)
+        note.removeTextChangedListener(textwatcher)
 
 
         nom.addTextChangedListener(textwatcher)
@@ -286,6 +292,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
         button.setOnClickListener {
+
             val nameCheck = nom.text?.trim().toString()
             val firstnameCheck = prenom.text?.trim().toString()
             val phoneCheck = phone.text?.trim().toString()
@@ -317,7 +324,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                             firstnameText != firstnameCheck
                     )
 
-            if (!isValid || !hasChanges) {
+            if (!isValid || !hasChanges ) {
                 if (nom.text?.trim().isNullOrEmpty() || nom.text?.trim().toString() == nameText) {
                     nom.error = getString(R.string.champ_obligatoire)
                 }
@@ -378,7 +385,17 @@ class Edit : Fragment(R.layout.fragment_edit) {
                                 ).show()
                                 bool = true
                                 viewModel.resetToast()
-                                // button.isEnabled = false
+
+                                nameText = nom.text?.trim().toString()
+                                firstnameText = prenom.text?.trim().toString()
+                                phoneValue = phone.text?.trim().toString()
+                                emailValue = email.text?.trim().toString()
+                                birthday = dateEditText.text?.trim().toString()
+                                wageText = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0
+                                noteText = note.text?.trim().toString()
+                                imageUri
+
+
                             }
 
                             is SimpleResponse.Status.Failure -> {
@@ -389,7 +406,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                                         ).show()
                                         bool = false
                                         viewModel.resetToast()
-                                        //button.isEnabled = false
+
                                     }
                                 }
                             }
@@ -506,6 +523,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
     }
+
 
     private fun bindAvatar(avatar: ImageView, str: String) {
         val uri = Uri.parse((str))
