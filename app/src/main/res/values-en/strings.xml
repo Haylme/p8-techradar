@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">tech radar</string>
+    <string name="rechercher_un_candidat">Search</string>
+    <string name="tous">All</string>
+    <string name="favoris">Favorites</string>
+    <string name="fab_add_content">fab_add_content</string>
+    <string name="edit">Edit</string>
+    <string name="supprimer">Delete</string>
+    <string name="avatar_picture">avatar_picture</string>
+    <string name="appel">Call</string>
+    <string name="Sms">SMS</string>
+    <string name="Email">Email</string>
+    <string name="call_button_item">call_button_item</string>
+    <string name="A_propos">About</string>
+    <string name="placeholder">
+        i \'m homer and i love moes \'s beers !
+    </string>
+    <string name="modifier_un_candidat">Edit a candidatet</string>
+
+
+    <string name="champ_obligatoire">Mandatory field</string>
+
+    <string name="Prétentions_salariales">Expected salary</string>
+    <string name="_3500">3500€</string>
+    <string name="Notes">Notes</string>
+    <string name="Disponible_de_suite">Available immediately</string>
+    <string name="Prénom">First name</string>
+    <string name="person_icon">person_icon</string>
+    <string name="Nom">Last name</string>
+    <string name="Téléphone">Phone</string>
+    <string name="phone_icon">phone_icon</string>
+    <string name="mail_icon">mail_icon</string>
+    <string name="Sélectionner_une_date">Select a date</string>
+    <string name="Entrer_une_date">Enter a date</string>
+    <string name="birthday_icon">birthday_icon</string>
+    <string name="calendar_icon">calendar_icon</string>
+    <string name="Date">Date</string>
+    <string name="jj_mm_aaaa">MM/dd/yyyy</string>
+    <string name="Note">Note</string>
+    <string name="edit_icon">edit_icon</string>
+
+    <string name="wage_text">%1$d %2$s</string>
+    <string name="euro">£</string>
+
+    <string name="ans">years old</string>
+
+
+    <string name="error_mail">Invalid format</string>
+    <string name="wadge_layout">wadge_layout</string>
+    <string name="Sauvegarder">Save</string>
+    <string name="home">home</string>
+    <string name="backstack">backstack</string>
+
+
+    <string name="about_text">%1$s %2$d %3$s</string>
+    <string name="veuillez_remplir_au_moins_un_champ">Please fill at least one field</string>
+
+    <string name="supprimer_candidat">Etes-vous sûr de vouloir supprimer ce candidat? Cette action est irréversible.</string>
+
+    <string name="annuler">Cancel</string>
+
+    <string name="confirmer">Confirm</string>
+
+    <string name="suppression">Deletion</string>
+
+    <string name="format">Invalid format</string>
+
+    <string name="ajouter">Add a candidate</string>
+
+
+</resources>
