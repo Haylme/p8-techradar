@@ -1,13 +1,9 @@
 package com.example.techradar.viewholder
 
-import android.view.View
-import androidx.appcompat.view.menu.MenuView.ItemView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.techradar.R
-import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.ItemBinding
 import com.example.techradar.model.Content
 import com.example.techradar.ui.edit.getDrawableUri

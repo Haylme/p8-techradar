@@ -1,15 +1,12 @@
 package com.example.techradar.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +17,6 @@ import com.example.techradar.adapter.ListAdapter
 import com.example.techradar.databinding.FragmentHomeBinding
 import com.example.techradar.model.Content
 import com.example.techradar.model.SimpleResponse
-import com.example.techradar.ui.detail.Detail
 import com.google.android.material.search.SearchBar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint

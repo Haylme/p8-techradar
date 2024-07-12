@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -375,16 +374,18 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             R.id.supp -> {
 
+                val color = ContextCompat.getDrawable(binding.root.context,R.color.primary)
 
                 context?.let {
                     MaterialAlertDialogBuilder(it)
+                        .setBackground(color)
                         .setTitle(R.string.suppression)
                         .setMessage(R.string.supprimer_candidat)
                         .setNegativeButton(R.string.annuler) { dialog, _ ->
                             dialog.cancel()
                         }
-                        .setPositiveButton(R.string.confirmer) { dialog_, _ ->
-                            dialog_.apply {
+                        .setPositiveButton(R.string.confirmer) { dialog, _ ->
+                            dialog.apply {
                                 viewModel.deleteCandidate(id)
                                 // Log.d("error", "onOptionsItemSelected:$id ")
                                 findNavController().navigate(R.id.action_detail_to_home)
