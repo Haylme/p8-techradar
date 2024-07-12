@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import com.example.techradar.databinding.FragmentHomeBinding
 import com.example.techradar.model.Content
 import com.example.techradar.model.SimpleResponse
 import com.example.techradar.ui.detail.Detail
+import com.google.android.material.search.SearchBar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -52,6 +54,10 @@ class Home : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val searchBar = binding.searchBar
+
+
+        updateSearchBarDirection(searchBar)
 
         val loading = binding.loading
 
@@ -99,7 +105,7 @@ class Home : Fragment() {
 
 
         var searchString: String
-        //val searchBar = binding.searchBar
+
         val searchViewBar = binding.searchViewBar
 
         searchViewBar.editText.setOnEditorActionListener { v, actionId, event ->
@@ -136,7 +142,7 @@ class Home : Fragment() {
                     is SimpleResponse.Status.Failure -> {
                         lifecycleScope.launch {
                             viewModel.homeError.collect {
-                               // Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                                // Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
 
 
                             }
@@ -149,7 +155,7 @@ class Home : Fragment() {
 
                             viewModel.homeError.collect {
 
-                               // Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                                // Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -177,6 +183,25 @@ class Home : Fragment() {
 
 
         findNavController().navigate(R.id.action_home_to_detail, bundle)
+    }
+
+
+    private fun updateSearchBarDirection(searchBar: SearchBar) {
+        val currentLocale = resources.configuration.locales.get(0)
+        if (currentLocale.language == "en") {
+
+            searchBar.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            searchBar.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+
+
+
+
+
+        } else {
+
+            searchBar.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            searchBar.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+        }
     }
 
 

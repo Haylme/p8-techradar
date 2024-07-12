@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -324,7 +325,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                             firstnameText != firstnameCheck
                     )
 
-            if (!isValid || !hasChanges ) {
+            if (!isValid || !hasChanges) {
                 if (nom.text?.trim().isNullOrEmpty() || nom.text?.trim().toString() == nameText) {
                     nom.error = getString(R.string.champ_obligatoire)
                 }
@@ -526,6 +527,25 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
 
     private fun bindAvatar(avatar: ImageView, str: String) {
+        val colourInt = ContextCompat.getColor(binding.root.context, R.color.transparent)
+
+        if (str.isNotEmpty()) {
+
+            avatar.setBackgroundColor(colourInt)
+
+            val drawable = getDrawableUri(binding.root.context,R.drawable.baseline_category_24).toString()
+
+            if(str == drawable) {
+
+                val colourNew = ContextCompat.getColor(binding.root.context, R.color.picture)
+                avatar.setBackgroundColor(colourNew)
+
+            }
+        } else {
+            val colourNew = ContextCompat.getColor(binding.root.context, R.color.picture)
+            avatar.setBackgroundColor(colourNew)
+        }
+
         val uri = Uri.parse((str))
         Glide.with(avatar.context)
             .load(uri)

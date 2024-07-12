@@ -3,7 +3,6 @@ package com.example.techradar.ui.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.example.techradar.R
 import com.example.techradar.databinding.FragmentDetailBinding
 import com.example.techradar.model.SimpleResponse
+import com.example.techradar.ui.edit.getDrawableUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -412,9 +414,33 @@ class Detail : Fragment(R.layout.fragment_detail) {
     }
 
     private fun bindAvatar(avatar: ImageView, str: String) {
+
+
+        if (str.isNotEmpty()) {
+            val colourInt = ContextCompat.getColor(binding.root.context, R.color.transparent)
+
+            avatar.setBackgroundColor(colourInt)
+
+            val drawable = getDrawableUri(binding.root.context,R.drawable.baseline_category_24).toString()
+
+            if(str == drawable) {
+
+                val colourNew = ContextCompat.getColor(binding.root.context, R.color.picture)
+                avatar.setBackgroundColor(colourNew)
+
+            }
+        } else {
+            val colourNew = ContextCompat.getColor(binding.root.context, R.color.picture)
+            avatar.setBackgroundColor(colourNew)
+            //avatar.setImageIcon(R.drawable.baseline_category_24)
+        }
+
+
+
         val uri = Uri.parse((str))
         Glide.with(avatar.context)
             .load(uri)
+
             .into(avatar)
     }
 
