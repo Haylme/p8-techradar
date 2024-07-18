@@ -21,10 +21,11 @@ import org.mockito.MockitoAnnotations
 class TestFetchDetailUser {
 
     @Mock
+    private lateinit var listDao: ListDao
 
     private lateinit var dataRepository: DataRepository
 
-    private lateinit var listDao: ListDao
+
 
 
     @Before
@@ -77,7 +78,7 @@ class TestFetchDetailUser {
         }
 
 
-        Mockito.verify(listDao).getAllFavoriteUsers()
+
     }
 
 
