@@ -80,6 +80,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.topAppbar)
 
+        (activity as? AppCompatActivity)?.supportActionBar?.title = ""
 
         return binding.root
 

@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcel
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -78,13 +79,30 @@ class Add : Fragment() {
         val dateEditText = binding.dateEditText
 
 
-        // calendar constraint time and year
+
         val today = MaterialDatePicker.todayInUtcMilliseconds()
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("utc"))
 
         calendar.timeInMillis = today
+        calendar.add(Calendar.DAY_OF_YEAR,1)
+        val tomorrow = calendar.timeInMillis
+
         val constraintsBuilder = CalendarConstraints.Builder()
-            .setEnd(today)
+            .setValidator(object : CalendarConstraints.DateValidator {
+                override fun isValid(date: Long): Boolean {
+                    return date < tomorrow
+                }
+
+                override fun describeContents(): Int {
+                    return 0
+                }
+
+                override fun writeToParcel(dest: Parcel, flags: Int) {
+                    //TODO("Not yet implemented")
+                }
+
+
+            })
 
 
         dateButton.setOnClickListener {

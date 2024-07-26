@@ -12,6 +12,7 @@ import com.example.techradar.room.dao.ListDao
 import com.example.techradar.room.dto.ListDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
 import java.io.File
 
 class Converters {
@@ -65,8 +66,8 @@ abstract class AppDataBase : RoomDatabase() {
            // val imagePath = "/storage/emulated/0/DCIM/louis.jpg"
            // val imageUri = Uri.fromFile(File(imagePath))
 
-            //val imagePath2 = "/storage/emulated/0/DCIM/kitano.jpg"
-            //val imageUri2 = Uri.fromFile(File(imagePath2))
+            val imagePath2 = "/media/picker_get_content/0/com.android.providers.media.photopicker/media/40"
+            val imageUri2 = Uri.fromFile(File(imagePath2))
 
             listDao.insertUser(
                 ListDto(
@@ -92,7 +93,7 @@ abstract class AppDataBase : RoomDatabase() {
                     listWage = 300000,
                     listNote = "i can speak japanese and english with more than 20 years experience as famous japanese actor. My favorite role part is playing a yakuza or a samurai",
                     listFavorite = false,
-                    listPicture = null
+                    listPicture = imageUri2.toString()
                 )
             )
         }
