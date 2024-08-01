@@ -109,8 +109,8 @@ class DataRepository(
         return result
     }
 
-    suspend fun fetchTranslate(date:String?, to:Int?): Curencies {
-        return CallApi.fetchTranslateData(date,to)
+    suspend fun fetchTranslate(to:Double?): Double {
+       return CallApi.fetchTranslateData(to)
     }
 
 

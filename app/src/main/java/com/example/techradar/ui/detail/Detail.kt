@@ -24,6 +24,7 @@ import com.example.techradar.model.SimpleResponse
 import com.example.techradar.ui.edit.getDrawableUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -53,9 +54,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
     private lateinit var birthday: String
 
-    private var wage by Delegates.notNull<Int>()
+    private var wage by Delegates.notNull<Double>()
 
-    // private lateinit var note: String
 
     private lateinit var pictureUri: String
 
@@ -108,7 +108,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
         birthday = arguments?.getString("birthday").toString()
 
-        wage = arguments?.getInt("wage") ?: 0
+        wage = arguments?.getDouble("wage") ?: 0.00
 
         phoneValue = arguments?.getString("phone").toString()
         emailValue = arguments?.getString(("email")).toString()
@@ -127,6 +127,8 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val name = binding.name
         val firstname = binding.firstname
 
+        var currency = binding.wageTranslate
+
 
         val backBar = binding.back
 
@@ -143,23 +145,44 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-        lifecycleScope.launch {
+        val formattedWage = if (wage % 1 == 0.0) {
+            String.format("%.0f", wage)
+        } else {
+            String.format("%.2f", wage)
+        }
+        wageText.text = getString(R.string.wage_text, formattedWage, getString(R.string.euro))
 
-            viewModel.translate.collect { response ->
-                when (response.status) {
+        viewModel.translateDate(wage)
+
+        lifecycleScope.launch {
+            viewModel.translate.collect {
+
+                    result ->
+                when (result.status) {
+
                     is SimpleResponse.Status.Success -> {
 
-                        viewModel.translateDate(birthday, wage)
+                        val translate = result.data
+                        currency.text =
+                            "${getString(R.string.soit)} $translate ${getString(R.string.pound)}"
 
                     }
 
-                    else -> {
+                    SimpleResponse.Status.Failure -> {
+
                         return@collect
+                    }
+
+                    else -> {
+
+                        return@collect
+
                     }
                 }
 
 
             }
+
 
         }
 
@@ -167,7 +190,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
 
 
-        wageText.text = getString(R.string.wage_text, wage, getString(R.string.euro))
+
+
+
+
 
 
         if (birthday.isNotEmpty()) {
@@ -239,7 +265,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
             firstnameText = bundle.getString("firstname") ?: ""
             phoneValue = bundle.getString("phone") ?: ""
             emailValue = bundle.getString("email") ?: ""
-            wage = bundle.getInt("wage")
+            wage = bundle.getDouble("wage")
             noteText = bundle.getString("note") ?: ""
             pictureUri = bundle.getString("pics").toString()
             birthday = bundle.getString("birthday") ?: ""
@@ -248,9 +274,15 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             name.text = nameText
             firstname.text = firstnameText
-            // binding.phoneEditText.setText(phoneValue)
-            //binding.mailEditText.setText(emailValue)
-            wageText.text = getString(R.string.wage_text, wage, getString(R.string.euro))
+
+
+            val formattedWage = if (wage % 1 == 0.0) {
+                String.format("%.0f", wage)
+            } else {
+                String.format("%.2f", wage)
+            }
+            wageText.text = getString(R.string.wage_text, formattedWage, getString(R.string.euro))
+
             binding.noteEditText.text = noteText
 
             binding.about.text = birthday
@@ -363,7 +395,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     putString("firstname", firstnameText)
                     putString("phone", phoneValue)
                     putString("email", emailValue)
-                    putInt("wage", wage)
+                    putDouble("wage", wage)
                     putString("note", noteText)
                     putString("pics", pictureUri)
                     putString("birthday", birthday)
@@ -375,7 +407,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             R.id.supp -> {
 
-                val color = ContextCompat.getDrawable(binding.root.context,R.color.primary)
+                val color = ContextCompat.getDrawable(binding.root.context, R.color.primary)
 
                 context?.let {
                     MaterialAlertDialogBuilder(it)
@@ -423,9 +455,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             avatar.setBackgroundColor(colourInt)
 
-            val drawable = getDrawableUri(binding.root.context,R.drawable.baseline_category_24).toString()
+            val drawable =
+                getDrawableUri(binding.root.context, R.drawable.baseline_category_24).toString()
 
-            if(str == drawable) {
+            if (str == drawable) {
 
                 val colourNew = ContextCompat.getColor(binding.root.context, R.color.picture)
                 avatar.setBackgroundColor(colourNew)
@@ -436,7 +469,6 @@ class Detail : Fragment(R.layout.fragment_detail) {
             avatar.setBackgroundColor(colourNew)
             //avatar.setImageIcon(R.drawable.baseline_category_24)
         }
-
 
 
         val uri = Uri.parse((str))

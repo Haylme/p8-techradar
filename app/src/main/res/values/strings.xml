@@ -39,8 +39,9 @@
     <string name="Note">Note</string>
     <string name="edit_icon">edit_icon</string>
 
-    <string name="wage_text">%1$d %2$s</string>
+    <string name="wage_text">%1$s %2$s</string>
     <string name="euro">€</string>
+    <string name="pound" translatable="false">£</string>
 
     <string name="ans">ans</string>
 
@@ -66,6 +67,7 @@
     <string name="format">Format invalide</string>
 
     <string name="ajouter">Ajouter un candidat</string>
+    <string name="soit">Soit</string>
 
 
 </resources>

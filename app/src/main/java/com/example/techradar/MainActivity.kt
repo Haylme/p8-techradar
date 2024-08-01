@@ -17,25 +17,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
 
-      //  val menuId = R.id.home //
-
-       /** if (savedInstanceState == null) {
-            val fragment = getFragmentById(menuId)
-            if (fragment != null) {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.main, fragment)
-                    .commitNow()
-            }
-        }**/
     }
-
-  /**  private fun getFragmentById(menuId: Int): Fragment? {
-        return when (menuId) {
-            R.id.add -> Add.newInstance()
-            R.id.detail -> Detail.newInstance()
-            R.id.edit -> Edit.newInstance()
-            R.id.home -> Home.newInstance()
-            else -> null
-        }
-    }**/
 }

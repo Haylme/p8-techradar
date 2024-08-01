@@ -69,7 +69,7 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
 
-
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation(libs.androidx.material3)
     implementation(libs.generativeai)
@@ -93,7 +93,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
 
-    //implementation("androidx.core:core-splashscreen:$1.0.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

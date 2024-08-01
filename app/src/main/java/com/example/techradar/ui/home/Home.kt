@@ -138,7 +138,7 @@ class Home : Fragment() {
                     is SimpleResponse.Status.Failure -> {
                         lifecycleScope.launch {
                             viewModel.homeError.collect {
-                                // Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+
 
 
                             }
@@ -151,7 +151,7 @@ class Home : Fragment() {
 
                             viewModel.homeError.collect {
 
-                                // Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+
                             }
                         }
                     }

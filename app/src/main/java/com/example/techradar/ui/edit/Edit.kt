@@ -68,7 +68,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
     private lateinit var birthday: String
 
-    private var wageText: Int = 0
+    private var wageText: Double = 0.0
 
 
     private lateinit var imageUri: String
@@ -166,7 +166,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         phoneValue = arguments?.getString("phone").toString()
         emailValue = arguments?.getString("email").toString()
         birthday = arguments?.getString("birthday") ?: ""
-        wageText = arguments?.getInt("wage") ?: 0
+        wageText = arguments?.getDouble("wage") ?: 0.0
         imageUri = arguments?.getString("pics").toString()
         noteText = arguments?.getString("note").toString()
         nameText = arguments?.getString("name").toString()
@@ -180,6 +180,8 @@ class Edit : Fragment(R.layout.fragment_edit) {
         email.setText(emailValue)
         phone.setText(phoneValue)
         dateEditText.setText(birthday)
+
+
 
         wage.editText?.setText(wageText.toString())
         note.setText(noteText)
@@ -214,11 +216,11 @@ class Edit : Fragment(R.layout.fragment_edit) {
             imageContract.launch("image/*")
         }
 
-        // imageUri = arguments?.getString("picture").toString()
+
         bindAvatar(binding.avatar, imageUri)
 
 
-        // button.isEnabled = false
+
 
 
         email.addTextChangedListener(object : TextWatcher {
@@ -337,7 +339,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     phoneValue != phoneCheck ||
                             emailValue != emailCheck ||
                             birthday != dateCheck ||
-                            wageText != (wageCheck.toIntOrNull() ?: 0) ||
+                            wageText != (wageCheck.toFloatOrNull() ?: 0) ||
                             imageUri != imageUriCheck ||
                             noteText != noteCheck ||
                             nameText != nameCheck ||
@@ -368,7 +370,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                 }
 
                 if (wage.editText?.text?.trim().isNullOrEmpty() || wage.editText?.text?.trim()
-                        .toString().toIntOrNull() == wageText
+                        .toString().toDoubleOrNull() == wageText
                 ) {
                     wage.editText?.error = getString(R.string.champ_obligatoire)
                 }
@@ -390,7 +392,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     phone = phone.text?.trim().toString(),
                     email = email.text?.trim().toString(),
                     birthday = dateEditText.text?.trim().toString(),
-                    wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                    wage = wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0,
                     note = note.text?.trim().toString(),
                     favorite = favorite,
                     picture = imageUri.toString()
@@ -411,7 +413,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                                 phoneValue = phone.text?.trim().toString()
                                 emailValue = email.text?.trim().toString()
                                 birthday = dateEditText.text?.trim().toString()
-                                wageText = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0
+                                wageText = wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0
                                 noteText = note.text?.trim().toString()
                                 imageUri
 
@@ -508,7 +510,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     putString("firstname", firstnameText)
                     putString("phone", phoneValue)
                     putString("email", emailValue)
-                    putInt("wage", wageText)
+                    putDouble("wage", wageText)
                     putString("note", noteText)
                     putString("pics", imageUri)
                     putString("birthday", birthday)

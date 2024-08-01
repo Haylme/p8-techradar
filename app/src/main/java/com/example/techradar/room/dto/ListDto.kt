@@ -30,7 +30,7 @@ data class ListDto(
     var listBirthday: String,
 
     @ColumnInfo(name = "list_wage")
-    var listWage: Int,
+    var listWage: Double,
 
     @ColumnInfo(name = "list_note")
     var listNote: String,

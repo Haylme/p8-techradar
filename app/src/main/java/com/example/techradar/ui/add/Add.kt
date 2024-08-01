@@ -161,7 +161,7 @@ class Add : Fragment() {
 
         avatar.setImageURI(imageUri?.let { Uri.parse(it) })
 
-       // button.isEnabled = false
+
 
 
 
@@ -283,7 +283,7 @@ class Add : Fragment() {
                     phone = phone.text?.trim().toString(),
                     email = email.text?.trim().toString(),
                     birthday = date.text?.trim().toString(),
-                    wage = wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                    wage = wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0,
                     note = note.text?.trim().toString(),
                     favorite = false,
                     picture = imageUri.toString()
@@ -371,7 +371,7 @@ class Add : Fragment() {
             dateEditText.setSelection(current.length)
             dateEditText.addTextChangedListener(this)
 
-            // Handle error if the format is incorrect
+
             try {
                 LocalDate.parse(current, formatter)
             } catch (e: Exception) {

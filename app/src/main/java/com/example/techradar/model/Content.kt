@@ -10,7 +10,7 @@ data class Content(
     val phone: String,
     val email: String,
     val birthday: String,
-    val wage: Int,
+    val wage: Double,
     val note: String,
     var favorite: Boolean,
     var picture: String?

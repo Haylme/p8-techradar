@@ -1,45 +1,38 @@
 package com.example.techradar.retrofit
 
 import Curencies
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Currency
-import java.util.Locale
+import retrofit2.Response
 
 object CallApi {
 
-    suspend fun fetchTranslateData(date: String?, to: Int?): Curencies {
+    suspend fun fetchTranslateData(to: Double?): Double {
         val service: ApiService = ApiService.retrofit.create(ApiService::class.java)
         return withContext(Dispatchers.IO) {
 
-            if (date.isNullOrEmpty() || to == null) {
-                throw IllegalArgumentException("date and to must be not null")
+            if (to == null) {
+                throw IllegalArgumentException("value is null")
             }
-        /**    if(getSystemLanguage() == "fr"){
 
-                val sdf = SimpleDateFormat("dd/MM/yyyy")
-                 sdf.parse(date)
-               to = Currency.getInstance(Locale.FRANCE).numericCode
+            val response: Response<Curencies> = service.getValue()
+            if (response.isSuccessful) {
+                val currencies =
+                    response.body() ?: throw IllegalStateException("Received null response body")
+
+                val gbpValue = currencies.eur.gbp
 
 
-            }**/
-            val currencies = Curencies(date, to)
-            val response = service.getValue(currencies)
-
-            response ?: throw IllegalStateException("Received null response body")
+                val newValue = to * gbpValue
+                newValue
+            } else {
+                Log.e(
+                    "CallApi",
+                    "Request failed with status: ${response.code()} and message: ${response.message()}"
+                )
+                throw IllegalStateException("Request failed with status: ${response.code()}")
+            }
         }
     }
-
-    private fun getSystemLanguage(): String {
-
-        return Locale.getDefault().language
-
-
-    }
 }
-
-
-
-
-

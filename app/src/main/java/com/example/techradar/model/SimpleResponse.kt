@@ -8,7 +8,7 @@ data class SimpleResponse<T>(
     sealed class Status {
         object Success : Status()
         object Failure : Status()
-        object Initial : Status() // Added to represent the initial state
+        object Initial : Status()
     }
 
     companion object {

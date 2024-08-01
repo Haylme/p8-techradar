@@ -34,8 +34,8 @@ class DetailViewModel @Inject constructor(
     private val _updateUserFav = MutableStateFlow(SimpleResponse.initial<Boolean>())
     val updateUserFav: StateFlow<SimpleResponse<Boolean>> = _updateUserFav.asStateFlow()
 
-    private val _translate = MutableStateFlow(SimpleResponse.initial<Curencies>())
-    val translate: StateFlow<SimpleResponse<Curencies>> = _translate.asStateFlow()
+    private val _translate = MutableStateFlow(SimpleResponse.initial<Double>())
+    val translate: StateFlow<SimpleResponse<Double>> = _translate.asStateFlow()
 
     fun resetToast() {
         _detailError.value = null
@@ -48,69 +48,21 @@ class DetailViewModel @Inject constructor(
     }
 
 
-     fun getSystemLanguage(): String {
-
-        return Locale.getDefault().language
-
-    }
-
-     fun getCurrency():String {
-
-        val defaultCurrency = Currency.getInstance(Locale.getDefault()).currencyCode
 
 
-
-        return defaultCurrency
-
-
-    }
-
-
-    fun translateDate(date: String, to: Int) {
-
+    fun translateDate(to: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-
-           val lang:String = getSystemLanguage()
-
-            val result: Curencies = dataRepository.fetchTranslate(date, to)
-
-
-
-            SimpleResponse.success(result)
-            _translate.value = SimpleResponse.success(result)
-
-
+            try {
+                val result = dataRepository.fetchTranslate(to)
+                _translate.value = SimpleResponse.success(result)
+            } catch (e: Exception) {
+                _translate.value = SimpleResponse.failure(e)
+                _detailError.value = "Translation error: ${e.message}"
+            }
         }
-
-
     }
 
 
-    /**  fun gettranslate(): Pair<String, Int> {
-
-    val systemLanguage = getSystemLanguage()
-    val currency = getCurrency()
-    val date: String
-    val to: Int
-    when (systemLanguage) {
-
-
-    "fr" -> {
-    date = "dd/MM/yyyy"
-    to = currency
-
-    }
-
-    "en" -> {
-    date = "MM/dd/yyyy"
-
-    to = currency
-
-
-    }
-    }
-    return Pair(date,to)
-    }**/
 
 
     fun updateData(id: Long, bool: Boolean) {

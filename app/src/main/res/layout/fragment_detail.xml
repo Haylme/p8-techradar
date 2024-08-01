@@ -232,6 +232,20 @@
                 android:paddingTop="18dp"
                 android:textSize="18sp" />
 
+
+            <TextView
+                android:id="@+id/wageTranslate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="80dp"
+                android:background="@null"
+                android:text="@string/soit"
+                android:hint="@string/_3500"
+                android:paddingTop="18dp"
+                android:textSize="14sp" />
+
+
         </com.google.android.material.card.MaterialCardView>
 
 
