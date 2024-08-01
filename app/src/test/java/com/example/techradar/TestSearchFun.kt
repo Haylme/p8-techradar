@@ -42,7 +42,7 @@ class TestSearchFun {
             listPhone = "0614238745",
             listEmail = "john@exemple.fr",
             listBirthday = "14/05/1970",
-            listWage = 3852f,
+            listWage = 3852.0,
             listNote = "j'aime les sport de balles",
             listFavorite = false,
             listPicture = null
@@ -54,7 +54,7 @@ class TestSearchFun {
             phone = "0614238745",
             email = "john@exemple.fr",
             birthday = "14/05/1970",
-            wage = 3852f,
+            wage = 3852.0,
             note = "j'aime les sport de balles",
             favorite = false,
             picture = null

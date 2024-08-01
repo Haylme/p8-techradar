@@ -47,7 +47,7 @@ class TestFetchDetailUser {
             listPhone = "044324785",
             listEmail = "jeannot@exemple.fr",
             listBirthday = "14/12/2023",
-            listWage = 45f,
+            listWage = 45.0,
             listNote = "to be or not to be that is the question",
             listFavorite = true,
             listPicture = null

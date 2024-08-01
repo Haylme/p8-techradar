@@ -152,7 +152,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
         wageText.text = getString(R.string.wage_text, formattedWage, getString(R.string.euro))
 
+
         viewModel.translateDate(wage)
+
+
 
         lifecycleScope.launch {
             viewModel.translate.collect {

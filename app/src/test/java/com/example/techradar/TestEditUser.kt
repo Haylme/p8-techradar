@@ -44,7 +44,7 @@ class TestEditUser {
             phone = "044324785",
             email = "jeannot@exemple.fr",
             birthday = "14/12/2023",
-            wage = 4500000f,
+            wage = 4500000.0,
             note = "to be or not to be that is the question",
             favorite = true,
             picture = null
