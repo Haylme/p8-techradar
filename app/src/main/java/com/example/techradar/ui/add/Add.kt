@@ -79,12 +79,11 @@ class Add : Fragment() {
         val dateEditText = binding.dateEditText
 
 
-
         val today = MaterialDatePicker.todayInUtcMilliseconds()
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("utc"))
 
         calendar.timeInMillis = today
-        calendar.add(Calendar.DAY_OF_YEAR,1)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
         val tomorrow = calendar.timeInMillis
 
         val constraintsBuilder = CalendarConstraints.Builder()
@@ -216,7 +215,7 @@ class Add : Fragment() {
                     phone.text?.trim().toString(),
                     email.text?.trim().toString(),
                     date.text?.trim().toString(),
-                    wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                    wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0,
                     note.text?.trim().toString()
                 )
 
@@ -244,7 +243,7 @@ class Add : Fragment() {
                 phone.text?.trim().toString(),
                 email.text?.trim().toString(),
                 date.text?.trim().toString(),
-                wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0,
                 note.text?.trim().toString()
             )
 
@@ -302,6 +301,7 @@ class Add : Fragment() {
                                 NavHostFragment.findNavController(this@Add)
                                     .navigate(R.id.action_add_to_home)
                             }
+
                             is SimpleResponse.Status.Failure -> {
                                 lifecycleScope.launch {
                                     viewModel.error.collect { message ->
@@ -316,6 +316,7 @@ class Add : Fragment() {
                                     }
                                 }
                             }
+
                             else -> {
                                 Snackbar.make(
                                     binding.root,
@@ -336,57 +337,62 @@ class Add : Fragment() {
 
 
         dateEditText.addTextChangedListener(
-    object : TextWatcher {
-        private var current = ""
-        private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            object : TextWatcher {
+                private var current = ""
+                private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // Store the current text before it changes
-            current = s.toString()
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // Do nothing here
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            if (s == null) return
-
-            val userInput = s.toString()
-            if (userInput == current) return
-
-            val cleanInput = userInput.replace("\\D".toRegex(), "")
-            val formattedInput = StringBuilder()
-
-            for (i in cleanInput.indices) {
-                formattedInput.append(cleanInput[i])
-                if ((i == 1 || i == 3) && i != cleanInput.length - 1) {
-                    formattedInput.append('/')
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    // Store the current text before it changes
+                    current = s.toString()
                 }
-            }
 
-            current = formattedInput.toString()
-            dateEditText.removeTextChangedListener(this)
-            dateEditText.setText(current)
-            dateEditText.setSelection(current.length)
-            dateEditText.addTextChangedListener(this)
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    // Do nothing here
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    if (s == null) return
+
+                    val userInput = s.toString()
+                    if (userInput == current) return
+
+                    val cleanInput = userInput.replace("\\D".toRegex(), "")
+                    val formattedInput = StringBuilder()
+
+                    for (i in cleanInput.indices) {
+                        formattedInput.append(cleanInput[i])
+                        if ((i == 1 || i == 3) && i != cleanInput.length - 1) {
+                            formattedInput.append('/')
+                        }
+                    }
+
+                    current = formattedInput.toString()
+                    dateEditText.removeTextChangedListener(this)
+                    dateEditText.setText(current)
+                    dateEditText.setSelection(current.length)
+                    dateEditText.addTextChangedListener(this)
 
 
-            try {
-                LocalDate.parse(current, formatter)
-            } catch (e: Exception) {
-                dateEditText.error = "format de date invalide"
-            }
-        }
-    })
+                    try {
+                        LocalDate.parse(current, formatter)
+                    } catch (e: Exception) {
+                        dateEditText.error = "format de date invalide"
+                    }
+                }
+            })
 
 
-}
+    }
 
-override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-}
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 
 

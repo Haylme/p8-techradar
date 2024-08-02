@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Parcel
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -282,7 +281,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     phone.text?.trim().toString(),
                     email.text?.trim().toString(),
                     dateEditText.text?.trim().toString(),
-                    wage.editText?.text?.trim().toString().toIntOrNull() ?: 0,
+                    wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0,
                     note.text?.trim().toString(),
                     imageUri
                 )
@@ -309,7 +308,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
         note.addTextChangedListener(textwatcher)
 
 
-        var bool = false
+        var bool = true
 
 
 
@@ -330,7 +329,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                 phoneCheck,
                 emailCheck,
                 dateCheck,
-                wageCheck.toIntOrNull() ?: 0,
+                wageCheck.toDoubleOrNull() ?: 0.0,
                 noteCheck,
                 imageUriCheck
             )
@@ -339,7 +338,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     phoneValue != phoneCheck ||
                             emailValue != emailCheck ||
                             birthday != dateCheck ||
-                            wageText != (wageCheck.toFloatOrNull() ?: 0) ||
+                            wageText != (wageCheck.toDoubleOrNull() ?: 0.0) ||
                             imageUri != imageUriCheck ||
                             noteText != noteCheck ||
                             nameText != nameCheck ||
@@ -395,7 +394,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     wage = wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0,
                     note = note.text?.trim().toString(),
                     favorite = favorite,
-                    picture = imageUri.toString()
+                    picture = imageUri
                 )
 
                 lifecycleScope.launch {
@@ -502,7 +501,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
 
         binding.topAppbar.setNavigationOnClickListener {
 
-            if (!bool) {
+            if (bool) {
 
                 val resultBundle = Bundle().apply {
                     putLong("id", id)
@@ -528,7 +527,7 @@ class Edit : Fragment(R.layout.fragment_edit) {
                     putString("firstname", prenom.text?.trim().toString())
                     putString("phone", phone.text?.trim().toString())
                     putString("email", email.text?.trim().toString())
-                    putInt("wage", wage.editText?.text?.trim().toString().toIntOrNull() ?: 0)
+                    putDouble("wage", wage.editText?.text?.trim().toString().toDoubleOrNull() ?: 0.0)
                     putString("note", note.text?.trim().toString())
                     putString("pics", imageUri)
                     putString("birthday", dateEditText.text?.trim().toString())

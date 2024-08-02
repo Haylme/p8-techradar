@@ -127,7 +127,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
         val name = binding.name
         val firstname = binding.firstname
 
-        var currency = binding.wageTranslate
+        val currency = binding.wageTranslate
 
 
         val backBar = binding.back
@@ -166,8 +166,17 @@ class Detail : Fragment(R.layout.fragment_detail) {
                     is SimpleResponse.Status.Success -> {
 
                         val translate = result.data
+
+                        val format = if (translate != null && translate % 1 == 0.0) {
+                            String.format("%.0f", translate)
+                        } else {
+                            String.format("%.2f", translate)
+                        }
+
+
+
                         currency.text =
-                            "${getString(R.string.soit)} $translate ${getString(R.string.pound)}"
+                            "${getString(R.string.soit)} $format ${getString(R.string.pound)}"
 
                     }
 
@@ -190,15 +199,6 @@ class Detail : Fragment(R.layout.fragment_detail) {
         }
 
 
-
-
-
-
-
-
-
-
-
         if (birthday.isNotEmpty()) {
             try {
                 val sdf = SimpleDateFormat("dd/MM/yyyy")
@@ -215,15 +215,10 @@ class Detail : Fragment(R.layout.fragment_detail) {
                         getString(R.string.about_text, birthday, age, getString(R.string.ans))
                 }
             } catch (e: Exception) {
-                // Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
-                //     .show()
+                return
             }
         } else {
-            // Toast.makeText(
-            //    requireContext(),
-            //  "Aucune date de naissance renseignée",
-            // Toast.LENGTH_LONG
-            // ).show()
+            return
         }
 
 
@@ -313,8 +308,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
                             getString(R.string.about_text, birthday, age, getString(R.string.ans))
                     }
                 } catch (e: Exception) {
-                    //  Toast.makeText(requireContext(), "format de date incorrecte", Toast.LENGTH_LONG)
-                    // .show()
+                    return@setFragmentResultListener
                 }
             } else {
                 Toast.makeText(
@@ -423,7 +417,7 @@ class Detail : Fragment(R.layout.fragment_detail) {
                         .setPositiveButton(R.string.confirmer) { dialog, _ ->
                             dialog.apply {
                                 viewModel.deleteCandidate(id)
-                                // Log.d("error", "onOptionsItemSelected:$id ")
+
                                 findNavController().navigate(R.id.action_detail_to_home)
                             }
 
@@ -480,18 +474,6 @@ class Detail : Fragment(R.layout.fragment_detail) {
 
             .into(avatar)
     }
-
-
-    /**  private fun language (){
-
-    viewModel.getSystemLanguage()
-    }
-
-    private fun currency (){
-
-    viewModel.getCurrency()
-
-    }**/
 
 
     override fun onDestroyView() {

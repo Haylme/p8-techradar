@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-   // private val credencies: Credencies
+
 ) : ViewModel() {
 
 
@@ -55,7 +55,7 @@ class EditViewModel @Inject constructor(
         phone: String,
         email: String,
         date: String,
-        wage: Int,
+        wage: Double,
         note: String,
         picture: String
     ): Boolean {

@@ -45,7 +45,7 @@ class AddViewModel @Inject constructor(
         phone: String,
         email: String,
         date: String,
-        wage: Int,
+        wage: Double,
         note: String
     ): Boolean {
         // Implement your logic here
