@@ -1,7 +1,5 @@
 package com.example.techradar.data
 
-import Curencies
-import android.net.Uri
 import com.example.techradar.model.Content
 import com.example.techradar.retrofit.CallApi
 import com.example.techradar.room.dao.ListDao

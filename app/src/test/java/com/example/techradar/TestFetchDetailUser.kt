@@ -47,7 +47,7 @@ class TestFetchDetailUser {
             listPhone = "044324785",
             listEmail = "jeannot@exemple.fr",
             listBirthday = "14/12/2023",
-            listWage = 45.0,
+            listWage = 45.00,
             listNote = "to be or not to be that is the question",
             listFavorite = true,
             listPicture = null
@@ -71,7 +71,7 @@ class TestFetchDetailUser {
             assertEquals(user.phone, "044324785")
             assertEquals(user.email, "jeannot@exemple.fr")
             assertEquals(user.birthday, "14/12/2023")
-            assertEquals(user.wage, 45)
+            assertEquals(user.wage, 45.00, 0.001)
             assertEquals(user.note, "to be or not to be that is the question")
             assertEquals(user.favorite, true)
             assertEquals(user.picture, null)
